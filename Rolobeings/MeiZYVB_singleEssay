@@ -1,0 +1,19 @@
+<html>
+
+<head>
+    <title>MeiZYVB</title>
+    <link rel="stylesheet" href="MeiZYVB.css">
+    <script src="MeiZYVB.js" defer></script>
+    <style>
+    </style>
+</head>
+
+<body>
+    <p>Dandelion</p>
+    <img src="images/dandelion.png" alt="Dandelion" class="herb-image" id="herb-image-1" />
+    <p><i>Gemini:</i> May 20 - June 19.</p>
+    <p>First published June 12th, 2024</p>
+    <p> </p>
+</body>
+
+</html>
