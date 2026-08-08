@@ -1,0 +1,137 @@
+<html>
+  <head>
+    <style>
+      .body-text {
+        font-family: "Noto Sans", sans-serif;
+        font-optical-sizing: auto;
+        font-weight: 200;
+        font-size: 14px;
+        font-style: normal;
+        font-variation-settings: "wdth" 100;
+        color: black;
+      }
+      /* Entry overlay: w/ prompt and dot to click in */
+      .entry-overlay {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        position: fixed;
+        z-index: 888;
+        left: 0;
+        top: 0;
+        width: 100vw;
+        height: 100vh;
+        overflow: auto;
+        background-color: rgba(247, 247, 237, 0.95);
+        opacity: 1; /* Fully visible */
+        transition: opacity 1.5s ease; /* Smooth fade-out effect */
+      }
+      .hidden-entry-overlay {
+        opacity: 0;
+        pointer-events: none; /* Prevent interaction */
+        transition: opacity 1s ease;
+      }
+      .prompt-text {
+        font-family: "Noto Sans", sans-serif;
+        font-optical-sizing: auto;
+        font-weight: 300;
+        font-size: 15px;
+        font-style: normal;
+        font-variation-settings: "wdth" 87.5;
+        color: black;
+      }
+      #entry-dot {
+        width: 15px;
+        height: 15px;
+        background-color: transparent;
+        border: 1px solid black;
+        border-radius: 50%;
+        cursor: pointer;
+        transition: background-color 0.5s ease; /* Smooth fade-out effect */
+      }
+      #prompt {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        transition: opacity 1s ease;
+      }
+      #loading {
+        position: absolute;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+        width: 100vw;
+        transition: opacity 1s ease;
+      }
+      .loader-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      .pulsing-circle {
+        width: 15px;
+        height: 15px;
+        background-color: #595959;
+        border-radius: 50%;
+        animation: pulse 2.5s infinite;
+      }
+      @keyframes pulse {
+        0%,
+        100% {
+          transform: scale(1);
+          opacity: 1;
+        }
+        50% {
+          transform: scale(1.5);
+          opacity: 0.5;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="entry-overlay">
+      <div id="prompt" class="hidden-entry-overlay">
+        <p class="prompt-text body-text"></p>
+        <div id="entry-dot"></div>
+      </div>
+      <div id="loading">
+        <p class="body-text">Loading ...</p>
+        <div class="loader-container">
+          <div class="pulsing-circle"></div>
+        </div>
+      </div>
+    </div>
+    <script>
+      // Entry overlay
+      var entryOverlay = document.getElementsByClassName("entry-overlay")[0];
+      const entryDot = document.getElementById("entry-dot");
+      const prompt = document.getElementById("prompt");
+      const promptText = document.getElementsByClassName("prompt-text")[0];
+      const loadingText = document.getElementById("loading");
+
+      window.addEventListener("load", () => {
+        // Hide loading text once loading is complete
+        loadingText.classList.add("hidden-entry-overlay");
+        prompt.classList.remove("hidden-entry-overlay");
+
+        // Hover color change
+        //TODO: use prompt text from backend
+        promptText.innerText = "TESTING";
+        entryDot.addEventListener("mouseover", () => {
+          //TODO: load this color from bg
+          entryDot.style.backgroundColor = "#DD5F5F";
+        });
+        entryDot.addEventListener("mouseout", () => {
+          entryDot.style.backgroundColor = "transparent";
+        });
+        entryDot.addEventListener("click", () => {
+          entryOverlay.classList.add("hidden-entry-overlay");
+        });
+      });
+    </script>
+  </body>
+</html>

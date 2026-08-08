@@ -1,0 +1,1111 @@
+<!-- TODO: 
+    1.   Font not updated to Noto
+-->
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- TODO: change name here -->
+    <title>Elle & Qiutong</title>
+    <style>
+      /* Native element styling */
+      p {
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 13.5px;
+        color: white;
+      }
+
+      body {
+        background-image: url(https://static.wixstatic.com/media/2fa7ac_f1a12471e59647658e03f73630e0eb51~mv2.jpg);
+        background-size: 100vw;
+        /* backdrop-filter: blur(4px); Apply blur effect */
+        margin: 0;
+        transition: opacity 1s ease-in-out;
+      }
+
+      /* Style classes used throughout */
+      .visible {
+        opacity: 1 !important;
+      }
+
+      .hidden {
+        opacity: 0 !important;
+        transition: opacity 0.4s ease;
+      }
+
+      .gray-text {
+        color: #595959 !important;
+      }
+
+      .green-text {
+        color: #298421 !important;
+      }
+
+      .content {
+        height: 3450px;
+        /* height: 385vh; */
+        overflow: clip;
+      }
+
+      /* effect-shine */
+      .effect-shine {
+        mask-image: linear-gradient(
+          -75deg,
+          rgba(0, 0, 0, 0.6) 30%,
+          #000 50%,
+          rgba(0, 0, 0, 0.6) 70%
+        );
+        -webkit-mask-image: linear-gradient(
+          -75deg,
+          rgba(0, 0, 0, 0.6) 30%,
+          #000 50%,
+          rgba(0, 0, 0, 0.6) 70%
+        );
+        -webkit-mask-size: 200%;
+        mask-size: 200%;
+        animation: shine 5s infinite;
+      }
+
+      @keyframes shine {
+        from {
+          -webkit-mask-position: 150%;
+        }
+
+        to {
+          -webkit-mask-position: -50%;
+        }
+      }
+
+      .blur {
+        filter: url(#blur);
+        filter: blur(3px);
+        filter: progid:DXImageTransform.Microsoft.Blur(PixelRadius='3');
+        transition: 1s;
+        cursor: pointer;
+        backdrop-filter: blur(0.5px);
+      }
+      .blur:hover {
+        filter: progid:DXImageTransform.Microsoft.Blur(PixelRadius='0');
+        filter: blur(0px);
+      }
+
+      .body {
+        overflow: scroll;
+        overflow-x: hidden;
+        height: 100vh;
+        z-index: 300;
+      }
+
+      /* Scroll bar styling
+            For Webkit-based browsers (Chrome, Edge, Safari) */
+      ::-webkit-scrollbar {
+        width: 10px; /* Width of the scrollbar */
+      }
+      ::-webkit-scrollbar-track {
+        background: transparent; /* Background of the scrollbar track */
+      }
+      ::-webkit-scrollbar-thumb {
+        background: rgba(
+          247,
+          247,
+          238,
+          0.5
+        ); /* Color of the scrollbar handle */
+        border-radius: 5px; /* Rounded corners */
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: rgba(247, 247, 237, 0.9); /* Handle color on hover */
+      }
+
+      /* Entry overlay: w/ prompt and dot to click in */
+      .entry-overlay {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        position: fixed;
+        z-index: 888;
+        left: 0;
+        top: 0;
+        width: 100vw;
+        height: 100vh;
+        overflow: auto;
+        background-color: rgba(247, 247, 237, 0.95);
+        opacity: 1; /* Fully visible */
+        transition: opacity 1.5s ease; /* Smooth fade-out effect */
+      }
+      .hidden-entry-overlay {
+        opacity: 0;
+        pointer-events: none; /* Prevent interaction */
+      }
+      #entry-dot {
+        width: 1.375rem;
+        height: 1.375rem;
+        background-color: transparent;
+        border: 1px solid black;
+        border-radius: 50%;
+        cursor: pointer;
+        transition: background-color 0.5s ease; /* Smooth fade-out effect */
+      }
+
+      .dot-nav {
+        height: 100px;
+        overflow: hidden;
+        display: flex;
+        justify-content: center;
+        position: relative;
+        padding: 20px;
+      }
+
+      .dot {
+        position: absolute;
+        height: 15px;
+        width: 15px;
+        background-color: transparent;
+        border: 1px solid white;
+        border-radius: 50%;
+        cursor: pointer;
+        z-index: 999;
+      }
+
+      /* Positioning the dots in a triangle formation */
+      #dot1 {
+        top: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+      }
+
+      #dot1::after {
+        content: "Go to home page";
+        font-family: Helvetica, sans-serif;
+        position: absolute;
+        top: -20px;
+        left: 50%;
+        transform: translateX(10%);
+        background-color: white;
+        color: black;
+        padding: 5px 10px;
+        border-radius: 5px;
+        font-size: 12px;
+        white-space: nowrap;
+        opacity: 0;
+        transition: opacity 0.3s ease-in-out;
+        pointer-events: none;
+        z-index: 15;
+      }
+
+      #dot1:hover::after {
+        opacity: 1;
+      }
+
+      #dot2 {
+        top: 60px;
+        left: calc(50% - 30px);
+        background-color: transparent;
+      }
+
+      #dot2::after {
+        content: "Go to Elle and Qiutong's Profile";
+        font-family: Helvetica, sans-serif;
+        position: absolute;
+        top: -20px;
+        left: 50%;
+        transform: translateX(-110%);
+        background-color: white;
+        color: black;
+        padding: 5px 10px;
+        border-radius: 5px;
+        font-size: 12px;
+        white-space: nowrap;
+        opacity: 0;
+        transition: opacity 0.3s ease-in-out;
+        pointer-events: none;
+        z-index: 15;
+      }
+
+      #dot2:hover::after {
+        opacity: 1;
+      }
+
+      #dot3 {
+        top: 60px;
+        left: calc(50% + 15px);
+        background-color: #f7f7ed;
+      }
+
+      #dot3::after {
+        content: "Refresh page";
+        font-family: Helvetica, sans-serif;
+        position: absolute;
+        top: -20px;
+        left: 50%;
+        transform: translateX(10%);
+        background-color: white;
+        color: black;
+        padding: 5px 10px;
+        border-radius: 5px;
+        font-size: 12px;
+        white-space: nowrap;
+        opacity: 0;
+        transition: opacity 0.3s ease-in-out;
+        pointer-events: none;
+        z-index: 15;
+      }
+
+      #dot3:hover::after {
+        opacity: 1;
+      }
+
+      /* Element specific styling */
+
+      .bg-2 {
+        z-index: 10;
+        width: 100vw;
+        height: 100vh;
+        position: absolute;
+        background-image: url("https://static.wixstatic.com/media/2fa7ac_0145faf71e4b4a8db670281397b32cc4~mv2.jpg");
+        /* no blur version
+              background-image: url("https://static.wixstatic.com/media/2fa7ac_e3d4d7d9b30b4d68bb5fbb439493d5f1~mv2.jpg"); */
+        background-size: 100vw;
+        opacity: 0;
+        transition: opacity 8s ease-in-out;
+      }
+      .blur-text-overlay {
+      }
+
+      .gradient-blur {
+        position: fixed;
+        z-index: 900;
+        inset: auto 0 0 0;
+        height: 50%;
+        pointer-events: none;
+        opacity: 1;
+        transition: opacity 0.4s ease;
+      }
+      .gradient-blur > div,
+      .gradient-blur::before,
+      .gradient-blur::after {
+        position: absolute;
+        inset: 0;
+      }
+      .gradient-blur::before {
+        content: "";
+        z-index: 1;
+        backdrop-filter: blur(0.5px);
+        mask: linear-gradient(
+          to bottom,
+          rgba(0, 0, 0, 0) 0%,
+          rgba(0, 0, 0, 1) 12.5%,
+          rgba(0, 0, 0, 1) 25%,
+          rgba(0, 0, 0, 0) 37.5%
+        );
+      }
+      .gradient-blur > div:nth-of-type(1) {
+        z-index: 2;
+        backdrop-filter: blur(1px);
+        mask: linear-gradient(
+          to bottom,
+          rgba(0, 0, 0, 0) 12.5%,
+          rgba(0, 0, 0, 1) 25%,
+          rgba(0, 0, 0, 1) 37.5%,
+          rgba(0, 0, 0, 0) 50%
+        );
+      }
+      .gradient-blur > div:nth-of-type(2) {
+        z-index: 3;
+        backdrop-filter: blur(2px);
+        mask: linear-gradient(
+          to bottom,
+          rgba(0, 0, 0, 0) 25%,
+          rgba(0, 0, 0, 1) 37.5%,
+          rgba(0, 0, 0, 1) 50%,
+          rgba(0, 0, 0, 0) 62.5%
+        );
+      }
+      .gradient-blur > div:nth-of-type(3) {
+        z-index: 4;
+        backdrop-filter: blur(4px);
+        mask: linear-gradient(
+          to bottom,
+          rgba(0, 0, 0, 0) 37.5%,
+          rgba(0, 0, 0, 1) 50%,
+          rgba(0, 0, 0, 1) 62.5%,
+          rgba(0, 0, 0, 0) 75%
+        );
+      }
+      .gradient-blur > div:nth-of-type(4) {
+        z-index: 5;
+        backdrop-filter: blur(8px);
+        mask: linear-gradient(
+          to bottom,
+          rgba(0, 0, 0, 0) 50%,
+          rgba(0, 0, 0, 1) 62.5%,
+          rgba(0, 0, 0, 1) 75%,
+          rgba(0, 0, 0, 0) 87.5%
+        );
+      }
+      .gradient-blur > div:nth-of-type(5) {
+        z-index: 6;
+        backdrop-filter: blur(16px);
+        mask: linear-gradient(
+          to bottom,
+          rgba(0, 0, 0, 0) 62.5%,
+          rgba(0, 0, 0, 1) 75%,
+          rgba(0, 0, 0, 1) 87.5%,
+          rgba(0, 0, 0, 0) 100%
+        );
+      }
+      .gradient-blur > div:nth-of-type(6) {
+        z-index: 7;
+        backdrop-filter: blur(32px);
+        mask: linear-gradient(
+          to bottom,
+          rgba(0, 0, 0, 0) 75%,
+          rgba(0, 0, 0, 1) 87.5%,
+          rgba(0, 0, 0, 1) 100%
+        );
+      }
+      .gradient-blur::after {
+        content: "";
+        z-index: 8;
+        backdrop-filter: blur(64px);
+        mask: linear-gradient(
+          to bottom,
+          rgba(0, 0, 0, 0) 87.5%,
+          rgba(0, 0, 0, 1) 100%
+        );
+      }
+
+      .hidden-text {
+        opacity: 0;
+        transform: translateY(10vh);
+        transition:
+          opacity 3s ease,
+          transform 3s ease;
+      }
+
+      .hidden-text.visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      .text-justify {
+        text-align: justify;
+      }
+
+      #part1 {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        padding: 300px 400px 0px;
+        position: relative;
+        z-index: 333;
+      }
+
+      #opener {
+        align-self: flex-end;
+      }
+
+      .full-horizontal {
+      }
+
+      .part1-right {
+        padding-left: 317px;
+      }
+
+      .part2 {
+        position: relative;
+        opacity: 0;
+        transition: opacity 8s ease;
+        z-index: 333;
+      }
+
+      .part2-opener {
+        opacity: 0;
+        transition: opacity 8s ease;
+      }
+
+      #part2-A {
+        display: flex;
+        flex-direction: row;
+        padding: 0px 400px 0px 251px;
+        justify-content: space-between;
+      }
+
+      .part2-left {
+        width: 300px;
+      }
+
+      .part2-right {
+        width: 300px;
+      }
+
+      #part2-separator {
+        width: 50px;
+      }
+
+      #part2-left-green {
+        text-align: right;
+        color: green;
+        width: 135px;
+        font-size: 10px;
+        padding: 3px 8px;
+      }
+
+      #part2-right-green {
+        text-align: right;
+        color: green;
+        width: 135px;
+        font-size: 10px;
+        padding: 3px 8px;
+      }
+
+      .left-break {
+        position: relative;
+        left: 170px;
+        top: -170px;
+      }
+
+      #left-break-1 {
+        width: 180px;
+      }
+
+      #left-break-2 {
+        width: 380px;
+      }
+
+      .right-break {
+        text-align: right;
+        position: relative;
+        left: 1010px;
+        top: -140px;
+        z-index: 300;
+      }
+
+      #right-break-1 {
+        width: 380px;
+      }
+
+      #right-break-2 {
+        width: 155px;
+        margin-left: 225px;
+      }
+
+      #part2-B {
+        display: flex;
+        flex-direction: row;
+        padding: 0px 400px;
+        justify-content: space-between;
+        position: relative;
+        top: -210px;
+      }
+
+      #part2-B-left,
+      #part2-B-right {
+        width: 298px;
+      }
+
+      #part2-B-left {
+        margin-top: -110px;
+      }
+
+      #part3 {
+        position: relative;
+        z-index: 333;
+      }
+
+      .part3-A {
+        padding: 0px 425px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        opacity: 0;
+        transition: opacity 3s ease-in-out;
+      }
+
+      #part3A-topText {
+        top: -155px;
+        position: relative;
+      }
+
+      #graphic-spiral {
+        position: relative;
+        top: -215px;
+        width: 530px;
+        /* 500px */
+        left: -30px;
+        /* -45px */
+      }
+
+      #graphic-vector {
+        position: relative;
+        top: -560px;
+        width: 560px;
+        left: 45px;
+      }
+
+      .biyiniao {
+        position: absolute;
+        top: -150px;
+        width: 291px;
+        left: 800px;
+        opacity: 0;
+        transition: opacity 3s ease-in-out;
+      }
+
+      #part3-fragmentA {
+        position: relative;
+        top: -822px;
+        left: -480px;
+      }
+      #part3-fragmentB {
+        position: relative;
+        top: -729px;
+        left: -569px;
+      }
+      #part3-fragmentC {
+        position: relative;
+        top: -745px;
+        left: -560px;
+      }
+      #part3-fragmentD {
+        position: relative;
+        top: -739px;
+        left: -510px;
+      }
+      #part3-fragmentE {
+        position: relative;
+        top: -980px;
+        right: -555px;
+      }
+      #part3-fragmentF {
+        position: relative;
+        top: -930px;
+        right: -574px;
+      }
+      #part3-fragmentG {
+        position: relative;
+        top: -910px;
+        right: -562px;
+      }
+
+      #part3A-bottomText {
+        position: relative;
+        top: -940px;
+        width: 625px;
+        text-align: right;
+        left: 50px;
+      }
+
+      #part3-B {
+        position: relative;
+        top: -890px;
+        padding: 0px 400px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="entry-overlay">
+      <p style="color: black; margin-top: -100px">
+        ON FRIENDSHIP | IN-BETWEEN WINGS
+      </p>
+      <div id="entry-dot"></div>
+    </div>
+    <div class="header">
+      <div class="dot" id="dot1" role="button"></div>
+      <div class="dot" id="dot2" role="button"></div>
+      <div class="dot" id="dot3" role="button"></div>
+    </div>
+    <div class="body">
+      <div class="bg-2"></div>
+      <div class="gradient-blur">
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+      </div>
+      <div class="content">
+        <div id="part1">
+          <p class="hidden-text" id="opener">
+            2024.4.14<br />
+            i woke up to see the sea at 7 am. she sits in the bed <br />
+            next to me. we didn't speak.<br /><br /><br /><br /><br />
+          </p>
+          <p class="full-horizontal text-justify hidden-text">
+            The climate here is characterized by two monsoon seasons: December
+            to early March and June to September. They met during the North East
+            monsoon during December to early March, which is a bit drier than
+            the other monsoon from June to September. They inhaled the same
+            breath of earth, drank in the same sea and dreamt into the other
+            like a delicate weave. Towards and apart, this time, they are
+            sitting next to each other on a cement step, on a long dock that
+            extends into the South China Sea.<br /><br />
+          </p>
+          <!-- TODO: get rid of default padding
+        TODO: maybe get rid of br? -->
+          <p class="part1-left hidden-text">
+            “Spring ascension, summer stillness, post-field depression, black
+            hole. I'm not sure how to read. waves are creating their own
+            indentations in the cartography.”
+          </p>
+          <p class="part1-right hidden-text">
+            “The boat just left the dock and then turned right. The fog hangs
+            thick once more. The many islands that had been vividly clear just
+            moments ago have now dissolved into shadows, more ghostly than
+            clouds, their outlines and locations impossible to pinpoint.”
+          </p>
+          <p class="part1-left hidden-text">
+            “Sea air ice cold. Three four boats gather in the dark, casting down
+            a large net which slowly contracts after 20 minutes.”
+          </p>
+          <p class="part1-right hidden-text">
+            “In the brief respite between the waves, everything stands still.
+            It’s like the empty silence of a school yard during a summer lunch
+            break. It seems I shouldn’t have come here—because no one is around,
+            nothing is happening. And yet, precisely because of that, everything
+            feels all the more vibrant and alive.”
+          </p>
+          <p class="part1-left hidden-text">
+            “The curtain has parted. Sunlight is pouring through and the sea
+            shines in <br />
+            turquoise.”
+          </p>
+          <p class="part1-right hidden-text">
+            “And everything I describe here are things that go on day by day,
+            but each time different and never repeating. The wave is limitless,
+            a never-ending heartbeat of the sea. I watch from my peripheral.”
+          </p>
+          <p class="part1-left hidden-text">
+            “The forecast announces a rainy next few days. The little boats are
+            walking a tightrope, hanging in the far sky. Is it time to part?”
+          </p>
+          <p class="part1-right hidden-text">
+            “I am still waiting for the storm to arrive.”
+          </p>
+          <p class="part1-left hidden-text">
+            “The waters my way are choppy and yours are filled with nets.”
+          </p>
+          <p class="part1-right hidden-text">
+            “Change is familiar and separation is understood.”
+          </p>
+          <p class="part1-left hidden-text">
+            “These are the worlds we will set foot on and the journeys we must
+            take alone.”
+            <br />
+          </p>
+          <p class="part2-opener full-horizontal text-justify gray-text">
+            In the Classic of Mountains and Seas, there is a mythical beast that
+            resembles a duck made of two parts. Each with one eye, one wing and
+            one leg and said to never take flight unless paired with another.
+            <br />
+            <br />But the South West monsoon beckons their independent
+            migration. One takes off along the coast towards the cool brisk air
+            and one goes opposite into the humid belt. It is like a baby turtle
+            newly hatched, tripping and clamouring towards more unfamiliar
+            water. To fulfil a mutual promise; some say for passion, duty to
+            their kind, and even out of animal instinct...
+          </p>
+        </div>
+        <div class="part2">
+          <div id="part2-A">
+            <p id="part2-left-green" class="green-text">
+              1.3521° N, 103.8198° E <br />
+              98.57% land, 1.43% water <br />15m above sea level<br />
+              21.43% of land is forest area <br />9:51pm
+            </p>
+            <p class="part2-left text-justify gray-text">
+              She is walking down the concrete side walk. Her mind is fuzzy with
+              the conversation from the day before, humid and congested like the
+              air which the ground evaporates. There is a half-whistle from
+              behind her. A calling out whistle but also the start of a song,
+              and without looking up she walks to the edge of the pavement as
+              the bicycle passes. The entire city whizzes by, city of metal and
+              cement.
+              <br /><br />
+              Her toes scrunch and her thoughts form a question. Her soles are
+              missing the loose, damp earth. Outside, from the window she is
+              looking beyond, the artificial trees are being trimmed. Everywhere
+              and all around her, there is always a faint smell of tar and soot.
+              She lets herself fall into a daydream, imagining the person she
+              hopes to become, the things she hopes to do and the places where
+              she would rather be.
+            </p>
+            <div id="part2-separator"></div>
+            <p id="part2-right-green" class="green-text">
+              35.7401° N, 139.6924° E <br />northwestern Ring of Fire
+              <br />surrounded by seas <br />40 m above sea level <br />10:51pm
+            </p>
+            <p class="part2-right text-justify gray-text">
+              Her stomach growls. There’s a small patch of green outside her
+              window, she almost hears the branches brush against each other and
+              sing in the wind. It’s quiet most of the time. The temperature
+              drops 10 degrees at night, and the sun shines the same sunshine
+              the next morning. She senses many fluctuations under this wellkept
+              stillness. The way her hairs fall, the speed her nails grow, the
+              frequency her skin cells divide. Here, humans curl back into their
+              homes, she treats herself too this way, like a specimen in its
+              wooden drawer. The spring willow pollen fluff flies and twirls and
+              rolls into balls that clog the gutter. She wonders if she, too, is
+              carrying on all the same, dancing the same dance, dancing her way
+              to the drain.
+              <br /><br />
+              She drinks green tea leaves from last summer on an empty stomach.
+              The clouds have shifted, and her potted plants got under a spot of
+              yellow. Last night she dreamt of flying in water. She was in the
+              Secret Service and felt angrily wronged by the institution. But
+              nonetheless, the flying helps. The falling lets go of something in
+              her, and in the end, she could fall with reassurance. Wind and
+              water hug all the same. It is a melancholic feeling, after all.
+            </p>
+          </div>
+          <p class="gray-text left-break blur" id="left-break-1">
+            Her daydream floats like a dandelion seed in the wind, soaring
+            beyond her window settling briefly and quickly<br />
+          </p>
+          <p class="gray-text left-break blur" id="left-break-2">
+            cast off again: branch, shoulder of a crow, hood of the car –
+            seashore, tail of a flying fish, side of the mountain, and finally,
+            the glass pane looking into where she is. She is attempting to fit
+            into a wooden drawer.
+          </p>
+          <div class="right-break">
+            <p class="gray-text blur" id="right-break-1">
+              She grabs onto a stalk of grass and glides into the warm southeast
+              current. The sun keeps setting, but never could fall behind the
+              blue screen loaded with sky. Yet the moisture rises,<br />
+            </p>
+            <p class="gray-text blur" id="right-break-2">
+              her vision <br />gets sticky. In the corner of her sweaty eye, she
+              spots her pressing her soles deep into the earth, <br />like a
+              tree.
+            </p>
+          </div>
+          <div id="part2-B">
+            <p id="part2-B-left" class="text-justify gray-text">
+              There is a violent honk from the roads outside. The saws are going
+              at another artificial branch and she decides to make some tea. She
+              watches as the leaves swirl in her mug. On the steel surfaces, the
+              light refracts. The walls withhold all sound. The mold forms
+              circles on the wooden furniture. “There is a way to greet the dead
+              things,” once said a Javanese dancer. In so doing, you become
+              acquainted, you befriend, you almost endow with life. <br />
+              <br />She wonders if she should leave home and be cast out there
+              into the wide open again. Will there be anything she remembers if
+              she returns? On her evening walk she traces the fonts of the store
+              names and the patterns on the shophouse tiles, the few that are
+              left. The city authorities have just added a fresh layer to the
+              road. She is walking back home again. Then, an imprint on the
+              glistening tar, like a small, clawed foot.
+            </p>
+            <p id="part2-B-right" class="text-justify gray-text">
+              Dirt twirls in the wind. There’s a weak scratching sound on the
+              window, grainy yellow filter masks her vision. Small black flies
+              crowd around the car plates, buckets and soaps line up in the
+              parking lot. She heard the neighbour say that last winter was too
+              warm, that the city did not clean up the lakes, that they will
+              soon go on searching for a cooler place. She got used to walking
+              with eyes half closed, thinking with heart half asleep. She wants
+              to wait, for the flies to calm down, for the dust to settle, for
+              the trees to stand tall again, protecting the weather, the city
+              and her.
+              <br /><br />
+              She wonders if she will have the courage to put a foot down, to
+              tread lightly even, but with the intention to leave a trace.<br /><br />
+              Abandoned nests are soon repopulated, as the first yellow jasmine
+              blooms. The air smells of fresh soil and salty dew. She lifts up
+              flattened leaves from the muddy pavement and traces the veiny
+              imprints that remind her of a three clawed being.
+            </p>
+          </div>
+        </div>
+        <div id="part3">
+          <div class="part3-A">
+            <p class="text-justify gray-text effect-shine" id="part3A-topText">
+              bread &ensp; silence &ensp; game &ensp; humidity &ensp; portraits
+              &ensp; letters &ensp; tyres &ensp; pair &ensp; soft &ensp;
+              geography &ensp; grass &ensp; call &ensp; corals &ensp; beer
+              &ensp; play &ensp; boiled &ensp; egg &ensp; paper&ensp; cutouts
+              &ensp; chair&ensp; crayons&ensp; bead &ensp; parks &ensp; milo
+              &ensp; mold &ensp; optimism &ensp; spiral&ensp; leap&ensp;
+              of&ensp; faith&ensp; dumplings &ensp; hibernation &ensp;
+              banana&ensp; seaweed &ensp; sea&ensp; glass&ensp; telepathy&ensp;
+              overcast&ensp; sound &ensp; timetable&ensp; circulation &ensp;
+              mirrors &ensp; chubz &ensp; texture &ensp; lilies&ensp; grip
+              &ensp; panadol &ensp; temporality&ensp; slippers &ensp; care&ensp;
+              adventure &ensp; rebirth &ensp; noodles &ensp; hot&ensp; chocolate
+              &ensp; compose&ensp; forgetting &ensp; youth &ensp; colour&ensp;
+              time &ensp; humour&ensp; loyalty&ensp; hallucination&ensp;
+              childishness&ensp; rhythm &ensp; palm&ensp; trees &ensp; tea
+              &ensp; vinegar&ensp; stiff
+            </p>
+            <img
+              src="https://static.wixstatic.com/media/2fa7ac_b4f9c8a674ef4862af86870a800e26c8~mv2.png"
+              alt="spiral word graphic"
+              id="graphic-spiral"
+              class="effect-shine"
+            />
+            <img
+              src="https://static.wixstatic.com/media/2fa7ac_c559d89a7eb54e31a55826fa905ef07b~mv2.png"
+              alt="spiral word graphic"
+              id="graphic-vector"
+            />
+            <p id="part3-fragmentA" class="gray-text">They grow dizzy.</p>
+            <p id="part3-fragmentB" class="gray-text">It could be seconds.</p>
+            <p id="part3-fragmentC" class="gray-text">It could be years.</p>
+            <p id="part3-fragmentD" class="gray-text">
+              Tectonic plates are shifting.
+            </p>
+            <p id="part3-fragmentE" class="gray-text">
+              Time slips over each other, <br />
+              Cards shuffling
+            </p>
+            <p id="part3-fragmentF" class="gray-text">
+              The nets are suspended in midair.
+            </p>
+            <p id="part3-fragmentG" class="gray-text">
+              Black holes are bending light. <br />
+              Like the waves unfurling.
+            </p>
+            <p id="part3A-bottomText" class="gray-text effect-shine">
+              neck &ensp; retrieve &ensp; glitters &ensp; fear &ensp; music
+              &ensp; resistance &ensp; wood &ensp; shadow &ensp; fascination
+              &ensp; sleepiness &ensp; encounter &ensp; rocks &ensp; sore &ensp;
+              muscle &ensp; leaf &ensp; wings &ensp; dependence &ensp; lotus
+              &ensp; root &ensp; scarf &ensp; welcome &ensp; incense &ensp;
+              cigarettes &ensp; shiny &ensp; floor &ensp; fingers &ensp; drawing
+              &ensp; mountain &ensp; boredom &ensp; tea &ensp; cup &ensp;
+              museums &ensp; dreams &ensp; rope &ensp; river &ensp; astrology
+              &ensp; backpack &ensp; astrology &ensp; cold &ensp; chopsticks
+              &ensp; organise &ensp; abandoned &ensp; house &ensp; tomato &ensp;
+              egg &ensp; ocean &ensp; star &ensp; rebirth &ensp; tea &ensp;
+              mosquitoes &ensp; abandoned &ensp; house &ensp; death &ensp; youth
+              &ensp; astrology &ensp; dumplings &ensp;
+            </p>
+          </div>
+          <img
+            src="https://static.wixstatic.com/media/2fa7ac_4e36536e6cb44c94bfa81e303a24e334~mv2.png"
+            alt="Biyiniao, a bird from the Classics of the Mountains and the Seas"
+            class="biyiniao"
+          />
+          <div id="part3-B">
+            <p class="text-justify gray-text">
+              She has left the speckled sand. The wind is blowing through her
+              hair and their reflection upon the water is a flash of white.
+              Feathers rustle. We are running, running, the blood is coursing
+              through our veins and we are darting through the air. Beating in
+              tandem, coalescing around a shared point. There, is the boat we
+              took to reach this island. It is pulling into the dock for the
+              last time today. That is the sand we laid on on pleasant days,
+              when the wind gently blows and eases the heat bearing into our
+              pores. The willow fluff always floats and traps in our hair; the
+              crabs endlessly make their little sand balls. <br />
+              <br />
+              We glided across the sea in an instant, like a heavy drop of dew
+              down a blade of grass. The gravity of this need to return pulls
+              tight like a boat’s awning, and each has come back here, to this
+              island in the middle of the South China Sea which we always leave
+              long enough to remain familiar. <br />
+              <br />Wing in wing, she is the pale moving thing in peripheral
+              vision and yet the source of endless reassurance. The
+              accompaniment to the orchestra of the waves which always settles,
+              lulls and endows with courage. Looking up on a bright day, you
+              might just glimpse a slice of a bird, existing 5,303km apart and
+              right next to each other.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script>
+      // Entry overlay
+      var entryOverlay = document.getElementsByClassName("entry-overlay")[0];
+      const entryDot = document.getElementById("entry-dot");
+      entryDot.addEventListener("mouseover", () => {
+        entryDot.style.backgroundColor = "#F1CF11";
+      });
+      entryDot.addEventListener("mouseout", () => {
+        entryDot.style.backgroundColor = "transparent";
+      });
+      entryDot.addEventListener("click", () => {
+        entryOverlay.classList.add("hidden-entry-overlay");
+      });
+
+      // Dot nav event listeners
+      document.getElementById("dot3").addEventListener("click", () => {
+        window.parent.location.href = "https://www.rolodex.cc/ec-qz"; // Update with your actual home page URL
+      });
+      document.getElementById("dot1").addEventListener("click", (event) => {
+        event.preventDefault();
+        // Navigate to home page
+        window.parent.location.href = "https://www.rolodex.cc/rolodex-home"; // Update with your actual home page URL
+      });
+      document.getElementById("dot2").addEventListener("click", (event) => {
+        event.preventDefault();
+        // Navigate to about page
+        window.parent.location.href = "https://www.rolodex.cc/ec-bio"; // Update with your actual about page URL
+      });
+      // if current window, then fill in the active dot
+      if (window.location.href.includes("bio")) {
+        document.getElementById("dot2").style.backgroundColor =
+          "#f7f7ed !important";
+        document.getElementById("dot3").style.backgroundColor =
+          "transparent !important";
+      } else {
+        document.getElementById("dot3").style.backgroundColor =
+          "#f7f7ed !important";
+        document.getElementById("dot2").style.backgroundColor =
+          "transparent !important";
+      }
+
+      window.addEventListener("load", () => {
+        // Opening animation, after click
+        const firstElement = document.getElementById("opener");
+        entryDot.addEventListener("click", () => {
+          setTimeout(firstScroll, 1500);
+        });
+        function firstScroll() {
+          firstElement.classList.add("visible");
+        }
+
+        // PART 1: Scrolling animation for part 1's 13 lines
+        // function debounce: helps prevent multiple scroll events from happening within a set time period
+        function debounce(method, delay) {
+          clearTimeout(method._tId);
+          method._tId = setTimeout(function () {
+            method();
+          }, delay);
+        }
+        // funciton handleScroll: adds visible class to text elements in Pt 1, triggerin fade-in/up animation
+        // for the first element and last element in pt 1 (other than opener), it only adds 1 instead of 2 elements
+        function handleScroll() {
+          const rect = document
+            .getElementsByClassName("hidden-text")[0]
+            .getBoundingClientRect();
+          const scrollY = document.getElementsByClassName("body")[0].scrollTop;
+          if (rect.top < window.innerHeight && rect.bottom) {
+            if (scrollY >= 100) {
+              document
+                .getElementsByClassName("hidden-text")[1]
+                .classList.add("visible");
+            }
+            if (scrollY >= 200) {
+              document
+                .getElementsByClassName("hidden-text")[2]
+                .classList.add("visible");
+              document
+                .getElementsByClassName("hidden-text")[3]
+                .classList.add("visible");
+            }
+            if (scrollY >= 350) {
+              document
+                .getElementsByClassName("hidden-text")[4]
+                .classList.add("visible");
+              document
+                .getElementsByClassName("hidden-text")[5]
+                .classList.add("visible");
+            }
+            if (scrollY >= 500) {
+              document
+                .getElementsByClassName("hidden-text")[6]
+                .classList.add("visible");
+              document
+                .getElementsByClassName("hidden-text")[7]
+                .classList.add("visible");
+            }
+            if (scrollY >= 600) {
+              document
+                .getElementsByClassName("hidden-text")[8]
+                .classList.add("visible");
+              document
+                .getElementsByClassName("hidden-text")[9]
+                .classList.add("visible");
+            }
+            if (scrollY >= 680) {
+              document
+                .getElementsByClassName("hidden-text")[10]
+                .classList.add("visible");
+              document
+                .getElementsByClassName("hidden-text")[11]
+                .classList.add("visible");
+            }
+            if (scrollY >= 750) {
+              document
+                .getElementsByClassName("hidden-text")[12]
+                .classList.add("visible");
+            }
+          } else {
+            return;
+          }
+        }
+        //initiating debounce code, as well as Part 2 transitions
+        document
+          .getElementsByClassName("body")[0]
+          .addEventListener("scroll", () => {
+            debounce(handleScroll, 1000);
+            const scrollY =
+              document.getElementsByClassName("body")[0].scrollTop;
+            if (scrollY > 800) {
+              // change bg image to yellow horizon film
+              document.getElementsByClassName("bg-2")[0].style.opacity = 1;
+              // make part 2 visible
+              document
+                .getElementsByClassName("part2-opener")[0]
+                .classList.add("visible");
+              document
+                .getElementsByClassName("part2")[0]
+                .classList.add("visible");
+              // fade out opacity gradient
+              document
+                .getElementsByClassName("gradient-blur")[0]
+                .classList.add("hidden");
+              //make green text flash/sparkle
+              document
+                .getElementsByClassName("green-text")[0]
+                .classList.add("effect-shine");
+              document
+                .getElementsByClassName("green-text")[1]
+                .classList.add("effect-shine");
+            }
+            if (scrollY > 1000) {
+              //remove green text flash/sparkle after scrolling down 200px
+              document
+                .getElementsByClassName("green-text")[0]
+                .classList.remove("effect-shine");
+              document
+                .getElementsByClassName("green-text")[1]
+                .classList.remove("effect-shine");
+            }
+            if (scrollY < 800) {
+              document.getElementsByClassName("bg-2")[0].style.opacity = 0;
+              document
+                .getElementsByClassName("gradient-blur")[0]
+                .classList.add("visible");
+            }
+            if (1500 < scrollY && scrollY < 2000) {
+              document
+                .getElementsByClassName("part3-A")[0]
+                .classList.add("visible");
+            }
+            if (scrollY < 1500 || scrollY > 2000) {
+              document
+                .getElementsByClassName("part3-A")[0]
+                .classList.remove("visible");
+            }
+            if (2050 < scrollY) {
+              document
+                .getElementsByClassName("biyiniao")[0]
+                .classList.add("visible");
+            }
+            if (scrollY > 2250 || scrollY < 2000) {
+              document
+                .getElementsByClassName("biyiniao")[0]
+                .classList.remove("visible");
+            }
+          });
+      });
+    </script>
+  </body>
+</html>

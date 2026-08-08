@@ -1,0 +1,854 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Blue time</title>
+    <style>
+      body {
+        margin: 0;
+        overflow: hidden;
+        background: #f7f7ed;
+      }
+
+      canvas {
+        display: block;
+      }
+
+      .body-text {
+        font-family: "Noto Sans", sans-serif;
+        font-optical-sizing: auto;
+        font-weight: 200;
+        font-size: 14px;
+        font-style: normal;
+        font-variation-settings: "wdth" 100;
+        color: black;
+        margin: 0.2rem;
+      }
+
+      .justify-text {
+        text-align: justify;
+      }
+
+      .label-text {
+        font-family: "Noto Sans", sans-serif;
+        font-optical-sizing: auto;
+        font-weight: 300;
+        font-size: 11px;
+        font-style: normal;
+        font-variation-settings: "wdth" 100;
+      }
+
+      .hidden {
+        opacity: 0;
+      }
+
+      .dot-nav {
+        height: 100px;
+        overflow: hidden;
+        display: flex;
+        justify-content: center;
+        position: relative;
+        padding: 20px;
+      }
+
+      .dot {
+        position: absolute;
+        height: 15px;
+        width: 15px;
+        background-color: transparent;
+        border: 1px solid black;
+        border-radius: 50%;
+        cursor: pointer;
+        z-index: 10;
+      }
+
+      /* Positioning the dots in a triangle formation */
+      #dot1 {
+        top: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+      }
+
+      #dot1::after {
+        content: "Rolodex Homepage";
+        font-family: "Noto Sans", sans-serif;
+        font-optical-sizing: auto;
+        font-weight: 300;
+        font-size: 10px;
+        font-style: normal;
+        font-variation-settings: "wdth" 100;
+        position: absolute;
+        top: -20px;
+        left: 50%;
+        transform: translateX(10%);
+        background-color: black;
+        color: white;
+        padding: 5px 10px;
+        border-radius: 5px;
+        white-space: nowrap;
+        opacity: 0;
+        transition: opacity 0.3s ease-in-out;
+        pointer-events: none;
+        z-index: 15;
+      }
+
+      #dot1:hover::after {
+        opacity: 1;
+      }
+
+      #dot2 {
+        top: 60px;
+        left: calc(50% - 30px);
+      }
+
+      #dot2::after {
+        content: "Rolobeing Bio";
+        font-family: "Noto Sans", sans-serif;
+        font-optical-sizing: auto;
+        font-weight: 300;
+        font-size: 10px;
+        font-style: normal;
+        font-variation-settings: "wdth" 100;
+        position: absolute;
+        top: -20px;
+        left: 50%;
+        transform: translateX(-110%);
+        background-color: black;
+        color: white;
+        padding: 5px 10px;
+        border-radius: 5px;
+        white-space: nowrap;
+        opacity: 0;
+        transition: opacity 0.3s ease-in-out;
+        pointer-events: none;
+        z-index: 15;
+      }
+
+      #dot2:hover::after {
+        opacity: 1;
+      }
+
+      #dot3 {
+        top: 60px;
+        left: calc(50% + 15px);
+        background-color: black;
+      }
+
+      #dot3::after {
+        content: "Refresh Content";
+        font-family: "Noto Sans", sans-serif;
+        font-optical-sizing: auto;
+        font-weight: 300;
+        font-size: 10px;
+        font-style: normal;
+        font-variation-settings: "wdth" 100;
+        position: absolute;
+        top: -20px;
+        left: 50%;
+        transform: translateX(10%);
+        background-color: black;
+        color: white;
+        padding: 5px 10px;
+        border-radius: 5px;
+        white-space: nowrap;
+        opacity: 0;
+        transition: opacity 0.3s ease-in-out;
+        pointer-events: none;
+        z-index: 15;
+      }
+
+      #dot3:hover::after {
+        opacity: 1;
+      }
+
+      /* Toggle styling */
+      .toggle {
+        font-family: "Noto Sans", sans-serif;
+        font-optical-sizing: auto;
+        font-weight: 300;
+        font-size: 13px;
+        font-style: normal;
+        font-variation-settings: "wdth" 87.5;
+        color: black;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        position: absolute;
+        right: 1rem;
+        top: 1rem;
+        transition: opacity 1s;
+        z-index: 999;
+      }
+      /* The box around the toggle */
+      .switch {
+        position: relative;
+        display: inline-block;
+        width: 2rem;
+        height: 0.9rem;
+        margin: 0rem 0.4rem;
+      }
+
+      /* Hide default HTML checkbox */
+      .switch input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+      }
+
+      /* The slider */
+      .slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #9e9e9e;
+        -webkit-transition: 0.4s;
+        transition: 0.4s;
+      }
+
+      .slider:before {
+        position: absolute;
+        content: "";
+        height: 0.7rem;
+        width: 0.7rem;
+        left: 0.1rem;
+        bottom: 0.1rem;
+        background-color: white;
+        -webkit-transition: 0.4s;
+        transition: 0.4s;
+      }
+
+      input:checked + .slider {
+        background-color: #9e9e9e;
+      }
+
+      input:focus + .slider {
+        box-shadow: 0 0 1px #9e9e9e;
+      }
+
+      input:checked + .slider:before {
+        -webkit-transform: translateX(1.1rem);
+        -ms-transform: translateX(1.1rem);
+        transform: translateX(1.1rem);
+      }
+
+      /* Rounded sliders */
+      .slider.round {
+        border-radius: 34px;
+      }
+
+      .slider.round:before {
+        border-radius: 50%;
+      }
+
+      .italic {
+        font-style: italic;
+      }
+
+      /* content styling */
+
+      #content {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        width: 100%;
+      }
+
+      .text-wrapper {
+        display: flex;
+        flex-direction: column;
+        align-content: center;
+        justify-content: center;
+        flex-wrap: balance;
+        padding-left: 14%;
+        padding-right: 5%;
+      }
+
+      .text-justify {
+        text-align: justify;
+      }
+
+      #flow-text {
+        position: absolute;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        align-content: center;
+        justify-content: center;
+        flex-wrap: balance;
+        padding-right: 4%;
+      }
+
+      .instruction-line {
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+      }
+
+      .instruction-dot {
+        height: 10px;
+        width: 10px;
+        background-color: transparent;
+        border: 1px solid black;
+        border-radius: 50%;
+        cursor: pointer;
+        z-index: 10;
+      }
+
+      .instruction {
+        width: 45%;
+      }
+
+      .example {
+        width: 45%;
+        text-align: right;
+      }
+
+      .paragraph-margin-bottom {
+        margin-bottom: 2.5rem;
+      }
+
+      /* controls styling */
+
+      .controls {
+        width: 100%;
+        display: flex;
+        justify-content: end;
+        transform: translateY(-50%);
+        z-index: 2;
+        pointer-events: none;
+        padding-top: 2rem;
+        position: absolute;
+        bottom: -3rem;
+        right: 0rem;
+      }
+
+      .controls button {
+        margin: 2rem;
+        width: 15px;
+        height: 15px;
+        border: 1px solid black;
+        border-radius: 50%;
+        background: transparent;
+        font-size: 0;
+        cursor: pointer;
+        pointer-events: all;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        transition:
+          box-shadow 0.3s ease,
+          transform 0.2s ease;
+      }
+
+      .controls button:disabled {
+        opacity: 0;
+        cursor: default;
+        transform: none;
+      }
+
+      .controls button:active {
+        box-shadow: 0 0 20px 5px rgba(255, 255, 255, 0.4);
+        transform: scale(1);
+      }
+
+      .controls button:hover:not(:disabled) {
+        transform: scale(1.3);
+      }
+
+      .sideBySide {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+      }
+      #side1 {
+        padding-right: 1rem;
+      }
+      #side2 {
+        padding-left: 1rem;
+      }
+      #caption1 {
+        width: 70%;
+      }
+      #caption2 {
+        width: 70%;
+      }
+      #focus-slideshow {
+        /* padding-top: 2%; */
+      }
+      .focus-image {
+        width: 13vw;
+      }
+      .focus-image-lg {
+        height: 45vh;
+      }
+      #slide-content {
+        height: 75vh;
+
+        display: flex;
+        flex-direction: column;
+        align-content: center;
+        justify-content: start;
+        flex-wrap: balance;
+      }
+
+      /* effect-shine */
+      .effect-shine {
+        mask-image: linear-gradient(
+          -75deg,
+          rgba(0, 0, 0, 0.6) 30%,
+          #000 50%,
+          rgba(0, 0, 0, 0.6) 70%
+        );
+        -webkit-mask-image: linear-gradient(
+          -75deg,
+          rgba(0, 0, 0, 0.6) 30%,
+          #000 50%,
+          rgba(0, 0, 0, 0.6) 70%
+        );
+        -webkit-mask-size: 150%;
+        mask-size: 150%;
+        animation: shine 3s infinite;
+      }
+
+      @keyframes shine {
+        from {
+          -webkit-mask-position: 150%;
+        }
+
+        to {
+          -webkit-mask-position: -50%;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="toggle">
+      <p class="toggle-label-interactive italic label-text">flow</p>
+      <label class="switch">
+        <input id="myInput" type="checkbox" />
+        <span class="slider round"></span>
+      </label>
+      <p class="toggle-label-essay label-text">focus</p>
+    </div>
+    <div class="header">
+      <div class="dot" id="dot1" role="button"></div>
+      <!-- <div class="dot" id="dot2" role="button"></div> -->
+      <div class="dot" id="dot3" role="button"></div>
+    </div>
+    <div id="content">
+      <canvas id="canvas" class="effect-shine"></canvas>
+      <div class="text-wrapper">
+        <div id="flow-text">
+          <p
+            class="text-justify paragraph-margin-bottom body-text justify-text"
+          >
+            Blue Time is a weekly ritual we practice alongside our collaborative
+            work; a pause after each meeting, to tend the relation that holds
+            the work. Sharing a recipe-score here, our small river sampling, and
+            an invitation to mark time and nourish your own relations.
+          </p>
+          <div class="instruction-line">
+            <p class="instruction body-text">Focus on a relation</p>
+            <div class="instruction-dot" id="dot4" role="button"></div>
+            <p class="example hidden body-text" id="example1">
+              Ali <> Vic collaboration
+            </p>
+          </div>
+          <div class="instruction-line">
+            <p class="instruction body-text">Mark a weekly rhythm</p>
+            <div class="instruction-dot" id="dot5" role="button"></div>
+            <p class="example hidden body-text" id="example2">
+              weekly 1.5 hr meetings
+            </p>
+          </div>
+          <div class="instruction-line">
+            <p class="instruction body-text">Create a shared form / movement</p>
+            <div class="instruction-dot" id="dot6" role="button"></div>
+            <p class="example hidden body-text" id="example3">
+              A blue print and written reflection
+            </p>
+          </div>
+          <div class="instruction-line">
+            <p class="instruction body-text">To archive together in years</p>
+            <div class="instruction-dot" id="dot7" role="button"></div>
+            <p class="example hidden body-text" id="example4">
+              A collate of blues from each one’s archive
+            </p>
+          </div>
+        </div>
+        <div id="focus-slideshow" class="hidden">
+          <div id="slide-content">
+            <p
+              id="focus-description"
+              class="text-justify paragraph-margin-bottom body-text justify-text"
+            >
+              Blue Time is our weekly ritual to grow a relation that our
+              collaborative work can then sprout from - sharing a recipe/score
+              here with you as guideline/invitation to mark time and nourish
+              your relations as well.
+            </p>
+            <div class="sideBySide">
+              <div id="side1"></div>
+              <div id="side2"></div>
+            </div>
+            <div
+              class="sideBySide"
+              style="align-items: flex-start; padding-top: 2rem"
+            >
+              <p
+                id="caption1"
+                class="body-text"
+                style="padding-right: 1rem"
+              ></p>
+              <p id="caption2" class="body-text" style="padding-left: 1rem"></p>
+            </div>
+          </div>
+          <div class="controls">
+            <button id="prevBtn" onclick="prevSlide()"></button>
+            <button id="nextBtn" class="pulse" onclick="nextSlide()"></button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const toggle = document.querySelector(".toggle");
+      const flowText = document.getElementById("flow-text");
+
+      const focusSlideshow = document.getElementById("focus-slideshow");
+      const focusDesc = document.getElementById("focus-description");
+      const side1 = document.getElementById("side1");
+      const side2 = document.getElementById("side2");
+      const caption1 = document.getElementById("caption1");
+      const caption2 = document.getElementById("caption2");
+
+      //Toggle constants
+      const interactiveText = document.getElementsByClassName(
+        "toggle-label-interactive",
+      )[0];
+      const essayText =
+        document.getElementsByClassName("toggle-label-essay")[0];
+      //Slideshow constants
+      const prevBtn = document.getElementById("prevBtn");
+      const nextBtn = document.getElementById("nextBtn");
+      const slideContent = [
+        {
+          text: [
+            "CUE: After each meeting, each collaborator writes a reflection and selects a blue print from their own archive, adding it to a growing shared collection.",
+            "<i>10.29 - Mercury enters Sagittarius. Home to home, wet hair lights rain in return. A gentle critique guides pitch to lasting minutes, holding reductive qualities for interactive benefits. Attention sparks clear to research ethics for organised caves. With notes for dots and paths, automata, orbits, and play - to train a record implicit and respectful - about time. 18, no 17? 33 runs yes to 90% overlays. A good compress finds moment of pause, where we hear one song for an image gallery. ‘Doodudoodudoo…’ </i>",
+            "Call 5 <br> <br> colder weather, rainy days. sleep on the mind → rhythms of rest, spice, and time. Cycles that begin in the middle of the week - problems that turn into patterns and prompts. What things live as invitations and others as indexes? Swimming thoughts, finding a groove.",
+          ],
+          images: [
+            "https://static.wixstatic.com/media/2fa7ac_d5a05a1ae77b411996249b6711516674~mv2.png",
+
+            "https://static.wixstatic.com/media/2fa7ac_8a4a72a34d4d4346a29abdde188a5b38~mv2.png",
+          ],
+          alts: ["", ""],
+        },
+        {
+          text: [
+            "CUE: Over time, patterns emerge across the collection - a spiral appearing in one person’s blue print from one meeting, surfacing again in another person’s blue print from a meeting many weeks later. They are synchronous and rhythmic, presencing in and out of time.",
+            "<i>Call 29<br><br>04.28.2026</i>",
+            "Call 13<br><br>12.18.2025",
+          ],
+          images: [
+            "https://static.wixstatic.com/media/2fa7ac_4ab4f2ab836c4585aff91a41da460470~mv2.png",
+            "https://static.wixstatic.com/media/2fa7ac_e4a6a2ac179747abaa88a4769b5606c9~mv2.png",
+          ],
+          alts: ["", ""],
+        },
+        {
+          text: [
+            "CUE: One blue print, offered with its Origin Story - the memory or meaning its maker holds for it - is accompanied by the other collaborator’s Interpretation. A reflection follows a reflection, attentive to the lifespan of a blue print and its movement from a personal archive into a shared collective place.",
+            "Call 13<br><br>Origin Story - coming and going, in the wind, between three minute intervals, afternoon green tea - young leaves - to the sound of grasses beneath oak and pine. emerald ash borer was often a topic of discussion during this time, leaving some trees marked.  grandma living with, recovering from her fall. it was the start of a new time, laid out in an old house, with three generations of women in the light.",
+            "<i>Interpretation - Four, maybe more, stalks of grass form what feels like a window to me. Something structured, but also moving itself - a vibrating frame with leaves that seem to quiver in an unseen wind themselves. And through their frame I see a transition of blue - both soft and stark at once. But somehow the vision extends past the frame and into my field of vision, wrinkles on the left hand side and melts into a kind of horizon behind my eyes.</i>",
+          ],
+          images: [
+            "https://static.wixstatic.com/media/2fa7ac_63bd1addbb8240d9a36d935b3e8ca127~mv2.png",
+          ],
+          alts: [""],
+        },
+        {
+          text: [
+            "CUE: The same gesture in reverse - one blue print offered with its Origin Story, accompanied by the other collaborator’s Interpretation of the same image, now part of the shared growing collection. A gentle magic often appears - origin story and interpretation together revealing a quiet truth, and luminous whole.",
+            "Call 32<br><br>Origin Story - Made by the roadside in HangZhou, China, this cyanotype was from a series made in situ, without removing the plants from their contexts. Since it was made in situ, the imperfections of the day - wind, movement, rain - is often captured along with the plants’ shadow. The series is an ongoing process leveraging the durational requirement of cyanotype-making to sit with and get to know the plants growing as “weeds” around me.",
+            "<i>Interpretation - a flower up close in a field of flowers. it looks like it could have been an overcast day, with gentle wind. a variety of flowers, one looked upon with affection, with its receptacle present, leaves, maybe sepals too. soft and twinkling, knowing its place, remaining reserved, persevering through a uniform orientation.<i>",
+          ],
+          images: [
+            "https://static.wixstatic.com/media/2fa7ac_f682b9476a0b4ecbb8d1337a86def962~mv2.png",
+          ],
+          alts: [""],
+        },
+      ];
+
+      let focusState = false;
+      let currentSlide = 0;
+      let previousSlide = 0;
+
+      // Set up event listeners
+      document.getElementById("dot1").addEventListener("click", (event) => {
+        event.preventDefault();
+        // Navigate to home page
+        window.parent.location.href = "https://www.rolodex.cc/rolodex-home"; // Update with your actual home page URL
+      });
+
+      // document.getElementById("dot2").addEventListener("click", (event) => {
+      //   event.preventDefault();
+      //   // Navigate to about page
+      //   window.parent.location.href = "https://www.rolodex.cc"; // TODO: Update with your actual about page URL
+      // });
+
+      document.getElementById("dot3").addEventListener("click", () => {
+        window.parent.location.href = "https://www.rolodex.cc/blue-time"; // TODO: Refresh current page
+      });
+
+      for (let i = 1; i < 5; i++) {
+        document
+          .getElementById(`dot${i + 3}`)
+          .addEventListener("mouseover", (event) => {
+            event.preventDefault();
+            document.getElementById(`example${i}`).classList.remove("hidden");
+            document.getElementById(`dot${i + 3}`).style.backgroundColor =
+              "rgba(0,0,0,0.3)";
+          });
+
+        document
+          .getElementById(`dot${i + 3}`)
+          .addEventListener("mouseout", (event) => {
+            console.log("hite out");
+            event.preventDefault();
+            document.getElementById(`example${i}`).classList.add("hidden");
+            document.getElementById(`dot${i + 3}`).style.backgroundColor =
+              "rgba(0,0,0,0)";
+          });
+      }
+
+      function updateSlide() {
+        prevBtn.disabled = currentSlide === 0;
+        nextBtn.disabled = currentSlide === slideContent.length - 1;
+        focusDesc.innerText = slideContent[currentSlide].text[0];
+        side1.innerHTML = `<img class=${currentSlide === 0 ? "focus-image" : "focus-image-lg"} alt="${slideContent[currentSlide].alts[0]}" src=${slideContent[currentSlide].images[0]} />`;
+        if (slideContent[currentSlide].images.length > 1) {
+          side2.innerHTML = `<img class=${currentSlide === 0 ? "focus-image" : "focus-image-lg"} alt="${slideContent[currentSlide].alts[1]}" src=${slideContent[currentSlide].images[1]} />`;
+          caption1.innerHTML = slideContent[currentSlide].text[1];
+          caption1.style.textAlign = currentSlide === 0 ? "right" : "left";
+          caption2.innerHTML = slideContent[currentSlide].text[2];
+          caption2.style.textAlign = currentSlide === 0 ? "left" : "right";
+        } else {
+          side2.innerHTML = `<p class="body-text justify-text" style="padding-bottom: 1rem">${slideContent[currentSlide].text[1]}</p><p class="body-text justify-text">${slideContent[currentSlide].text[2]}</p>`;
+          caption1.innerHTML = "";
+          caption2.innerHTML = "";
+        }
+      }
+
+      function updateContent() {
+        if (focusState) {
+          updateSlide();
+          // display slide div, hide flow text div
+          flowText.classList.add("hidden");
+          focusSlideshow.classList.remove("hidden");
+        } else {
+          focusSlideshow.classList.add("hidden");
+          flowText.classList.remove("hidden");
+        }
+      }
+
+      // controls for next and back buttons
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "ArrowRight") {
+          nextSlide();
+        } else if (e.key === "ArrowLeft") {
+          prevSlide();
+        }
+      });
+
+      function nextSlide() {
+        nextBtn.classList.remove("pulse");
+        if (currentSlide < slideContent.length - 1) {
+          previousSlide = currentSlide;
+          currentSlide++;
+          updateSlide();
+        }
+      }
+
+      function prevSlide() {
+        if (currentSlide > 0) {
+          previousSlide = currentSlide;
+          currentSlide--;
+          updateSlide();
+        }
+      }
+
+      const imageSources = [
+        // "https://static.wixstatic.com/media/2fa7ac_8fef2fefca5f4a2a971b8c9b16745263~mv2.png",
+        // "https://static.wixstatic.com/media/2fa7ac_b62bb43b3fc843d593635a571f912fb9~mv2.jpg",
+        // "https://static.wixstatic.com/media/2fa7ac_132098cf82084ef498192b9399209b6c~mv2.jpg",
+        // real images begin after this breaK:
+        "https://static.wixstatic.com/media/2fa7ac_f11ea33edf7a436f8452d3aa9231239c~mv2.png",
+        "https://static.wixstatic.com/media/2fa7ac_9693068c73be435bb15216a149fedc2c~mv2.png",
+        "https://static.wixstatic.com/media/2fa7ac_8bdc149389d14c18b44c47c5daaa44a8~mv2.png",
+        "https://static.wixstatic.com/media/2fa7ac_030cac6e44754d3b8a3964057574bc84~mv2.png",
+        "https://static.wixstatic.com/media/2fa7ac_e63bb5ffb664414fb8ec34de47cbb867~mv2.png",
+        "https://static.wixstatic.com/media/2fa7ac_7986a0c3cb664fef903bb73db391ce05~mv2.png",
+        "https://static.wixstatic.com/media/2fa7ac_2c00cb94843d4071827b5d0118fb46f1~mv2.png",
+        "https://static.wixstatic.com/media/2fa7ac_16e1ce5569e3477e91e6478d9262948e~mv2.png",
+        "https://static.wixstatic.com/media/2fa7ac_f26053c3482f44599a5b83a94592348b~mv2.png",
+
+        "https://static.wixstatic.com/media/2fa7ac_5ec4ed9cb40f4b759ba43c5feac72535~mv2.png",
+
+        "https://static.wixstatic.com/media/2fa7ac_2cebf81c81c6473eb5b317d15282be9c~mv2.png",
+        "https://static.wixstatic.com/media/2fa7ac_d38ad85cd68a48d6a3ba5139a4a683a0~mv2.png",
+        "https://static.wixstatic.com/media/2fa7ac_65cfed15b44848e3bfdcd0be47bef4f2~mv2.png",
+        "https://static.wixstatic.com/media/2fa7ac_35b73e132bca4c7facd22df281c31cd6~mv2.png",
+        "https://static.wixstatic.com/media/2fa7ac_c59d3e3beeab494eb7bcfd81dc727a44~mv2.png",
+        "https://static.wixstatic.com/media/2fa7ac_a6fe5055727540b38951b60cdc7ec4e0~mv2.png",
+        "https://static.wixstatic.com/media/2fa7ac_6f89365647d24f95ba987f1fc56c8d08~mv2.png",
+        "https://static.wixstatic.com/media/2fa7ac_671250ad3db74c77925a74ba99bea930~mv2.png",
+      ];
+
+      const canvas = document.getElementById("canvas");
+      const c = canvas.getContext("2d");
+
+      // 🖥️ Force high-quality crisp image scaling
+      // c.imageSmoothingEnabled = true;
+      // c.imageSmoothingQuality = "high";
+
+      canvas.width = window.innerWidth / 3;
+      canvas.height = window.innerHeight;
+
+      const TARGET_WIDTH = 120; // Set base rendering width
+      const SPACING = 70; // Set space between images
+      const TOTAL_HEIGHT = imageSources.length * SPACING;
+
+      // 🌊 Wave config
+      const wave = {
+        x: canvas.width / 3,
+        baseAmplitude: 80,
+        amplitudeVariation: 40,
+        length: 0.01,
+        frequency: 0.02,
+      };
+
+      let offset = 0;
+      let time = 0;
+      let isPaused = false;
+
+      // Create structural images array with fallback scales
+      const images = imageSources.map((src, i) => {
+        const img = new Image();
+        img.src = src;
+
+        return {
+          img,
+          x: 0,
+          y: i * SPACING,
+          width: TARGET_WIDTH,
+          height: TARGET_WIDTH,
+        };
+      });
+
+      Promise.all(
+        images.map(
+          (item) =>
+            new Promise((resolve) => {
+              item.img.onload = () => {
+                // Math remains the same, cleanly mapping high-res pixels to our target width
+                const aspectRatio =
+                  item.img.naturalHeight / item.img.naturalWidth;
+                item.height = TARGET_WIDTH * aspectRatio;
+                resolve();
+              };
+            }),
+        ),
+      ).then(() => animate());
+
+      function animate() {
+        requestAnimationFrame(animate);
+        c.clearRect(0, 0, canvas.width, canvas.height);
+
+        if (!isPaused) {
+          offset += wave.frequency;
+          time += 0.01;
+        }
+
+        // 🌊 Dynamic amplitude calculations
+        const dynamicAmplitude =
+          wave.baseAmplitude + Math.sin(time) * wave.amplitudeVariation;
+
+        images.forEach((item) => {
+          if (!isPaused) {
+            item.y -= 1.2; // Speed multiplier
+          }
+
+          // Loop logic relative to total train length instead of window viewbounds
+          if (item.y < -item.height) {
+            item.y += TOTAL_HEIGHT;
+          }
+
+          const phase = item.y * wave.length + offset;
+
+          // Position coordinates tracking along wave function
+          const x = wave.x + Math.sin(phase) * dynamicAmplitude;
+
+          // Slope of the wave (derivative)
+          const slope = Math.cos(phase) * wave.length * dynamicAmplitude;
+          const angle = Math.atan(slope);
+
+          // 🎯 Render centered, scaled image frame
+          c.save();
+          c.translate(x + item.width / 2, item.y + item.height / 2);
+
+          // c.rotate(angle); // Keep commented out if you don't want rotation distortion
+
+          c.drawImage(
+            item.img,
+            -item.width / 2,
+            -item.height / 2,
+            item.width,
+            item.height,
+          );
+          c.restore();
+        });
+      }
+
+      // Window boundary updates
+      // window.addEventListener("resize", () => {
+      //   canvas.width = window.innerWidth;
+      //   canvas.height = window.innerHeight;
+      //   wave.x = canvas.width / 2;
+      // });
+
+      // Attach event listeners after DOM loads
+      window.onload = function () {
+        const inputEl = document.getElementById("myInput");
+        // Trigger when input gets focus (selected)
+        inputEl.addEventListener("click", onInputSelected);
+        // updateContent();
+
+        // Function to run when input is selected (focused)
+        function onInputSelected() {
+          focusState = !focusState;
+          isPaused = !isPaused;
+          updateContent();
+          if (focusState) {
+            // displayFocusSlideshow();
+            essayText.classList.add("italic");
+            interactiveText.classList.remove("italic");
+          } else {
+            // displayFlowText();
+            essayText.classList.remove("italic");
+            interactiveText.classList.add("italic");
+          }
+        }
+      };
+    </script>
+  </body>
+</html>

@@ -1,0 +1,699 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wdth,wght@0,62.5..100,100..900;1,62.5..100,100..900&display=swap"
+      rel="stylesheet"
+    />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Geoffrey Van</title>
+    <style>
+      body {
+        margin: 0;
+        background-image: url(https://static.wixstatic.com/media/2fa7ac_9a3c716c72a942c4b2e769f47edeb04a~mv2.png);
+        background-size: 100vw;
+        overflow: hidden;
+      }
+
+      p {
+        font-family: "Noto Sans", sans-serif;
+        font-optical-sizing: auto;
+        font-weight: 200;
+        font-size: 14px;
+        font-style: normal;
+        font-variation-settings: "wdth" 100;
+      }
+
+      /* Entry overlay: w/ prompt and dot to click in */
+      .entry-overlay {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        position: fixed;
+        z-index: 888;
+        left: 0;
+        top: 0;
+        width: 100vw;
+        height: 100vh;
+        overflow: auto;
+        background-color: rgba(247, 247, 237, 0.95);
+        opacity: 1; /* Fully visible */
+        transition: opacity 1.5s ease; /* Smooth fade-out effect */
+      }
+      .hidden-entry-overlay {
+        opacity: 0;
+        pointer-events: none; /* Prevent interaction */
+      }
+      #entry-dot {
+        width: 15px;
+        height: 15px;
+        background-color: transparent;
+        border: 1px solid black;
+        border-radius: 50%;
+        cursor: pointer;
+        transition: background-color 0.5s ease; /* Smooth fade-out effect */
+      }
+      .prompt-text {
+        font-family: "Noto Sans", sans-serif;
+        font-optical-sizing: auto;
+        font-weight: 300;
+        font-size: 14px;
+        font-style: normal;
+        font-variation-settings: "wdth" 87.5;
+        color: black;
+      }
+
+      .dot-nav {
+        height: 100px;
+        overflow: hidden;
+        display: flex;
+        justify-content: center;
+        position: relative;
+        padding: 20px;
+      }
+
+      .dot {
+        position: absolute;
+        height: 15px;
+        width: 15px;
+        background-color: transparent;
+        border: 1px solid black;
+        border-radius: 50%;
+        cursor: pointer;
+        z-index: 10;
+      }
+
+      /* Positioning the dots in a triangle formation */
+      #dot1 {
+        top: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+      }
+
+      #dot1::after {
+        content: "Rolodex Homepage";
+        font-family: "Noto Sans", sans-serif;
+        font-optical-sizing: auto;
+        font-weight: 300;
+        font-size: 10px;
+        font-style: normal;
+        font-variation-settings: "wdth" 100;
+        position: absolute;
+        top: -20px;
+        left: 50%;
+        transform: translateX(10%);
+        background-color: white;
+        color: black;
+        padding: 5px 10px;
+        border-radius: 5px;
+        white-space: nowrap;
+        opacity: 0;
+        transition: opacity 0.3s ease-in-out;
+        pointer-events: none;
+        z-index: 15;
+      }
+
+      #dot1:hover::after {
+        opacity: 1;
+      }
+
+      #dot2 {
+        top: 60px;
+        left: calc(50% - 30px);
+      }
+
+      #dot2::after {
+        content: "Geoffrey Van's Bio";
+        font-family: "Noto Sans", sans-serif;
+        font-optical-sizing: auto;
+        font-weight: 300;
+        font-size: 10px;
+        font-style: normal;
+        font-variation-settings: "wdth" 100;
+        position: absolute;
+        top: -20px;
+        left: 50%;
+        transform: translateX(-110%);
+        background-color: white;
+        color: black;
+        padding: 5px 10px;
+        border-radius: 5px;
+        white-space: nowrap;
+        opacity: 0;
+        transition: opacity 0.3s ease-in-out;
+        pointer-events: none;
+        z-index: 15;
+      }
+
+      #dot2:hover::after {
+        opacity: 1;
+      }
+
+      #dot3 {
+        top: 60px;
+        left: calc(50% + 15px);
+        background-color: black;
+      }
+
+      #dot3::after {
+        content: "Refresh Content";
+        font-family: "Noto Sans", sans-serif;
+        font-optical-sizing: auto;
+        font-weight: 300;
+        font-size: 10px;
+        font-style: normal;
+        font-variation-settings: "wdth" 100;
+        position: absolute;
+        top: -20px;
+        left: 50%;
+        transform: translateX(10%);
+        background-color: black;
+        color: #f7f7ed;
+        padding: 5px 10px;
+        border-radius: 5px;
+        white-space: nowrap;
+        opacity: 0;
+        transition: opacity 0.3s ease-in-out;
+        pointer-events: none;
+        z-index: 15;
+      }
+
+      #dot3:hover::after {
+        opacity: 1;
+      }
+
+      #map-bg {
+        background-image: url(https://static.wixstatic.com/media/2fa7ac_e3603c5aa6064cf3bd53a31b0b723674~mv2.png);
+        background-size: 100vw;
+        width: 100vw;
+        height: 100vh;
+        background-color: #f7f7ed;
+        margin: 0;
+        padding: 0;
+        opacity: 0.1;
+        transition: opacity 5s ease-in-out;
+        position: absolute;
+      }
+
+      #parallel {
+        width: 100vw;
+        position: absolute;
+        top: 35vh;
+      }
+
+      .stack {
+        z-index: 10;
+        position: relative;
+      }
+
+      .stack-label {
+        font-family: "Noto Sans", sans-serif;
+        font-optical-sizing: auto;
+        font-weight: 300;
+        font-size: 11px;
+        font-style: normal;
+        font-variation-settings: "wdth" 100;
+        color: black;
+        padding: 0;
+        margin: 0;
+        position: absolute;
+        top: -0.7rem;
+      }
+
+      .thumbnail-img {
+        width: 5vw;
+        position: absolute;
+        left: 0;
+      }
+
+      /* First item stays in place */
+      .thumbnai-img:first-child {
+        margin-top: 0;
+      }
+
+      /* Shift each item slightly */
+      /* TODO: add another child if any one location has more than 7 images */
+      .thumbnail-img:nth-child(2) {
+        transform: translate(0px, 10px);
+      }
+      .thumbnail-img:nth-child(3) {
+        transform: translate(0px, 20px);
+      }
+      .thumbnail-img:nth-child(4) {
+        transform: translate(0px, 30px);
+      }
+      .thumbnail-img:nth-child(5) {
+        transform: translate(0px, 40px);
+      }
+      .thumbnail-img:nth-child(6) {
+        transform: translate(0px, 50px);
+      }
+      .thumbnail-img:nth-child(7) {
+        transform: translate(0px, 60px);
+      }
+      .thumbnail-img:nth-child(8) {
+        transform: translate(0px, 70px);
+      }
+
+      #oregon {
+        top: 30vh;
+        left: 12vw;
+      }
+
+      #minneapolis {
+        top: 31vh;
+        left: 19vw;
+      }
+
+      #isle {
+        top: 23vh;
+        left: 44vw;
+      }
+
+      #hongkong {
+        left: 77vw;
+        top: 46vh;
+      }
+
+      #australia {
+        left: 85vw;
+        top: 79vh;
+      }
+
+      /* The Modal (background) */
+      .modal {
+        display: none;
+        position: fixed;
+        z-index: 30;
+        /* padding-top: 100px; */
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-image: url(https://static.wixstatic.com/media/2fa7ac_6f1d515fbae54c6eb665515155bbf0c8~mv2.png);
+        background-size: 100vw;
+      }
+
+      /* Add Animation - Zoom in the Modal */
+      .modal,
+      .modal-content {
+        animation-name: fadein;
+        animation-duration: 0.3s;
+      }
+      @keyframes fadein {
+        0% {
+          opacity: 0;
+        }
+        100% {
+          opacity: 1;
+        }
+      }
+
+      /* The Close Button */
+      .close {
+        position: absolute;
+        top: 1vh;
+        right: 2vw;
+        color: #f1f1f1;
+        font-size: 40px;
+        font-weight: bold;
+        transition: 0.3s;
+      }
+      .close:hover,
+      .close:focus {
+        color: #bbb;
+        text-decoration: none;
+        cursor: pointer;
+      }
+
+      .slideshow-container {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        height: 100%;
+        width: 100%;
+      }
+
+      #img-slide {
+        height: 80vh;
+      }
+
+      .controls {
+        position: absolute;
+        display: flex;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        width: 100%;
+        flex-direction: row;
+        justify-content: center;
+        align-items: flex-end;
+        transform: translateY(-50%);
+        z-index: 999;
+        pointer-events: none;
+      }
+
+      .controls button {
+        width: 15px;
+        height: 15px;
+        border: 1px solid white;
+        border-radius: 50%;
+        background: transparent;
+        font-size: 0;
+        cursor: pointer;
+        pointer-events: all;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        transition:
+          box-shadow 0.3s ease,
+          transform 0.2s ease;
+        margin: 0.7rem 2rem;
+      }
+
+      .controls button:disabled {
+        opacity: 0;
+        cursor: default;
+        transform: none;
+      }
+
+      .controls button:active {
+        box-shadow: 0 0 20px 5px rgba(255, 255, 255, 0.4);
+        transform: scale(1);
+      }
+      .controls button:hover:not(:disabled) {
+        transform: scale(1.3);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="entry-overlay">
+      <p class="prompt-text">FAMILY HEART | A NEW ARCHIVE</p>
+      <div id="entry-dot"></div>
+    </div>
+    <div class="header" id="dot-nav">
+      <div class="dot" id="dot1" role="button"></div>
+      <div class="dot" id="dot2" role="button"></div>
+      <div class="dot" id="dot3" role="button"></div>
+    </div>
+    <div id="map-bg"></div>
+    <div class="body">
+      <!-- <hr id="parallel" /> -->
+      <div class="stack" id="oregon">
+        <p class="stack-label" id="oregon-label"></p>
+      </div>
+      <div class="stack" id="minneapolis">
+        <p class="stack-label" id="minneapolis-label"></p>
+      </div>
+      <div class="stack" id="isle">
+        <p class="stack-label" id="isle-label"></p>
+      </div>
+      <div class="stack" id="hongkong">
+        <p class="stack-label" id="hongkong-label"></p>
+      </div>
+      <div class="stack" id="australia">
+        <p class="stack-label" id="australia-label"></p>
+      </div>
+    </div>
+    <div id="myModal" class="modal">
+      <!-- The Close Button -->
+      <span class="close">×</span>
+      <div class="slideshow-container">
+        <div class="slide" style="position: relative; z-index: 2">
+          <img id="img-slide" src="" alt="" />
+        </div>
+        <div class="controls">
+          <button id="prevBtn" onclick="prevSlide()"></button>
+          <button id="nextBtn" onclick="nextSlide()"></button>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // Entry overlay
+      var entryOverlay = document.getElementsByClassName("entry-overlay")[0];
+      const entryDot = document.getElementById("entry-dot");
+      entryDot.addEventListener("mouseover", () => {
+        entryDot.style.backgroundColor = "#34AD3A";
+      });
+      entryDot.addEventListener("mouseout", () => {
+        entryDot.style.backgroundColor = "transparent";
+      });
+      entryDot.addEventListener("click", () => {
+        entryOverlay.classList.add("hidden-entry-overlay");
+        // Fade out
+        setTimeout(fadeOutMap, 3000);
+
+        function fadeOutMap() {
+          document.getElementById("map-bg").style.opacity = 0;
+        }
+      });
+
+      // Dot nav event listeners
+      document.getElementById("dot3").addEventListener("click", () => {
+        window.parent.location.href = "https://www.rolodex.cc/gv";
+      });
+      document.getElementById("dot1").addEventListener("click", (event) => {
+        event.preventDefault();
+        // Navigate to home page
+        window.parent.location.href = "https://www.rolodex.cc/rolodex-home"; // Update with your actual home page URL
+      });
+      document.getElementById("dot2").addEventListener("click", (event) => {
+        event.preventDefault();
+        // Navigate to about page
+        window.parent.location.href = "https://www.rolodex.cc/gv-bio"; // Update with your actual about page URL
+      });
+      // if current window, then fill in the active dot
+      if (window.location.href.includes("bio")) {
+        document.getElementById("dot2").style.backgroundColor = "black";
+        document.getElementById("dot3").style.backgroundColor = "transparent";
+      } else {
+        document.getElementById("dot2").style.backgroundColor = "transparent";
+        document.getElementById("dot3").style.backgroundColor = "black";
+      }
+
+      //Page specific js
+      // Img info
+      /* TODO: currently the location count requires all images of one location to be lumped together in the list */
+      const imgList = [
+        {
+          index: 0,
+          location: "oregon",
+          url: "https://static.wixstatic.com/media/2fa7ac_96935fe1f6084df4947f8796e52ec910~mv2.jpg",
+          desc: "Two people blowing up an inflatable in a pool",
+        },
+        {
+          index: 1,
+          location: "oregon",
+          url: "https://static.wixstatic.com/media/2fa7ac_90e2c2cd0e3f4267a29bac50b44700d5~mv2.jpg",
+          desc: "A dog by a pond, surrounded by trees and a mountain",
+        },
+        {
+          index: 2,
+          location: "oregon",
+          url: "https://static.wixstatic.com/media/2fa7ac_cc9bb2460e964dcfb37b4b3c1eccac19~mv2.jpg",
+          desc: "A palm tree and motion blur",
+        },
+        {
+          index: 3,
+          location: "oregon",
+          url: "https://static.wixstatic.com/media/2fa7ac_2fc98633ea8a4715b322b70117d10307~mv2.jpg",
+          desc: "Windows of a building and motion blur",
+        },
+        {
+          index: 4,
+          location: "oregon",
+          url: "https://static.wixstatic.com/media/2fa7ac_36547fc338f14fccb715d262c6821ce1~mv2.jpg",
+          desc: "A black dog being pet by a lake",
+        },
+        {
+          index: 5,
+          location: "minneapolis",
+          url: "https://static.wixstatic.com/media/2fa7ac_f339f2e6c582427db3e4d3f1894963c4~mv2.jpg",
+          desc: "A family eating in a restaurant with the sun filtering in",
+        },
+        {
+          index: 6,
+          location: "minneapolis",
+          url: "https://static.wixstatic.com/media/2fa7ac_c71de50adeba4e9b9cddf90fb395d033~mv2.jpg",
+          desc: "A dog looks ahead in a sunny car",
+        },
+        {
+          index: 7,
+          location: "minneapolis",
+          url: "https://static.wixstatic.com/media/2fa7ac_4022234174ae4992b21d32c4b07ff3d8~mv2.jpg",
+          desc: "A person lounges outside in greenery next to a stream, the word love is visible on a window",
+        },
+        {
+          index: 8,
+          location: "minneapolis",
+          url: "https://static.wixstatic.com/media/2fa7ac_230de407adfd4b778359be7da2ef71c7~mv2.jpg",
+          desc: "A dog looks ahead in a sunny car",
+        },
+        {
+          index: 9,
+          location: "isle",
+          url: "https://static.wixstatic.com/media/2fa7ac_8e5fd73a2e8c4f3ea2ffc79fd273b38d~mv2.jpg",
+          desc: "A figure walking a dog outside a window",
+        },
+        {
+          index: 10,
+          location: "isle",
+          url: "https://static.wixstatic.com/media/2fa7ac_d033b8bf169e42c4b3d8fdd9204e7090~mv2.jpg",
+          desc: "Two snowy mountains next to each other",
+        },
+        {
+          index: 11,
+          location: "isle",
+          url: "https://static.wixstatic.com/media/2fa7ac_0017e9f2db984020b853e6a1476cfd26~mv2.jpg",
+          desc: "A black and white screen in a movie theatre",
+        },
+        {
+          index: 12,
+          location: "isle",
+          url: "https://static.wixstatic.com/media/2fa7ac_8258730bb9694381a28e1b56dd2f6511~mv2.jpg",
+          desc: "A tree on a hill is surrounded by figures walking upwards.",
+        },
+        {
+          index: 13,
+          location: "isle",
+          url: "https://static.wixstatic.com/media/2fa7ac_3d92c0ad873b46bd8589ae988170d7ad~mv2.jpg",
+          desc: "A kid looks in a funhouse mirror",
+        },
+        {
+          index: 14,
+          location: "isle",
+          url: "https://static.wixstatic.com/media/2fa7ac_869eb77a995f4c3f88210ae675280f33~mv2.jpg",
+          desc: "Three people snuggle up on a couch",
+        },
+        {
+          index: 15,
+          location: "isle",
+          url: "https://static.wixstatic.com/media/2fa7ac_7b2c679b9c774fd7b5afea5c5ed88d5c~mv2.jpg",
+          desc: "A bare tree blows in the wind",
+        },
+        {
+          index: 16,
+          location: "hongkong",
+          url: "https://static.wixstatic.com/media/2fa7ac_a8a42b324c094a22a12f92b4995fc25c~mv2.jpg",
+          desc: "Three people walk on stones in a park barefoot",
+        },
+        {
+          index: 17,
+          location: "australia",
+          url: "https://static.wixstatic.com/media/2fa7ac_a8762666092243f7a910df4081c1dcfe~mv2.jpg",
+          desc: "Black and white photo of trees and low growing shrubs under sun",
+        },
+        {
+          index: 18,
+          location: "australia",
+          url: "https://static.wixstatic.com/media/2fa7ac_d8b6d351d34f4e0e88d0c5bdd87c3df8~mv2.jpg",
+          desc: "Black and white photo of tall cacti in a garden",
+        },
+      ];
+      const slideImg = document.getElementById("img-slide");
+      let currentSlide = 0;
+      const modal = document.getElementById("myModal");
+      var dotNav = document.getElementById("dot-nav");
+      const prevBtn = document.getElementById("prevBtn");
+      const nextBtn = document.getElementById("nextBtn");
+      var span = document.getElementsByClassName("close")[0];
+      var stackCount = 0;
+      var stackName = "";
+
+      function generateStacks() {
+        for (let i = 0; i < imgList.length; i++) {
+          const stack = document.getElementById(imgList[i].location);
+          if (stackName !== imgList[i].location && i > 0) {
+            document.getElementById(`${stackName}-label`).textContent =
+              `(${stackCount})`;
+            stackCount = 0;
+          }
+          stackName = imgList[i].location;
+          stackCount += 1;
+          if (i === imgList.length - 1) {
+            document.getElementById(`${stackName}-label`).textContent =
+              `(${stackCount})`;
+          }
+          const imgAddition = document.createElement("img");
+          imgAddition.classList.add("thumbnail-img");
+          imgAddition.src = imgList[i].url;
+          imgAddition.alt = imgList[i].desc;
+          imgAddition.style.cursor = "pointer";
+
+          const count = document.createElement("p");
+          count.classList.add("count");
+          count.textContent = `(${4})`;
+
+          imgAddition.onclick = () => {
+            modalTrigger(i);
+          };
+          stack.appendChild(imgAddition);
+        }
+      }
+
+      // Handling slideshow
+      function updateSlide(index) {
+        if (index) {
+          currentSlide = index;
+        }
+        slideImg.src = imgList[currentSlide].url;
+        slideImg.alt = imgList[currentSlide].desc;
+      }
+
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "ArrowRight") {
+          nextSlide();
+        } else if (e.key === "ArrowLeft") {
+          prevSlide();
+        }
+      });
+
+      function nextSlide() {
+        if (currentSlide < imgList.length - 1) {
+          currentSlide++;
+          updateSlide();
+        } else if (currentSlide === imgList.length - 1) {
+          currentSlide = 0;
+          updateSlide();
+        }
+      }
+
+      function prevSlide() {
+        if (currentSlide > 0) {
+          currentSlide--;
+          updateSlide();
+        } else if (currentSlide === 0) {
+          currentSlide = imgList.length - 1;
+          updateSlide();
+        }
+      }
+
+      //Handling modal behavior
+      function modalTrigger(index) {
+        modal.style.display = "block";
+        updateSlide(index);
+        dotNav.style.display = "none";
+      }
+
+      // When the user clicks on <span> (x), close the modal
+      span.onclick = function () {
+        modal.style.display = "none";
+        dotNav.style.display = "flex";
+        currentSlide = 0;
+      };
+
+      window.addEventListener("load", () => {
+        //create img stacks
+        generateStacks();
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,495 @@
+<!-- TODO: 
+    1.   
+-->
+<!doctype html>
+<html lang="en">
+  <head>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wdth,wght@0,62.5..100,100..900;1,62.5..100,100..900&display=swap"
+      rel="stylesheet"
+    />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- TODO: change name here -->
+    <title>Anon</title>
+    <style>
+      p {
+        font-family: "Noto Sans", sans-serif;
+        font-optical-sizing: auto;
+        font-weight: 200;
+        font-size: 14px;
+        font-style: normal;
+        font-variation-settings: "wdth" 100;
+        color: black;
+      }
+
+      /* Entry overlay: w/ prompt and dot to click in */
+      .entry-overlay {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        position: fixed;
+        z-index: 888;
+        left: 0;
+        top: 0;
+        width: 100vw;
+        height: 100vh;
+        overflow: auto;
+        background-color: rgba(247, 247, 237, 0.95);
+        opacity: 1; /* Fully visible */
+        transition: opacity 1.5s ease; /* Smooth fade-out effect */
+      }
+      .hidden-entry-overlay {
+        opacity: 0;
+        pointer-events: none; /* Prevent interaction */
+      }
+      .entry-dot {
+        width: 15px;
+        height: 15px;
+        background-color: transparent;
+        border: 1px solid black;
+        border-radius: 50%;
+        /* cursor: pointer; */
+        transition: background-color 0.5s ease; /* Smooth fade-out effect */
+      }
+      .prompt-text {
+        font-family: "Noto Sans", sans-serif;
+        font-optical-sizing: auto;
+        font-weight: 300;
+        font-size: 14px;
+        font-style: normal;
+        font-variation-settings: "wdth" 87.5;
+        color: black;
+        margin-top: 0.1rem;
+        margin-bottom: 0rem;
+      }
+      #blueTimeDotWrapper {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        position: absolute;
+        left: 28vw;
+        top: 35vh;
+      }
+
+      #reflexesDotWrapper {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        position: absolute;
+        right: 28vw;
+        bottom: 35vh;
+      }
+
+      .dot-nav {
+        height: 100px;
+        overflow: hidden;
+        display: flex;
+        justify-content: center;
+        position: relative;
+        padding: 20px;
+      }
+
+      .dot {
+        position: absolute;
+        height: 15px;
+        width: 15px;
+        background-color: transparent;
+        border: 1px solid black;
+        border-radius: 50%;
+        cursor: pointer;
+        z-index: 10;
+      }
+
+      /* Positioning the dots in a triangle formation */
+      #dot1 {
+        top: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+      }
+
+      #dot1::after {
+        content: "Rolodex Homepage";
+        font-family: "Noto Sans", sans-serif;
+        font-optical-sizing: auto;
+        font-weight: 300;
+        font-size: 10px;
+        font-style: normal;
+        font-variation-settings: "wdth" 100;
+        position: absolute;
+        top: -20px;
+        left: 50%;
+        transform: translateX(10%);
+        background-color: black;
+        color: white;
+        padding: 5px 10px;
+        border-radius: 5px;
+        white-space: nowrap;
+        opacity: 0;
+        transition: opacity 0.3s ease-in-out;
+        pointer-events: none;
+        z-index: 15;
+      }
+
+      #dot1:hover::after {
+        opacity: 1;
+      }
+
+      #dot2 {
+        top: 60px;
+        left: calc(50% - 30px);
+      }
+
+      #dot2::after {
+        content: "Rolobeing Bio";
+        font-family: "Noto Sans", sans-serif;
+        font-optical-sizing: auto;
+        font-weight: 300;
+        font-size: 10px;
+        font-style: normal;
+        font-variation-settings: "wdth" 100;
+        position: absolute;
+        top: -20px;
+        left: 50%;
+        transform: translateX(-110%);
+        background-color: black;
+        color: white;
+        padding: 5px 10px;
+        border-radius: 5px;
+        white-space: nowrap;
+        opacity: 0;
+        transition: opacity 0.3s ease-in-out;
+        pointer-events: none;
+        z-index: 15;
+      }
+
+      #dot2:hover::after {
+        opacity: 1;
+      }
+
+      #dot3 {
+        top: 60px;
+        left: calc(50% + 15px);
+        background-color: black;
+      }
+
+      #dot3::after {
+        content: "Refresh Content";
+        font-family: "Noto Sans", sans-serif;
+        font-optical-sizing: auto;
+        font-weight: 300;
+        font-size: 10px;
+        font-style: normal;
+        font-variation-settings: "wdth" 100;
+        position: absolute;
+        top: -20px;
+        left: 50%;
+        transform: translateX(10%);
+        background-color: black;
+        color: white;
+        padding: 5px 10px;
+        border-radius: 5px;
+        white-space: nowrap;
+        opacity: 0;
+        transition: opacity 0.3s ease-in-out;
+        pointer-events: none;
+        z-index: 15;
+      }
+
+      #dot3:hover::after {
+        opacity: 1;
+      }
+
+      /* Mobile view only on screens up to 768px wide */
+      .mobile-only {
+        display: flex;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        z-index: 999;
+        position: absolute;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        color: #595959;
+      }
+
+      .redirect-message {
+        color: #595959;
+        text-align: center;
+        font-family: "Noto Sans", sans-serif;
+        font-optical-sizing: auto;
+        font-weight: 200;
+        font-size: 14px;
+        font-style: normal;
+        font-variation-settings: "wdth" 100;
+      }
+
+      .rolodex {
+        font-family: "Marzo", serif;
+        font-size: 2.5rem;
+        position: relative;
+        cursor: pointer;
+        text-align: center;
+        margin-bottom: 1rem;
+      }
+
+      .solid-circle {
+        position: relative;
+        display: inline-block;
+        width: 1.375rem;
+        height: 1.375rem;
+        border-radius: 50%;
+        background-color: #595959;
+      }
+
+      .o1 {
+        top: 0;
+        left: 1.668rem;
+        transform: translateX(-1.65rem);
+      }
+
+      .o2 {
+        bottom: 0;
+        left: -1.66rem;
+        transform: translateX(1.65rem);
+      }
+
+      .footer {
+        position: absolute;
+        bottom: 1.5rem;
+        right: 0rem;
+        display: flex;
+        justify-content: right;
+        align-items: end;
+        flex-direction: column;
+        width: 100%;
+      }
+
+      #copyright {
+        font-family: "didot", serif;
+        font-style: italic;
+        text-decoration: none;
+        font-size: 14px;
+        color: #595959;
+        padding: 0rem 2rem;
+      }
+
+      @media (min-width: 769px) {
+        .mobile-only {
+          display: none;
+        }
+      }
+      @media (max-width: 769px) {
+        .entry-overlay {
+          display: none;
+        }
+        .header {
+          display: none;
+        }
+        .body {
+          display: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="mobile-only">
+      <div class="rolodex" id="alldots">
+        <span class="letter r"
+          ><svg
+            width="15"
+            height="22"
+            viewBox="0 0 15 22"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M-0.000195228 21.1499V1.0799C-0.000195228 0.779902 0.0998048 0.529902 0.299805 0.329902C0.519805 0.109901 0.769805 -9.89437e-05 1.0498 -9.89437e-05H7.82981C8.72981 -9.89437e-05 9.56981 0.169901 10.3498 0.509902C11.1298 0.849902 11.8098 1.3199 12.3898 1.9199C12.9698 2.4999 13.4298 3.1799 13.7698 3.9599C14.1098 4.7399 14.2798 5.5799 14.2798 6.4799C14.2798 7.3799 14.1098 8.2199 13.7698 8.9999C13.4298 9.7799 12.9698 10.4699 12.3898 11.0699C11.8098 11.6499 11.1298 12.1099 10.3498 12.4499C9.56981 12.7899 8.72981 12.9599 7.82981 12.9599H1.8898C1.7898 12.9599 1.7398 13.0099 1.7398 13.1099C1.7398 13.1699 1.7898 13.2299 1.8898 13.2899L13.9498 20.6699L13.6498 21.1499L1.5898 13.7699C1.4898 13.6899 1.3998 13.5999 1.3198 13.4999C1.2398 13.3999 1.1998 13.2699 1.1998 13.1099C1.1998 12.9099 1.2598 12.7499 1.3798 12.6299C1.5198 12.4899 1.6898 12.4199 1.8898 12.4199H7.82981C8.64981 12.4199 9.41981 12.2699 10.1398 11.9699C10.8598 11.6499 11.4798 11.2199 11.9998 10.6799C12.5398 10.1399 12.9598 9.5099 13.2598 8.7899C13.5798 8.0699 13.7398 7.2999 13.7398 6.4799C13.7398 5.6599 13.5798 4.8899 13.2598 4.1699C12.9598 3.4499 12.5398 2.8199 11.9998 2.2799C11.4798 1.7399 10.8598 1.3199 10.1398 1.0199C9.41981 0.699902 8.64981 0.539901 7.82981 0.539901H1.0498C0.909805 0.539901 0.789805 0.589901 0.689805 0.689901C0.589805 0.789901 0.539805 0.919901 0.539805 1.0799V21.1499H-0.000195228Z"
+              fill="#595959"
+            />
+          </svg>
+        </span>
+        <span class="letter o solid-circle o1 dot-container">
+          <div class="finaldots" id="firstDotHide"></div>
+        </span>
+        <span class="letter l"
+          ><svg
+            width="16"
+            height="22"
+            viewBox="0 0 16 22"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M0.539805 -9.89437e-05V20.0699C0.539805 20.2299 0.589805 20.3599 0.689805 20.4599C0.789805 20.5599 0.919805 20.6099 1.0798 20.6099H15.8098V21.1499H1.0798C0.779805 21.1499 0.519805 21.0499 0.299805 20.8499C0.0998048 20.6299 -0.000195228 20.3699 -0.000195228 20.0699V-9.89437e-05H0.539805Z"
+              fill="#595959"
+            />
+          </svg>
+        </span>
+        <span class="letter o solid-circle o2 dot-container">
+          <div class="finaldots"></div>
+        </span>
+        <span class="letter d"
+          ><svg
+            width="17"
+            height="22"
+            viewBox="0 0 17 22"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M0.539805 20.5799H6.44981C7.8298 20.5799 9.1298 20.3199 10.3498 19.7999C11.5698 19.2599 12.6298 18.5399 13.5298 17.6399C14.4298 16.7399 15.1398 15.6799 15.6598 14.4599C16.1998 13.2399 16.4698 11.9399 16.4698 10.5599C16.4698 9.1799 16.1998 7.8799 15.6598 6.6599C15.1398 5.4399 14.4298 4.3799 13.5298 3.4799C12.6298 2.5599 11.5698 1.8399 10.3498 1.3199C9.1298 0.799901 7.8298 0.539901 6.44981 0.539901H1.0798C0.919805 0.539901 0.789805 0.589901 0.689805 0.689901C0.589805 0.789901 0.539805 0.919901 0.539805 1.0799V20.5799ZM-0.000195228 1.0799C-0.000195228 0.779902 0.0998048 0.529902 0.299805 0.329902C0.519805 0.109901 0.779805 -9.89437e-05 1.0798 -9.89437e-05H6.44981C7.90981 -9.89437e-05 9.27981 0.279901 10.5598 0.839901C11.8398 1.3799 12.9598 2.1299 13.9198 3.0899C14.8798 4.0499 15.6298 5.1699 16.1698 6.4499C16.7298 7.7299 17.0098 9.0999 17.0098 10.5599C17.0098 12.0199 16.7298 13.3899 16.1698 14.6699C15.6298 15.9499 14.8798 17.0699 13.9198 18.0299C12.9598 18.9899 11.8398 19.7499 10.5598 20.3099C9.27981 20.8499 7.90981 21.1199 6.44981 21.1199H-0.000195228V1.0799Z"
+              fill="#595959"
+            />
+          </svg>
+        </span>
+        <span class="letter e"
+          ><svg
+            width="16"
+            height="22"
+            viewBox="0 0 16 22"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M15.9898 21.1499H-0.000195228V1.0799C-0.000195228 0.779902 0.0998048 0.529902 0.299805 0.329902C0.499805 0.109901 0.749805 -9.89437e-05 1.0498 -9.89437e-05H15.7798V0.539901H1.0498C0.889805 0.539901 0.759805 0.589901 0.659805 0.689901C0.579805 0.789901 0.539805 0.919901 0.539805 1.0799V10.3499H15.9898V10.8899H0.539805V20.6099H15.9898V21.1499Z"
+              fill="#595959"
+            />
+          </svg>
+        </span>
+        <span class="letter x"
+          ><svg
+            width="19"
+            height="22"
+            viewBox="0 0 19 22"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M9 10.1399L17.31 -9.89437e-05H18.03L9.36 10.5899L18.03 21.1499H17.31L9 11.0099L0.69 21.1499H0L8.64 10.5899L0 -9.89437e-05H0.69L9 10.1399Z"
+              fill="#595959"
+            />
+          </svg>
+        </span>
+      </div>
+
+      <p class="redirect-message">
+        the time is now
+        <span class="clock" id="utcClock"> ... </span>
+        <br />
+        <br />
+        we welcome you <br />
+        to canon our truths <br />
+        <br />
+
+        with rite clear <br />
+        <br />
+
+        please visit rolodex.cc <br />
+        curated for desktop platform <br />
+        at this time <br />
+      </p>
+      <div class="footer">
+        <a id="copyright" href="https://www.aft.studio/"
+          >© a.f.t. Cooperative</a
+        >
+      </div>
+    </div>
+
+    <div class="entry-overlay">
+      <div class="dot" id="dot1" role="button"></div>
+
+      <div id="blueTimeDotWrapper">
+        <p class="prompt-text">BLUE TIME</p>
+        <p></p>
+        <div class="entry-dot" id="entry-dot-bluetime"></div>
+      </div>
+      <div id="reflexesDotWrapper">
+        <p class="prompt-text">REFLEXES</p>
+        <p>(in progress)</p>
+        <div class="entry-dot" id="entry-dot-reflexes"></div>
+      </div>
+    </div>
+    <div class="header">
+      <div class="dot" id="dot1" role="button"></div>
+      <div class="dot" id="dot2" role="button"></div>
+      <div class="dot" id="dot3" role="button"></div>
+    </div>
+    <div class="body"></div>
+    <script>
+      // Entry overlay
+      const entryOverlay = document.getElementsByClassName("entry-overlay")[0];
+      const entryDot = document.getElementById("entry-dot-bluetime");
+      entryDot.addEventListener("mouseover", () => {
+        //TODO: EDIT COLOR HERE
+        entryDot.style.backgroundColor = "black";
+      });
+      entryDot.addEventListener("mouseout", () => {
+        entryDot.style.backgroundColor = "transparent";
+      });
+      entryDot.addEventListener("click", () => {
+        entryOverlay.classList.add("hidden-entry-overlay");
+        window.parent.location.href = "https://www.rolodex.cc/blue-time"; // Update with your actual home page URL
+      });
+
+      // Dot nav event listeners
+      document.getElementById("dot3").addEventListener("click", () => {
+        //TODO: EDIT URL HERE
+      });
+      document.getElementById("dot1").addEventListener("click", (event) => {
+        event.preventDefault();
+        //TODO: EDIT URL HERE
+        // Navigate to home page
+        window.parent.location.href = "https://www.rolodex.cc/rolodex-home"; // Update with your actual home page URL
+      });
+      document.getElementById("dot2").addEventListener("click", (event) => {
+        event.preventDefault();
+        //TODO: EDIT URL HERE
+        // Navigate to about page
+        window.parent.location.href = "https://www.rolodex.cc/blue-time"; // Update with your actual about page URL
+      });
+      // if current window, then fill in the active dot
+      if (window.location.href.includes("bio")) {
+        document.getElementById("dot2").style.backgroundColor = "black";
+        document.getElementById("dot3").style.backgroundColor = "transparent";
+      } else {
+        document.getElementById("dot2").style.backgroundColor = "transparent";
+        document.getElementById("dot3").style.backgroundColor = "black";
+      }
+
+      /**
+       * Formats a number to always have two digits (e.g., 5 -> "05")
+       */
+      function padZero(num) {
+        return num.toString().padStart(2, "0");
+      }
+
+      /**
+       * Updates the UTC clock every second
+       */
+      function updateUTCClock() {
+        try {
+          const now = new Date();
+          const hours = padZero(now.getUTCHours());
+          const minutes = padZero(now.getUTCMinutes());
+          const seconds = padZero(now.getUTCSeconds());
+          document.getElementById("utcClock").textContent =
+            `${hours}:${minutes}:${seconds} UTC`;
+        } catch (error) {
+          console.error("Error updating UTC clock:", error);
+          document.getElementById("utcClock").textContent = "Error";
+        }
+      }
+
+      // Initial call and set interval for updates
+      updateUTCClock();
+      setInterval(updateUTCClock, 1000);
+    </script>
+  </body>
+</html>

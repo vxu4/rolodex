@@ -1,0 +1,1235 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wdth,wght@0,62.5..100,100..900;1,62.5..100,100..900&display=swap"
+      rel="stylesheet"
+    />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Yuchen Chang & Dong Xing</title>
+    <style>
+      p {
+        font-family: "Noto Sans", sans-serif;
+        font-optical-sizing: auto;
+        font-weight: 200;
+        font-size: 14px;
+        font-style: normal;
+        font-variation-settings: "wdth" 100;
+        color: black;
+      }
+      input[type="range"] {
+        -webkit-appearance: none; /* Clear out default styles */
+        appearance: none;
+        background: transparent;
+        cursor: pointer;
+      }
+
+      /* Entry overlay: w/ prompt and dot to click in */
+      .entry-overlay {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        position: fixed;
+        z-index: 888;
+        left: 0;
+        top: 0;
+        width: 100vw;
+        height: 100vh;
+        overflow: auto;
+        background-color: rgba(247, 247, 237, 0.95);
+        opacity: 1; /* Fully visible */
+        transition: opacity 1.5s ease; /* Smooth fade-out effect */
+      }
+      .hidden-entry-overlay {
+        opacity: 0;
+        pointer-events: none; /* Prevent interaction */
+        transition: opacity 1s ease;
+      }
+      .prompt-text {
+        font-family: "Noto Sans", sans-serif;
+        font-optical-sizing: auto;
+        font-weight: 300;
+        font-size: 15px;
+        font-style: normal;
+        font-variation-settings: "wdth" 87.5;
+        color: black;
+      }
+      #entry-dot {
+        width: 15px;
+        height: 15px;
+        background-color: transparent;
+        border: 1px solid black;
+        border-radius: 50%;
+        cursor: pointer;
+        transition: background-color 0.5s ease; /* Smooth fade-out effect */
+      }
+      #prompt {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        transition: opacity 1s ease;
+      }
+      #loading {
+        position: absolute;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+        width: 100vw;
+        transition: opacity 1s ease;
+      }
+      .loader-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      .pulsing-circle {
+        width: 15px;
+        height: 15px;
+        background-color: #595959;
+        border-radius: 50%;
+        animation: pulse 2.5s infinite;
+      }
+      @keyframes pulse {
+        0%,
+        100% {
+          transform: scale(1);
+          opacity: 1;
+        }
+        50% {
+          transform: scale(1.5);
+          opacity: 0.5;
+        }
+      }
+
+      .dot-nav {
+        height: 100px;
+        overflow: hidden;
+        display: flex;
+        justify-content: center;
+        position: relative;
+        border: none;
+        /* z-index: 900; */
+        /* padding: 20px; */
+      }
+
+      .dot {
+        position: absolute;
+        height: 15px;
+        width: 15px;
+        background-color: transparent;
+        border: 1px solid black;
+        border-radius: 50%;
+        cursor: pointer;
+        z-index: 10;
+      }
+
+      /* Positioning the dots in a triangle formation */
+      #dot1 {
+        top: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+      }
+
+      #dot1::after {
+        content: "Rolodex Homepage";
+        font-family: "Noto Sans", sans-serif;
+        font-optical-sizing: auto;
+        font-weight: 300;
+        font-size: 10px;
+        font-style: normal;
+        font-variation-settings: "wdth" 100;
+        position: absolute;
+        top: -20px;
+        left: 50%;
+        transform: translateX(10%);
+        background-color: black;
+        color: white;
+        padding: 4px 8px;
+        border-radius: 5px;
+        white-space: nowrap;
+        opacity: 0;
+        transition: opacity 0.3s ease-in-out;
+        pointer-events: none;
+        z-index: 15;
+      }
+
+      #dot1:hover::after {
+        opacity: 1;
+      }
+
+      #dot2 {
+        top: 60px;
+        left: calc(50% - 30px);
+        background-color: black;
+      }
+
+      #dot2::after {
+        content: "Yuchen Chang & Dong Xing's Bio";
+        font-family: "Noto Sans", sans-serif;
+        font-optical-sizing: auto;
+        font-weight: 300;
+        font-size: 10px;
+        font-style: normal;
+        font-variation-settings: "wdth" 100;
+        font-optical-sizing: auto;
+        font-weight: 300;
+        font-style: normal;
+        font-variation-settings: "wdth" 100;
+        position: absolute;
+        top: -20px;
+        left: 50%;
+        transform: translateX(-110%);
+        background-color: black;
+        color: white;
+        padding: 4px 8px;
+        border-radius: 5px;
+        white-space: nowrap;
+        opacity: 0;
+        transition: opacity 0.3s ease-in-out;
+        pointer-events: none;
+        z-index: 15;
+      }
+
+      #dot2:hover::after {
+        opacity: 1;
+      }
+
+      #dot3 {
+        top: 60px;
+        left: calc(50% + 15px);
+        background-color: transparent;
+      }
+
+      #dot3::after {
+        content: "Refresh Content";
+        font-family: "Noto Sans", sans-serif;
+        font-optical-sizing: auto;
+        font-weight: 300;
+        font-size: 10px;
+        font-style: normal;
+        font-variation-settings: "wdth" 100;
+        position: absolute;
+        top: -20px;
+        left: 50%;
+        transform: translateX(10%);
+        background-color: black;
+        color: white;
+        padding: 4px 8px;
+        border-radius: 5px;
+        white-space: nowrap;
+        opacity: 0;
+        transition: opacity 0.3s ease-in-out;
+        pointer-events: none;
+        z-index: 15;
+      }
+
+      #dot3:hover::after {
+        opacity: 1;
+      }
+
+      body {
+        background: #f7f7ed;
+        color: #666;
+        text-align: center;
+      }
+
+      #img-A,
+      #img-B,
+      #img-mid {
+        transition: linear;
+        /* position: relative; */
+        padding-top: 35vh;
+      }
+
+      #img-A {
+        width: 14vw;
+        /* left: 46vw; */
+      }
+      #img-mid {
+        width: 19.5vw;
+        /* left: 50vw; */
+      }
+      #img-B {
+        width: 14.5vw;
+        /* left: 64.5vw; */
+      }
+
+      ul {
+        padding: 0;
+      }
+
+      .overlay {
+        opacity: 1;
+        background: linear-gradient(
+          0deg,
+          rgba(247, 247, 237, 1) 0%,
+          rgba(247, 247, 237, 0) 60%,
+          rgba(247, 247, 237, 0) 63%,
+          rgba(247, 247, 237, 1) 98%
+        );
+        /* background-color: black; */
+        height: 100%;
+        width: 100%;
+        z-index: 100;
+        position: fixed;
+        left: 0;
+        top: 0;
+      }
+
+      #side-A {
+        position: absolute;
+        left: 26vw;
+        top: 10vh;
+      }
+      #side-B {
+        position: absolute;
+        right: 26vw;
+        top: 10vh;
+      }
+      #side-A-text,
+      #side-B-text {
+        opacity: 1;
+        transition: opacity 0.3s ease; /* Smooth fade-out effect */
+      }
+      #needle-A {
+        position: absolute;
+        left: 20vw;
+        top: 38vh;
+      }
+      #needle-B {
+        position: absolute;
+        right: 20vw;
+        top: 38vh;
+      }
+
+      /* custom audio controls css */
+      .hidden {
+        display: none;
+      }
+
+      .player {
+        max-width: 500px;
+        margin: 7rem auto;
+        background: white;
+        padding: 36px 32px 24px 32px;
+        border-radius: 14px;
+        box-shadow:
+          0 20px 25px -5px rgb(0 0 0 / 0.1),
+          0 8px 10px -6px rgb(0 0 0 / 0.1);
+      }
+
+      .player-track-meta {
+        text-align: center;
+      }
+
+      .player-track-meta p {
+        margin: 0;
+        font-size: 20px;
+        color: #0e0e0e;
+        font-weight: 700;
+      }
+
+      .player-track-meta span {
+        font-size: 16px;
+        font-weight: 400;
+        padding: 0 2px;
+        position: relative;
+        top: 1px;
+        color: #a3a3a3;
+      }
+
+      .player-controls-A,
+      .player-controls-B {
+        display: flex;
+        align-items: center;
+        width: 18vw;
+        position: absolute;
+        z-index: 999;
+      }
+      .player-controls-A {
+        top: 3vh;
+        left: 2vw;
+      }
+      .player-controls-B {
+        top: 3vh;
+        right: 2vw;
+      }
+
+      .player-play-btn {
+        background: transparent;
+        border: none;
+        cursor: pointer;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 18px;
+        height: 18px;
+      }
+
+      .icon-container {
+        fill: transparent;
+        stroke: none;
+      }
+
+      .player-play-btn:hover {
+        fill: #444444;
+      }
+
+      .player-play-btn svg {
+        color: #0e0e0e;
+        position: relative;
+        left: 0.5px;
+        width: 18px;
+        height: 18px;
+        display: block;
+      }
+
+      .player-play-btn:hover svg {
+        color: #ffffff;
+      }
+
+      .player-timeline {
+        display: flex;
+        flex: 1;
+        align-items: center;
+        justify-content: space-between;
+        padding-left: 10px;
+      }
+
+      .player-progress {
+        display: flex;
+        position: relative;
+        height: 4px;
+        background: #a3a3a3;
+        border-radius: 25px;
+        margin: 0 5px;
+        flex: 10;
+        flex-basis: 100%;
+        overflow: hidden;
+      }
+
+      .player-progress-filled {
+        height: 4px;
+        background: #0e0e0e;
+        flex: 0;
+        flex-basis: 0%;
+        border-radius: 25px;
+      }
+
+      .player-time {
+        padding: 2px 5px;
+        font-family: "Noto Sans", sans-serif;
+        font-optical-sizing: auto;
+        font-weight: 200;
+        font-size: 14px;
+        font-style: normal;
+        font-variation-settings: "wdth" 100;
+      }
+
+      #volume-icon {
+        width: 20px;
+      }
+
+      .player-volume-container {
+        width: 5vw;
+        margin: 0px 1vw 0px 1vw;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+      }
+      .player-volume {
+        height: 4px;
+        /* -webkit-appearance: none; */
+        margin: 10px 0;
+        width: 100%;
+        background: transparent;
+        padding-left: 5px;
+      }
+
+      .player-volume:focus {
+        outline: none;
+      }
+
+      .player-volume::-webkit-slider-runnable-track {
+        width: 100%;
+        height: 4px;
+        cursor: pointer;
+        animation: 0.2s;
+        background: #0e0e0e;
+        border-radius: 5px;
+      }
+
+      .player-volume::-webkit-slider-thumb {
+        height: 10px;
+        width: 10px;
+        border-radius: 5px;
+        border: none;
+        background: #0e0e0e;
+        cursor: pointer;
+        -webkit-appearance: none;
+        margin-top: -2.5px;
+      }
+
+      .player-volume:focus::-webkit-slider-runnable-track {
+        background: #0e0e0e;
+      }
+
+      .player-volume::-moz-range-track {
+        width: 100%;
+        height: 4px;
+        cursor: pointer;
+        animation: 0.2s;
+        background: #0e0e0e;
+        border-radius: 5px;
+      }
+
+      .player-volume::-moz-range-thumb {
+        height: 10px;
+        width: 10px;
+        border-radius: 100px;
+        border: none;
+        background: #0e0e0e;
+        cursor: pointer;
+        margin-top: -2.5px;
+      }
+
+      .player-volume::-ms-track {
+        width: 100%;
+        height: 4px;
+        cursor: pointer;
+        animation: 0.2s;
+        background: #0e0e0e;
+        border-radius: 5px;
+      }
+
+      .player-volume::-ms-fill-lower {
+        background: #0e0e0e;
+        border-radius: 5px;
+      }
+
+      .player-volume::-ms-fill-upper {
+        background: #0e0e0e;
+        border-radius: 5px;
+      }
+
+      .player-volume::-ms-thumb {
+        margin-top: -2.5px;
+        height: 10px;
+        width: 10px;
+        border-radius: 5px;
+        border: none;
+        background: #0e0e0e;
+        cursor: pointer;
+      }
+
+      .player-volume:focus::-ms-fill-lower {
+        background: #38bdf8;
+      }
+
+      .player-volume:focus::-ms-fill-upper {
+        background: #38bdf8;
+      }
+
+      .flip {
+        transform: scaleX(-1);
+      }
+
+      .container {
+        height: 97vh;
+        width: 100%;
+        z-index: 0;
+        position: absolute;
+        left: 0%;
+        overflow: hidden;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+      }
+
+      #content-before-loading {
+        text-align: center;
+        display: none;
+        font-size: 16px;
+        margin-top: 20px;
+        max-width: 600px;
+        margin: 20px auto;
+        padding: 20px;
+        background-color: #fff;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="entry-overlay">
+      <div id="prompt" class="hidden-entry-overlay">
+        <p class="prompt-text">ON FRIENDSHIP | MOMENT TO MOMENT</p>
+        <div id="entry-dot"></div>
+      </div>
+      <div id="loading">
+        <p>Loading ...</p>
+        <div class="loader-container">
+          <div class="pulsing-circle"></div>
+        </div>
+      </div>
+    </div>
+    <div class="overlay">
+      <div class="dot-nav">
+        <div class="dot" id="dot1" role="button"></div>
+        <div class="dot" id="dot2" role="button"></div>
+        <div class="dot" id="dot3" role="button"></div>
+      </div>
+      <!-- Side A disc -->
+      <svg
+        id="side-A"
+        width="120"
+        height="120"
+        viewBox="0 0 159 157"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M79.5 13.5C116.112 13.5 145.5 42.7621 145.5 78.5C145.5 114.238 116.112 143.5 79.5 143.5C42.8876 143.5 13.5 114.238 13.5 78.5C13.5 42.7621 42.8876 13.5 79.5 13.5Z"
+          fill="transparent"
+          stroke="#9E9E9E"
+          stroke-width="27"
+        />
+        <text
+          id="side-A-text"
+          x="65"
+          y="83"
+          font-family="Noto Sans"
+          font-size="11"
+          font-weight="300"
+          fill="black"
+        >
+          side A
+        </text>
+      </svg>
+      <!-- custom audio player A -->
+      <div class="player-controls-A">
+        <button
+          class="player-play-btn"
+          id="player-play-btn-A"
+          role="button"
+          aria-label="Play"
+          data-playing="false"
+        >
+          <div class="player-icon-play" id="player-icon-play-A">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+            >
+              <title>play</title>
+              <polygon
+                class="icon-play"
+                points="19.05 12 6 3.36 6 20.64 19.05 12"
+              />
+              <rect class="icon-container" width="12" height="12" />
+            </svg>
+          </div>
+
+          <div class="player-icon-pause hidden" id="player-icon-pause-A">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+            >
+              <title>pause</title>
+              <g>
+                <rect
+                  class="icon-pause"
+                  x="6"
+                  y="3.26"
+                  width="4"
+                  height="17.48"
+                />
+                <rect
+                  class="icon-pause"
+                  x="14"
+                  y="3.26"
+                  width="4"
+                  height="17.48"
+                />
+              </g>
+              <rect class="icon-container" width="24" height="24" />
+            </svg>
+          </div>
+        </button>
+        <audio
+          id="audio-A"
+          src="https://static.wixstatic.com/mp3/7ec13e_b9f6db2f0cbf4753881415e3c24db0d9.m4a"
+          crossorigin="anonymous"
+        ></audio>
+        <div class="player-timeline">
+          <div class="player-progress" id="player-progress-A">
+            <div
+              class="player-progress-filled"
+              id="player-progress-filled-A"
+            ></div>
+          </div>
+        </div>
+        <div class="player-volume-container">
+          <svg
+            id="volume-icon"
+            width="16"
+            height="16"
+            viewBox="0 0 16 16"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <g clip-path="url(#clip0_66_26)">
+              <path
+                d="M10.6112 1.26102C10.2786 0.943404 9.84288 0.768433 9.38427 0.768433C9.0524 0.768433 8.72725 0.862276 8.44403 1.03979L3.56772 4.09623H1.78764C0.810305 4.09623 0.0151367 4.89134 0.0151367 5.86871V10.1248C0.0151367 11.1022 0.810275 11.8973 1.78764 11.8973H3.55767L8.44397 14.96C8.72719 15.1376 9.05234 15.2314 9.38427 15.2314C9.84288 15.2314 10.2786 15.0564 10.6112 14.7388C10.781 14.5766 10.9148 14.3857 11.0089 14.1713C11.1077 13.946 11.1578 13.7061 11.1578 13.4582V8.00304V7.99676V2.54168C11.1578 2.2937 11.1077 2.05377 11.0089 1.82849C10.9148 1.61415 10.781 1.42322 10.6112 1.26102ZM9.84534 7.99676V8.00304V13.4581C9.84534 13.7278 9.62392 13.9188 9.38427 13.9188C9.30265 13.9188 9.21889 13.8966 9.14104 13.8479L4.20397 10.7534C4.02823 10.6432 3.82505 10.5848 3.61763 10.5848H1.78764C1.5336 10.5848 1.32765 10.3788 1.32765 10.1248V5.86871C1.32765 5.61469 1.5336 5.40874 1.78764 5.40874H3.62771C3.83513 5.40874 4.03825 5.35032 4.21402 5.24017L9.14101 2.15193C9.21886 2.10313 9.30256 2.08098 9.38424 2.08098C9.62389 2.08098 9.84531 2.27203 9.84531 2.54171V7.99676H9.84534Z"
+                fill="black"
+              />
+              <path
+                d="M9.38445 15.2467C9.04961 15.2467 8.72164 15.1521 8.436 14.973L3.55344 11.9126H1.78783C0.802001 11.9127 0 11.1106 0 10.1249V5.86877C0 4.88297 0.802001 4.08097 1.78783 4.08097H3.56352L8.43606 1.02689C8.72176 0.847844 9.0497 0.753174 9.38445 0.753174C9.84696 0.753174 10.2864 0.929616 10.6219 1.24999C10.7932 1.4136 10.9282 1.60616 11.0231 1.8224C11.1228 2.04957 11.1733 2.29158 11.1733 2.54174V13.4582C11.1733 13.7083 11.1228 13.9503 11.0231 14.1775C10.9281 14.3938 10.7932 14.5864 10.622 14.7499C10.2865 15.0703 9.84696 15.2467 9.38445 15.2467ZM1.78783 4.11161C0.818913 4.11161 0.0306376 4.89985 0.0306376 5.86877V10.1249C0.0306376 11.0938 0.818913 11.8821 1.78783 11.8821H3.56227L3.566 11.8844L8.4523 14.9471C8.73307 15.1231 9.0554 15.2161 9.38448 15.2161C9.83908 15.2161 10.2711 15.0427 10.6008 14.7278C10.7691 14.5671 10.9017 14.3778 10.995 14.1652C11.093 13.9419 11.1427 13.7041 11.1427 13.4583V2.54174C11.1427 2.29587 11.093 2.05797 10.995 1.83471C10.9017 1.62218 10.7691 1.43293 10.6008 1.27214C10.271 0.95722 9.83908 0.783811 9.38448 0.783811C9.0555 0.783811 8.73316 0.876858 8.45236 1.05284L3.57231 4.11161H1.78783ZM9.38445 13.9342C9.29652 13.9342 9.20957 13.9089 9.13307 13.8609L4.196 10.7664C4.02247 10.6576 3.82256 10.6002 3.61781 10.6002H1.78783C1.52575 10.6002 1.31252 10.387 1.31252 10.1249V5.86877C1.31252 5.60669 1.52572 5.39349 1.78783 5.39349H3.62789C3.83261 5.39349 4.03252 5.33601 4.20605 5.22725L9.13307 2.139C9.20957 2.09106 9.29652 2.06569 9.38445 2.06569C9.64711 2.06569 9.86084 2.27923 9.86084 2.54174V13.4582C9.86084 13.7207 9.64711 13.9342 9.38445 13.9342ZM1.78783 5.42412C1.54263 5.42412 1.34315 5.62357 1.34315 5.86877V10.1249C1.34315 10.3701 1.54263 10.5696 1.78783 10.5696H3.61781C3.82832 10.5696 4.03387 10.6287 4.21227 10.7405L9.14934 13.8349C9.22097 13.8799 9.30225 13.9036 9.38445 13.9036C9.63023 13.9036 9.8302 13.7038 9.8302 13.4582V2.54174C9.8302 2.29615 9.63026 2.09633 9.38445 2.09633C9.30225 2.09633 9.22097 2.12004 9.14934 2.16495L4.22229 5.25323C4.04386 5.36502 3.83831 5.42412 3.62786 5.42412H1.78783Z"
+                fill="black"
+              />
+              <path
+                d="M12.9987 4.79579C12.8374 4.47121 12.4434 4.33895 12.119 4.50026C11.7944 4.6616 11.6621 5.0555 11.8234 5.38005C12.2041 6.14583 12.4053 7.05298 12.4053 8.00342C12.4053 8.96869 12.1984 9.88724 11.8069 10.6599C11.643 10.9832 11.7723 11.3781 12.0956 11.5419C12.1907 11.5901 12.2919 11.6129 12.3917 11.6129C12.6311 11.6129 12.862 11.4813 12.9776 11.2532C13.4619 10.2975 13.7178 9.17381 13.7178 8.00342C13.7179 6.85133 13.4692 5.74212 12.9987 4.79579Z"
+                fill="black"
+              />
+              <path
+                d="M12.3917 11.6283C12.2858 11.6283 12.1838 11.6038 12.0887 11.5557C11.7583 11.3882 11.6258 10.9833 11.7932 10.653C12.1836 9.88256 12.3899 8.96634 12.3899 8.00349C12.3899 7.05532 12.1893 6.15053 11.8097 5.38692C11.7299 5.22629 11.7173 5.04415 11.7745 4.87411C11.8316 4.70407 11.9515 4.56645 12.1121 4.4866C12.206 4.43994 12.3064 4.41626 12.4105 4.41626C12.6675 4.41626 12.8981 4.55909 13.0124 4.78903C13.4839 5.73754 13.7331 6.84907 13.7331 8.00349C13.7331 9.1763 13.4765 10.3024 12.9912 11.2601C12.8762 11.4872 12.6464 11.6283 12.3917 11.6283ZM12.4105 4.44687C12.3112 4.44687 12.2154 4.46945 12.1258 4.51399C11.9725 4.59019 11.858 4.72153 11.8035 4.88382C11.749 5.04611 11.7609 5.21991 11.8371 5.37323C12.2188 6.14107 12.4206 7.05057 12.4206 8.00343C12.4206 8.97109 12.2131 9.89209 11.8205 10.6668C11.6607 10.9821 11.7872 11.3685 12.1025 11.5283C12.1933 11.5743 12.2906 11.5976 12.3916 11.5976C12.6348 11.5976 12.8541 11.463 12.9639 11.2463C13.4471 10.2928 13.7025 9.17146 13.7025 8.00343C13.7025 6.85373 13.4544 5.74691 12.985 4.8026C12.8759 4.5832 12.6558 4.44687 12.4105 4.44687Z"
+                fill="black"
+              />
+              <path
+                d="M13.9875 2.70355C13.6629 2.86488 13.5306 3.25876 13.6919 3.58334C14.3332 4.87333 14.6721 6.39783 14.6721 7.992C14.6721 9.6111 14.3235 11.1549 13.6638 12.4567C13.5 12.78 13.6292 13.1749 13.9525 13.3387C14.0476 13.3869 14.1489 13.4097 14.2487 13.4097C14.4881 13.4097 14.719 13.2782 14.8346 13.05C15.587 11.5652 15.9847 9.81619 15.9847 7.992C15.9847 6.19617 15.5983 4.46965 14.8672 2.99905C14.7059 2.6745 14.312 2.54215 13.9875 2.70355Z"
+                fill="black"
+              />
+              <path
+                d="M14.2486 13.4251C14.1426 13.4251 14.0406 13.4006 13.9455 13.3524C13.7854 13.2713 13.6666 13.1328 13.6108 12.9623C13.555 12.7919 13.5689 12.6098 13.65 12.4498C14.3086 11.1502 14.6567 9.60871 14.6567 7.99203C14.6567 6.40016 14.3183 4.87802 13.6781 3.5902C13.5132 3.25858 13.6489 2.85471 13.9805 2.68988C14.0744 2.64319 14.1748 2.61951 14.279 2.61951C14.5359 2.61951 14.7665 2.76237 14.8808 2.99227C15.6129 4.46493 15.9998 6.19384 15.9998 7.99203C15.9998 9.81861 15.6016 11.57 14.8481 13.0569C14.7331 13.284 14.5033 13.4251 14.2486 13.4251ZM14.279 2.65014C14.1797 2.65014 14.0838 2.67276 13.9942 2.71733C13.8409 2.79353 13.7264 2.92487 13.6719 3.08716C13.6173 3.24945 13.6293 3.42325 13.7055 3.57656C14.3479 4.86861 14.6874 6.39547 14.6874 7.99206C14.6874 9.61352 14.3381 11.1598 13.6774 12.4637C13.6 12.6164 13.5867 12.7901 13.6399 12.9528C13.6932 13.1155 13.8066 13.2477 13.9593 13.3251C14.0501 13.3711 14.1475 13.3945 14.2485 13.3945C14.4917 13.3945 14.711 13.2598 14.8207 13.0431C15.5721 11.5605 15.9692 9.81386 15.9692 7.99206C15.9692 6.19853 15.5833 4.47437 14.8534 3.00594C14.7443 2.78645 14.5242 2.65014 14.279 2.65014Z"
+                fill="black"
+              />
+            </g>
+            <defs>
+              <clipPath id="clip0_66_26">
+                <rect width="16" height="16" fill="white" />
+              </clipPath>
+            </defs>
+          </svg>
+
+          <input
+            type="range"
+            id="volume-A"
+            min="0"
+            max="1"
+            value="1"
+            step="0.01"
+            class="player-volume"
+          />
+        </div>
+      </div>
+      <!-- custom audio player B -->
+      <div class="player-controls-B">
+        <div class="player-volume-container">
+          <input
+            type="range"
+            id="volume-B"
+            min="0"
+            max="1"
+            value="1"
+            step="0.01"
+            class="player-volume flip"
+          />
+          <svg
+            id="volume-icon"
+            class="flip"
+            width="16"
+            height="16"
+            viewBox="0 0 16 16"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <g clip-path="url(#clip0_66_26)">
+              <path
+                d="M10.6112 1.26102C10.2786 0.943404 9.84288 0.768433 9.38427 0.768433C9.0524 0.768433 8.72725 0.862276 8.44403 1.03979L3.56772 4.09623H1.78764C0.810305 4.09623 0.0151367 4.89134 0.0151367 5.86871V10.1248C0.0151367 11.1022 0.810275 11.8973 1.78764 11.8973H3.55767L8.44397 14.96C8.72719 15.1376 9.05234 15.2314 9.38427 15.2314C9.84288 15.2314 10.2786 15.0564 10.6112 14.7388C10.781 14.5766 10.9148 14.3857 11.0089 14.1713C11.1077 13.946 11.1578 13.7061 11.1578 13.4582V8.00304V7.99676V2.54168C11.1578 2.2937 11.1077 2.05377 11.0089 1.82849C10.9148 1.61415 10.781 1.42322 10.6112 1.26102ZM9.84534 7.99676V8.00304V13.4581C9.84534 13.7278 9.62392 13.9188 9.38427 13.9188C9.30265 13.9188 9.21889 13.8966 9.14104 13.8479L4.20397 10.7534C4.02823 10.6432 3.82505 10.5848 3.61763 10.5848H1.78764C1.5336 10.5848 1.32765 10.3788 1.32765 10.1248V5.86871C1.32765 5.61469 1.5336 5.40874 1.78764 5.40874H3.62771C3.83513 5.40874 4.03825 5.35032 4.21402 5.24017L9.14101 2.15193C9.21886 2.10313 9.30256 2.08098 9.38424 2.08098C9.62389 2.08098 9.84531 2.27203 9.84531 2.54171V7.99676H9.84534Z"
+                fill="black"
+              />
+              <path
+                d="M9.38445 15.2467C9.04961 15.2467 8.72164 15.1521 8.436 14.973L3.55344 11.9126H1.78783C0.802001 11.9127 0 11.1106 0 10.1249V5.86877C0 4.88297 0.802001 4.08097 1.78783 4.08097H3.56352L8.43606 1.02689C8.72176 0.847844 9.0497 0.753174 9.38445 0.753174C9.84696 0.753174 10.2864 0.929616 10.6219 1.24999C10.7932 1.4136 10.9282 1.60616 11.0231 1.8224C11.1228 2.04957 11.1733 2.29158 11.1733 2.54174V13.4582C11.1733 13.7083 11.1228 13.9503 11.0231 14.1775C10.9281 14.3938 10.7932 14.5864 10.622 14.7499C10.2865 15.0703 9.84696 15.2467 9.38445 15.2467ZM1.78783 4.11161C0.818913 4.11161 0.0306376 4.89985 0.0306376 5.86877V10.1249C0.0306376 11.0938 0.818913 11.8821 1.78783 11.8821H3.56227L3.566 11.8844L8.4523 14.9471C8.73307 15.1231 9.0554 15.2161 9.38448 15.2161C9.83908 15.2161 10.2711 15.0427 10.6008 14.7278C10.7691 14.5671 10.9017 14.3778 10.995 14.1652C11.093 13.9419 11.1427 13.7041 11.1427 13.4583V2.54174C11.1427 2.29587 11.093 2.05797 10.995 1.83471C10.9017 1.62218 10.7691 1.43293 10.6008 1.27214C10.271 0.95722 9.83908 0.783811 9.38448 0.783811C9.0555 0.783811 8.73316 0.876858 8.45236 1.05284L3.57231 4.11161H1.78783ZM9.38445 13.9342C9.29652 13.9342 9.20957 13.9089 9.13307 13.8609L4.196 10.7664C4.02247 10.6576 3.82256 10.6002 3.61781 10.6002H1.78783C1.52575 10.6002 1.31252 10.387 1.31252 10.1249V5.86877C1.31252 5.60669 1.52572 5.39349 1.78783 5.39349H3.62789C3.83261 5.39349 4.03252 5.33601 4.20605 5.22725L9.13307 2.139C9.20957 2.09106 9.29652 2.06569 9.38445 2.06569C9.64711 2.06569 9.86084 2.27923 9.86084 2.54174V13.4582C9.86084 13.7207 9.64711 13.9342 9.38445 13.9342ZM1.78783 5.42412C1.54263 5.42412 1.34315 5.62357 1.34315 5.86877V10.1249C1.34315 10.3701 1.54263 10.5696 1.78783 10.5696H3.61781C3.82832 10.5696 4.03387 10.6287 4.21227 10.7405L9.14934 13.8349C9.22097 13.8799 9.30225 13.9036 9.38445 13.9036C9.63023 13.9036 9.8302 13.7038 9.8302 13.4582V2.54174C9.8302 2.29615 9.63026 2.09633 9.38445 2.09633C9.30225 2.09633 9.22097 2.12004 9.14934 2.16495L4.22229 5.25323C4.04386 5.36502 3.83831 5.42412 3.62786 5.42412H1.78783Z"
+                fill="black"
+              />
+              <path
+                d="M12.9987 4.79579C12.8374 4.47121 12.4434 4.33895 12.119 4.50026C11.7944 4.6616 11.6621 5.0555 11.8234 5.38005C12.2041 6.14583 12.4053 7.05298 12.4053 8.00342C12.4053 8.96869 12.1984 9.88724 11.8069 10.6599C11.643 10.9832 11.7723 11.3781 12.0956 11.5419C12.1907 11.5901 12.2919 11.6129 12.3917 11.6129C12.6311 11.6129 12.862 11.4813 12.9776 11.2532C13.4619 10.2975 13.7178 9.17381 13.7178 8.00342C13.7179 6.85133 13.4692 5.74212 12.9987 4.79579Z"
+                fill="black"
+              />
+              <path
+                d="M12.3917 11.6283C12.2858 11.6283 12.1838 11.6038 12.0887 11.5557C11.7583 11.3882 11.6258 10.9833 11.7932 10.653C12.1836 9.88256 12.3899 8.96634 12.3899 8.00349C12.3899 7.05532 12.1893 6.15053 11.8097 5.38692C11.7299 5.22629 11.7173 5.04415 11.7745 4.87411C11.8316 4.70407 11.9515 4.56645 12.1121 4.4866C12.206 4.43994 12.3064 4.41626 12.4105 4.41626C12.6675 4.41626 12.8981 4.55909 13.0124 4.78903C13.4839 5.73754 13.7331 6.84907 13.7331 8.00349C13.7331 9.1763 13.4765 10.3024 12.9912 11.2601C12.8762 11.4872 12.6464 11.6283 12.3917 11.6283ZM12.4105 4.44687C12.3112 4.44687 12.2154 4.46945 12.1258 4.51399C11.9725 4.59019 11.858 4.72153 11.8035 4.88382C11.749 5.04611 11.7609 5.21991 11.8371 5.37323C12.2188 6.14107 12.4206 7.05057 12.4206 8.00343C12.4206 8.97109 12.2131 9.89209 11.8205 10.6668C11.6607 10.9821 11.7872 11.3685 12.1025 11.5283C12.1933 11.5743 12.2906 11.5976 12.3916 11.5976C12.6348 11.5976 12.8541 11.463 12.9639 11.2463C13.4471 10.2928 13.7025 9.17146 13.7025 8.00343C13.7025 6.85373 13.4544 5.74691 12.985 4.8026C12.8759 4.5832 12.6558 4.44687 12.4105 4.44687Z"
+                fill="black"
+              />
+              <path
+                d="M13.9875 2.70355C13.6629 2.86488 13.5306 3.25876 13.6919 3.58334C14.3332 4.87333 14.6721 6.39783 14.6721 7.992C14.6721 9.6111 14.3235 11.1549 13.6638 12.4567C13.5 12.78 13.6292 13.1749 13.9525 13.3387C14.0476 13.3869 14.1489 13.4097 14.2487 13.4097C14.4881 13.4097 14.719 13.2782 14.8346 13.05C15.587 11.5652 15.9847 9.81619 15.9847 7.992C15.9847 6.19617 15.5983 4.46965 14.8672 2.99905C14.7059 2.6745 14.312 2.54215 13.9875 2.70355Z"
+                fill="black"
+              />
+              <path
+                d="M14.2486 13.4251C14.1426 13.4251 14.0406 13.4006 13.9455 13.3524C13.7854 13.2713 13.6666 13.1328 13.6108 12.9623C13.555 12.7919 13.5689 12.6098 13.65 12.4498C14.3086 11.1502 14.6567 9.60871 14.6567 7.99203C14.6567 6.40016 14.3183 4.87802 13.6781 3.5902C13.5132 3.25858 13.6489 2.85471 13.9805 2.68988C14.0744 2.64319 14.1748 2.61951 14.279 2.61951C14.5359 2.61951 14.7665 2.76237 14.8808 2.99227C15.6129 4.46493 15.9998 6.19384 15.9998 7.99203C15.9998 9.81861 15.6016 11.57 14.8481 13.0569C14.7331 13.284 14.5033 13.4251 14.2486 13.4251ZM14.279 2.65014C14.1797 2.65014 14.0838 2.67276 13.9942 2.71733C13.8409 2.79353 13.7264 2.92487 13.6719 3.08716C13.6173 3.24945 13.6293 3.42325 13.7055 3.57656C14.3479 4.86861 14.6874 6.39547 14.6874 7.99206C14.6874 9.61352 14.3381 11.1598 13.6774 12.4637C13.6 12.6164 13.5867 12.7901 13.6399 12.9528C13.6932 13.1155 13.8066 13.2477 13.9593 13.3251C14.0501 13.3711 14.1475 13.3945 14.2485 13.3945C14.4917 13.3945 14.711 13.2598 14.8207 13.0431C15.5721 11.5605 15.9692 9.81386 15.9692 7.99206C15.9692 6.19853 15.5833 4.47437 14.8534 3.00594C14.7443 2.78645 14.5242 2.65014 14.279 2.65014Z"
+                fill="black"
+              />
+            </g>
+            <defs>
+              <clipPath id="clip0_66_26">
+                <rect width="16" height="16" fill="white" />
+              </clipPath>
+            </defs>
+          </svg>
+        </div>
+        <div class="player-timeline flip">
+          <div class="player-progress" id="player-progress-B">
+            <div
+              class="player-progress-filled"
+              id="player-progress-filled-B"
+            ></div>
+          </div>
+        </div>
+        <audio
+          id="audio-B"
+          src="https://static.wixstatic.com/mp3/7ec13e_474a00af9eb74a4db86fe4e9e9223291.m4a"
+          crossorigin="anonymous"
+        ></audio>
+        <button
+          class="player-play-btn"
+          id="player-play-btn-B"
+          role="button"
+          aria-label="Play"
+          data-playing="false"
+        >
+          <div id="player-icon-play-B" class="player-icon-play flip">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+            >
+              <title>play</title>
+              <polygon
+                class="icon-play"
+                points="19.05 12 6 3.36 6 20.64 19.05 12"
+              />
+              <rect class="icon-container" width="12" height="12" />
+            </svg>
+          </div>
+
+          <div class="player-icon-pause hidden" id="player-icon-pause-B">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+            >
+              <title>pause</title>
+              <g>
+                <rect
+                  class="icon-pause"
+                  x="6"
+                  y="3.26"
+                  width="4"
+                  height="17.48"
+                />
+                <rect
+                  class="icon-pause"
+                  x="14"
+                  y="3.26"
+                  width="4"
+                  height="17.48"
+                />
+              </g>
+              <rect class="icon-container" width="24" height="24" />
+            </svg>
+          </div>
+        </button>
+      </div>
+
+      <!-- Needles -->
+      <svg
+        id="needle-A"
+        width="34"
+        height="15"
+        viewBox="0 0 34 15"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M33.0011 6.51873C34.0776 6.73004 34.0776 8.26996 33.0011 8.48127L1.69262 14.6271C1.07482 14.7484 0.5 14.2754 0.5 13.6458V1.35417C0.5 0.724572 1.07482 0.25162 1.69262 0.372895L33.0011 6.51873Z"
+          fill="#9E9E9E"
+        />
+      </svg>
+      <svg
+        id="needle-B"
+        width="34"
+        height="15"
+        viewBox="0 0 34 15"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M0.998864 6.51873C-0.0776384 6.73004 -0.0776367 8.26996 0.998866 8.48127L32.3074 14.6271C32.9252 14.7484 33.5 14.2754 33.5 13.6458V1.35417C33.5 0.724572 32.9252 0.25162 32.3074 0.372895L0.998864 6.51873Z"
+          fill="#9E9E9E"
+        />
+      </svg>
+
+      <!-- Side B disc -->
+      <svg
+        id="side-B"
+        width="120"
+        height="120"
+        viewBox="0 0 159 157"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M79.5 13.5C116.112 13.5 145.5 42.7621 145.5 78.5C145.5 114.238 116.112 143.5 79.5 143.5C42.8876 143.5 13.5 114.238 13.5 78.5C13.5 42.7621 42.8876 13.5 79.5 13.5Z"
+          fill="transparent"
+          stroke="#9E9E9E"
+          stroke-width="27"
+        />
+        <text
+          id="side-B-text"
+          x="65"
+          y="83"
+          font-family="Noto Sans"
+          font-size="11"
+          font-weight="300"
+          fill="black"
+        >
+          side B
+        </text>
+      </svg>
+    </div>
+
+    <div class="container">
+      <div id="lyric-container-A">
+        <img
+          src="https://static.wixstatic.com/media/2fa7ac_85246f371ff1449e85b07c9620f1834c~mv2.png"
+          id="img-A"
+        />
+      </div>
+      <div id="lyric-container-mid">
+        <img
+          src="https://static.wixstatic.com/media/2fa7ac_3e8b40292dfc408ea32497a76ad1e32e~mv2.png"
+          id="img-mid"
+        />
+        <div id="content-before-loading"></div>
+      </div>
+      <div id="lyric-container-B">
+        <img
+          src="https://static.wixstatic.com/media/2fa7ac_e8ce2325d72d420588893c09c6c06251~mv2.png"
+          id="img-B"
+        />
+      </div>
+    </div>
+    <script>
+      // Entry overlay
+      var entryOverlay = document.getElementsByClassName("entry-overlay")[0];
+      const entryDot = document.getElementById("entry-dot");
+      const prompt = document.getElementById("prompt");
+      const loadingText = document.getElementById("loading");
+
+      // Dot nav event listeners
+      document.getElementById("dot3").addEventListener("click", () => {
+        window.parent.location.href = "https://www.rolodex.cc/yc-xd";
+      });
+      document.getElementById("dot1").addEventListener("click", (event) => {
+        event.preventDefault();
+        // Navigate to home page
+        window.parent.location.href = "https://www.rolodex.cc/rolodex-home"; // Update with your actual home page URL
+      });
+      document.getElementById("dot2").addEventListener("click", (event) => {
+        event.preventDefault();
+        // Navigate to about page
+        window.parent.location.href = "https://www.rolodex.cc/yc-xd-bio"; // Update with your actual about page URL
+      });
+      // if current window, then fill in the active dot
+      if (window.location.href.includes("bio")) {
+        document.getElementById("dot2").style.backgroundColor = "black";
+        document.getElementById("dot3").style.backgroundColor = "transparent";
+      } else {
+        document.getElementById("dot2").style.backgroundColor = "transparent";
+        document.getElementById("dot3").style.backgroundColor = "black";
+      }
+
+      // Custom audio player
+      // A: load sound via <audio> tag
+      const audioElement = document.getElementById("audio-A");
+      const audioCtx = new AudioContext();
+      const track = audioCtx.createMediaElementSource(audioElement);
+      // B: load sound via <audio> tag
+      const audioElementB = document.getElementById("audio-B");
+      const audioCtxB = new AudioContext();
+      const trackB = audioCtxB.createMediaElementSource(audioElementB);
+
+      // A:Player controls and attributes
+      const playButton = document.getElementById("player-play-btn-A");
+      const playIcon = document.getElementById("player-icon-play-A");
+      const pauseIcon = document.getElementById("player-icon-pause-A");
+      const progress = document.getElementById("player-progress-A");
+      const progressFilled = document.getElementById(
+        "player-progress-filled-A",
+      );
+      const playerCurrentTime = document.getElementById(
+        "player-time-current-A",
+      );
+      const playerDuration = document.getElementById("player-time-duration-A");
+      const volumeControl = document.getElementById("volume-A");
+
+      // B:Player controls and attributes
+      const playButtonB = document.getElementById("player-play-btn-B");
+      const playIconB = document.getElementById("player-icon-play-B");
+      const pauseIconB = document.getElementById("player-icon-pause-B");
+      const progressB = document.getElementById("player-progress-B");
+      const progressFilledB = document.getElementById(
+        "player-progress-filled-B",
+      );
+      const playerCurrentTimeB = document.getElementById(
+        "player-time-current-B",
+      );
+      const playerDurationB = document.getElementById("player-time-duration-B");
+      const volumeControlB = document.getElementById("volume-B");
+
+      window.addEventListener(
+        "load",
+        () => {
+          // Hide loading text once loading is complete
+          loadingText.classList.add("hidden-entry-overlay");
+          prompt.classList.remove("hidden-entry-overlay");
+
+          // Hover color change
+          entryDot.addEventListener("mouseover", () => {
+            entryDot.style.backgroundColor = "#DD5F5F";
+          });
+          entryDot.addEventListener("mouseout", () => {
+            entryDot.style.backgroundColor = "transparent";
+          });
+          entryDot.addEventListener("click", () => {
+            entryOverlay.classList.add("hidden-entry-overlay");
+            setTimeout(delayedPlay, 1500);
+          });
+
+          function delayedPlay() {
+            playAudioFunc("A");
+            playAudioFunc("B");
+          }
+
+          function playAudioFunc(val) {
+            if (val == "A") {
+              if (audioCtx.state === "suspended") {
+                audioCtx.resume();
+              }
+
+              // Play or pause track depending on state
+              if (playButton.dataset.playing === "false") {
+                audioElement.play();
+                playButton.dataset.playing = "true";
+                playIcon.classList.add("hidden");
+                pauseIcon.classList.remove("hidden");
+              } else if (playButton.dataset.playing === "true") {
+                audioElement.pause();
+                playButton.dataset.playing = "false";
+                pauseIcon.classList.add("hidden");
+                playIcon.classList.remove("hidden");
+              }
+            } else if (val == "B") {
+              if (audioCtxB.state === "suspended") {
+                audioCtxB.resume();
+              }
+
+              // Play or pause track depending on state
+              if (playButtonB.dataset.playing === "false") {
+                audioElementB.play();
+                playButtonB.dataset.playing = "true";
+                playIconB.classList.add("hidden");
+                pauseIconB.classList.remove("hidden");
+              } else if (playButtonB.dataset.playing === "true") {
+                audioElementB.pause();
+                playButtonB.dataset.playing = "false";
+                pauseIconB.classList.add("hidden");
+                playIconB.classList.remove("hidden");
+              }
+            }
+          }
+
+          // A: Play button toggle
+          playButton.addEventListener("click", () => {
+            playAudioFunc("A");
+          });
+
+          // B: Play button toggle
+          playButtonB.addEventListener("click", () => {
+            playAudioFunc("B");
+          });
+
+          // Update progress bar and time values as audio plays
+          audioElement.addEventListener("timeupdate", () => {
+            progressUpdate("A");
+          });
+          audioElementB.addEventListener("timeupdate", () => {
+            progressUpdate("B");
+          });
+
+          // A: if the track ends reset the player
+          audioElement.addEventListener("ended", () => {
+            playButton.dataset.playing = "false";
+            pauseIcon.classList.add("hidden");
+            playIcon.classList.remove("hidden");
+            progressFilled.style.flexBasis = "0%";
+            audioElement.currentTime = 0;
+            audioElement.duration = audioElement.duration;
+          });
+          audioElementB.addEventListener("ended", () => {
+            playButtonB.dataset.playing = "false";
+            pauseIconB.classList.add("hidden");
+            playIconB.classList.remove("hidden");
+            progressFilledB.style.flexBasis = "0%";
+            audioElementB.currentTime = 0;
+            audioElementB.duration = audioElementB.duration;
+          });
+
+          // A: Bridge the gap between gainNode and AudioContext so we can manipulate volume (gain)
+          const gainNode = audioCtx.createGain();
+          const volumeControl = document.getElementById("volume-A");
+          volumeControl.addEventListener("change", () => {
+            gainNode.gain.value = volumeControl.value;
+          });
+          track.connect(gainNode).connect(audioCtx.destination);
+          // B: Bridge the gap between gainNode and AudioContext so we can manipulate volume (gain)
+          const gainNodeB = audioCtxB.createGain();
+          const volumeControlB = document.getElementById("volume-B");
+          volumeControlB.addEventListener("change", () => {
+            gainNodeB.gain.value = volumeControlB.value;
+          });
+          trackB.connect(gainNodeB).connect(audioCtxB.destination);
+
+          // Update player timeline progress visually
+          function progressUpdate(val) {
+            if (val == "A") {
+              const percent =
+                (audioElement.currentTime / audioElement.duration) * 100;
+              progressFilled.style.flexBasis = `${percent}%`;
+            } else {
+              const percent =
+                (audioElementB.currentTime / audioElementB.duration) * 100;
+              progressFilledB.style.flexBasis = `${percent}%`;
+            }
+          }
+
+          // Scrub player timeline to skip forward and back on click for easier UX
+          let mousedown = false;
+          function scrub(event, val) {
+            if (val == "A") {
+              const scrubTime =
+                (event.offsetX / progress.offsetWidth) * audioElement.duration;
+              audioElement.currentTime = scrubTime;
+            } else if (val == "B") {
+              const scrubTimeB =
+                (event.offsetX / progressB.offsetWidth) *
+                audioElementB.duration;
+              audioElementB.currentTime = scrubTimeB;
+            }
+          }
+          progress.addEventListener("click", scrub);
+          progress.addEventListener(
+            "mousemove",
+            (e) => mousedown && scrub(e, "A"),
+          );
+          progress.addEventListener("mousedown", () => (mousedown = true));
+          progress.addEventListener("mouseup", () => (mousedown = false));
+
+          progressB.addEventListener("click", scrub);
+          progressB.addEventListener(
+            "mousemove",
+            (e) => mousedown && scrub(e, "B"),
+          );
+          progressB.addEventListener("mousedown", () => (mousedown = true));
+          progressB.addEventListener("mouseup", () => (mousedown = false));
+        },
+        false,
+      );
+
+      //Syncing scroll with audio
+      document.addEventListener("DOMContentLoaded", () => {
+        const audioA = document.getElementById("audio-A");
+        const imgA = document.getElementById("img-A");
+        const containerA = document.getElementById("lyric-container-A");
+        let imgAHeight = 0;
+        let containerAHeight = containerA.clientHeight;
+
+        const imgMid = document.getElementById("img-mid");
+        const containerMid = document.getElementById("lyric-container-mid");
+        let imgMidHeight = 0;
+        let containerMidHeight = containerA.clientHeight;
+
+        const audioB = document.getElementById("audio-B");
+        const imgB = document.getElementById("img-B");
+        const containerB = document.getElementById("lyric-container-B");
+        let imgBHeight = 0;
+        let containerBHeight = containerB.clientHeight;
+
+        // Update image height after it loads
+        imgA.onload = () => {
+          imgAHeight =
+            imgA.naturalHeight * (imgA.clientWidth / imgA.naturalWidth);
+        };
+        imgB.onload = () => {
+          imgBHeight =
+            imgB.naturalHeight * (imgB.clientWidth / imgB.naturalWidth);
+        };
+        imgMid.onload = () => {
+          imgMidHeight =
+            imgMid.naturalHeight * (imgMid.clientWidth / imgMid.naturalWidth);
+        };
+
+        // Adjust on resize
+        window.addEventListener("resize", () => {
+          containerBHeight = containerA.clientHeight;
+          imgAHeight =
+            imgA.naturalHeight * (imgA.clientWidth / imgA.naturalWidth);
+
+          containerBHeight = containerB.clientHeight;
+          imgBHeight =
+            imgB.naturalHeight * (imgB.clientWidth / imgB.naturalWidth);
+
+          containerMidHeight = containerMid.clientHeight;
+          imgMidHeight =
+            imgMid.naturalHeight * (imgMid.clientWidth / imgMid.naturalWidth);
+        });
+
+        // Sync scroll with audio
+        audioA.addEventListener("timeupdate", () => {
+          // Make disc A's text disappear on play
+          document.getElementById("side-A-text").style.opacity = "0";
+          // scroll img as time updates
+          if (imgAHeight > containerAHeight) {
+            const progress = audioA.currentTime / audioA.duration;
+            // const maxScroll = imgAHeight - containerAHeight;
+            const scrollY = -progress * imgAHeight;
+            imgA.style.transform = `translateY(${scrollY}px)`;
+            imgMid.style.transform = `translateY(-${imgMidHeight}px)`;
+            imgMid.style.transition = `930s linear`;
+          }
+        });
+        audioB.addEventListener("timeupdate", () => {
+          // Make disc B's text disappear on play
+          document.getElementById("side-B-text").style.opacity = "0";
+          // scroll img as time updates
+          if (imgBHeight > containerBHeight) {
+            const progress = audioB.currentTime / audioB.duration;
+            const maxScroll = imgBHeight - containerBHeight;
+            const scrollY = -progress * maxScroll;
+            imgB.style.transform = `translateY(${scrollY}px)`;
+          }
+        });
+      });
+    </script>
+  </body>
+</html>

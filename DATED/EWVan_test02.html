@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Bouncing Ball with Audio Volume</title>
+    <style>
+      body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+        flex-direction: column;
+      }
+      #ball {
+        width: 250px;
+        height: auto;
+        border-radius: 50%;
+        position: absolute;
+        /* bottom: 10px; */
+        left: 100px;
+        transition: transfrom 1s ease-in-out;
+      }
+      button {
+        margin-top: 20px;
+        padding: 10px 20px;
+        font-size: 16px;
+      }
+
+      /* Bounce effect */
+
+      #bouncer {
+        width: 150px;
+        position: absolute;
+        /* bottom: 10px; */
+        right: 100px;
+        transition: transform 0.1s ease;
+      }
+
+      /* Bounce effect */
+      .bounce {
+        transform: scale(1.3);
+      }
+    </style>
+  </head>
+  <body>
+    <img
+      src="https://static.wixstatic.com/media/2fa7ac_13e56911b07147c986fd892fd318764e~mv2.jpeg"
+      id="ball"
+      alt="small green vase"
+    />
+    <img
+      id="bouncer"
+      src="https://static.wixstatic.com/media/2fa7ac_e78ab07b1bcd40f6985cdc3fb216ca26~mv2.jpeg"
+      alt="wavy gray ceramic piece"
+    />
+
+    <audio
+      id="audio"
+      src="https://static.wixstatic.com/mp3/2fa7ac_08dae341f4c64b48a5d54c5cc99fd674.mp3"
+      crossorigin="anonymous"
+    ></audio>
+
+    <script>
+      (async function () {
+        const audio = document.getElementById("audio");
+        const playBtn = document.getElementById("playBtn");
+        const ball = document.getElementById("ball");
+        const wavy = document.getElementById("bouncer");
+        // Create Audio Context
+        const audioCtx = new (
+          window.AudioContext || window.webkitAudioContext
+        )();
+        const source = audioCtx.createMediaElementSource(audio);
+
+        // Create Analyser Node
+        const analyser = audioCtx.createAnalyser();
+        analyser.fftSize = 256;
+        const bufferLength = analyser.frequencyBinCount;
+        const dataArray = new Uint8Array(bufferLength);
+
+        // Connect nodes: source -> analyser -> destination
+        // AnalyserNode captures real-time waveform data
+        source.connect(analyser);
+        analyser.connect(audioCtx.destination);
+
+        // Animation for ball (volume triggered)
+        let animationId;
+
+        function animateBall() {
+          analyser.getByteTimeDomainData(dataArray);
+
+          // Calculate RMS (volume) (Root Mean Square) from the waveform to estimate loudness.
+          let sumSquares = 0;
+          for (let i = 0; i < bufferLength; i++) {
+            const normalized = (dataArray[i] - 128) / 128; // -1 to 1
+            sumSquares += normalized * normalized;
+          }
+          const rms = Math.sqrt(sumSquares / bufferLength);
+
+          // Map RMS to vertical position (bounce effect)
+          const maxHeight = 150; // pixels
+          const y = maxHeight - rms * maxHeight;
+          console.log(y - 100);
+          ball.style.transform = `translateY(-${y - 140}px)`;
+
+          animationId = requestAnimationFrame(animateBall);
+        }
+
+        // Animation for wavy ceramic (beat triggered)
+        let lastBeatTime = 0;
+        const beatCooldown = 0; // ms between beats to avoid over-triggering
+
+        function detectBeat() {
+          console.log("hit detect");
+          analyser.getByteFrequencyData(dataArray);
+
+          // Calculate average volume
+          let sum = 0;
+          for (let i = 0; i < bufferLength; i++) {
+            sum += dataArray[i];
+          }
+          const avg = sum / bufferLength;
+          console.log(avg);
+          const now = performance.now();
+          if (avg > 50 && now - lastBeatTime > beatCooldown) {
+            triggerBounce();
+            lastBeatTime = now;
+          }
+
+          requestAnimationFrame(detectBeat);
+        }
+
+        function triggerBounce() {
+          console.log("bounce triggered");
+          wavy.classList.add("bounce");
+          setTimeout(() => wavy.classList.remove("bounce"), 100);
+        }
+
+        ball.addEventListener("click", async () => {
+          if (audioCtx.state === "suspended") {
+            await audioCtx.resume();
+          }
+          if (audio.paused) {
+            audio.play();
+            animateBall();
+          } else {
+            audio.pause();
+            cancelAnimationFrame(animationId);
+          }
+        });
+
+        wavy.addEventListener("click", () => {
+          console.log("hit play");
+          if (audioCtx.state === "suspended") {
+            audioCtx.resume();
+          }
+          detectBeat();
+          if (audio.paused) {
+            audio.play();
+            detectBeat();
+          } else {
+            audio.pause();
+            cancelAnimationFrame(detectBeat);
+          }
+        });
+      })();
+    </script>
+  </body>
+</html>

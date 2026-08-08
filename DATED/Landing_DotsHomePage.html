@@ -1,0 +1,577 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wdth,wght@0,62.5..100,100..900;1,62.5..100,100..900&display=swap"
+      rel="stylesheet"
+    />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Rolodex | a.f.t.</title>
+    <link rel="canonical" href="https://www.rolodex.cc" />
+    <meta property="og:title" content="HOME | a.f.t." />
+    <meta property="og:url" content="https://www.rolodex.cc" />
+    <meta property="og:site_name" content="a.f.t." />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="HOME | a.f.t." />
+    <!-- TODO: update description and keywords 
+    <meta
+      name="description"
+      content="Explore Rolodex, an online journal and collective space dedicated to the pursuit of living through art. Featuring works by Ali Van, Miranda Zhen-Yao Van-Boswell, and the a.f.t. cooperative, Rolodex offers an archival space and publishing platform for intersubjective and interwoven experiences. Join our community in New York, the Scottish Highlands, Hong Kong, and Minnesota."
+    />
+    <meta
+      name="keywords"
+      content="Rolodex, online journal, artistic collective, archive, Ali Van, Miranda Zhen-Yao Van-Boswell, a.f.t. cooperative, Seawitch, New York, Scottish Highlands, Hong Kong, Minnesota, relational practice, intersubjective, interwoven, artist constellation, stars, dots, publishing space, community, index, beings, slow transpiration, pursuit of living"
+    /> -->
+    <meta name="author" content="Rolodex" />
+
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        height: 100%;
+        align-items: center;
+        font-family: Arial, sans-serif;
+        overflow: hidden; /* Hide scrollbars */
+      }
+
+      .italic {
+        font-style: italic;
+      }
+
+      main {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        height: 100%;
+        width: 100%;
+      }
+
+      .header {
+        display: flex;
+        justify-content: right;
+        align-items: end;
+        flex-direction: column;
+        width: 100%;
+      }
+
+      .footer {
+        position: absolute;
+        bottom: 1rem;
+        display: flex;
+        justify-content: right;
+        align-items: end;
+        flex-direction: column;
+        width: 100%;
+      }
+
+      #copyright {
+        font-family: "didot", serif;
+        font-style: italic;
+        text-decoration: none;
+        font-size: 14px;
+        color: black;
+        padding: 0rem 2rem;
+      }
+
+      .container {
+        position: absolute;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        height: 100%;
+      }
+
+      .rololand-index {
+        flex-direction: row;
+        display: flex;
+        justify-content: center;
+        align-items: start;
+        width: 100%;
+        opacity: 1;
+        transition: opacity 1s;
+      }
+
+      .category-title {
+        padding-bottom: 0.8rem;
+        font-family: "Noto Sans", sans-serif;
+        font-optical-sizing: auto;
+        font-weight: 300;
+        font-size: 15px;
+        font-style: normal;
+        font-variation-settings: "wdth" 87.5;
+        color: black;
+      }
+
+      .index-list {
+        font-family: "Noto Sans", sans-serif;
+        font-optical-sizing: auto;
+        font-weight: 200;
+        font-size: 14px;
+        font-style: normal;
+        font-variation-settings: "wdth" 100;
+        color: black;
+        display: flex;
+        flex-direction: column;
+        align-items: start;
+        justify-content: center;
+        padding: 0rem 4rem;
+      }
+
+      .index-line {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+      }
+
+      .index-line-text {
+        padding: 1rem;
+        cursor: pointer;
+      }
+
+      .hidden {
+        opacity: 0;
+        transition: opacity 1s;
+      }
+
+      .zIndex900 {
+        z-index: 900;
+      }
+
+      .dot {
+        width: 1.375rem;
+        height: 1.375rem;
+        background-color: black;
+        border-radius: 50%;
+      }
+
+      .rolodex-dot {
+        position: absolute;
+      }
+
+      /* Toggle styling */
+      .toggle {
+        font-family: "Noto Sans", sans-serif;
+        font-optical-sizing: auto;
+        font-weight: 300;
+        font-size: 13px;
+        font-style: normal;
+        font-variation-settings: "wdth" 87.5;
+        color: black;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        position: absolute;
+        right: 1rem;
+        top: 1rem;
+        transition: opacity 1s;
+        z-index: 999;
+      }
+      /* The box around the toggle */
+      .switch {
+        position: relative;
+        display: inline-block;
+        width: 2rem;
+        height: 0.9rem;
+        margin: 0rem 0.4rem;
+      }
+
+      /* Hide default HTML checkbox */
+      .switch input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+      }
+
+      /* The slider */
+      .slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #9e9e9e;
+        -webkit-transition: 0.4s;
+        transition: 0.4s;
+      }
+
+      .slider:before {
+        position: absolute;
+        content: "";
+        height: 0.7rem;
+        width: 0.7rem;
+        left: 0.1rem;
+        bottom: 0.1rem;
+        background-color: white;
+        -webkit-transition: 0.4s;
+        transition: 0.4s;
+      }
+
+      input:checked + .slider {
+        background-color: #9e9e9e;
+      }
+
+      input:focus + .slider {
+        box-shadow: 0 0 1px #9e9e9e;
+      }
+
+      input:checked + .slider:before {
+        -webkit-transform: translateX(1.1rem);
+        -ms-transform: translateX(1.1rem);
+        transform: translateX(1.1rem);
+      }
+
+      /* Rounded sliders */
+      .slider.round {
+        border-radius: 34px;
+      }
+
+      .slider.round:before {
+        border-radius: 50%;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <div class="header">
+        <div class="toggle hidden">
+          <p class="toggle-label-interactive italic">rolodex</p>
+          <label class="switch">
+            <input id="myInput" type="checkbox" />
+            <span class="slider round"></span>
+          </label>
+          <p class="toggle-label-essay">rololand</p>
+        </div>
+      </div>
+      <div class="container dot-container zIndex900" id="containers"></div>
+      <div class="rololand-index hidden">
+        <div class="index-list" id="index-roloform">
+          <p class="category-title">roloform</p>
+        </div>
+        <div class="index-list" id="index-rolobeing">
+          <p class="category-title">rolobeing</p>
+        </div>
+      </div>
+      <!-- <div class="footer">
+        <a id="copyright" href="https://www.aft.studio/"
+          >© a.f.t. Cooperative</a
+        >
+      </div> -->
+    </main>
+    <script>
+      const toggle = document.querySelector(".toggle");
+      const container = document.querySelector(".dot-container");
+      const indexRoloform = document.getElementById("index-roloform");
+      const indexRolobeings = document.getElementById("index-rolobeing");
+      const rololandContainer = document.querySelector(".rololand-index");
+      const rolodexContainer = document.querySelector(".container");
+
+      let rololand = false;
+      // Save data to localStorage
+      // Code for getting an array of visited links
+      // let data = localStorage.getItem("visited");
+      // let visitedArr = [];
+      // if (data) {
+      //   visitedArr = JSON.parse(data);
+      //   console.log(visitedArr); // Outputs: Alice
+      // }
+
+      // window.onload = function () {
+      generateDots();
+      toggle.classList.remove("hidden");
+      // };
+
+      function generateDots() {
+        const links = [
+          {
+            index: 0,
+            name: "rune",
+            url: "https://www.rolodex.cc/rune",
+            color: "#9E9E9E",
+            category: "roloform",
+          },
+          {
+            index: 1,
+            name: "space",
+            url: "https://www.rolodex.cc/space",
+            color: "#A3A847",
+            category: "roloform",
+          },
+          {
+            index: 2,
+            name: "time",
+            url: "https://www.rolodex.cc/time",
+            color: "#8B5E3C",
+            category: "roloform",
+          },
+          {
+            index: 3,
+            name: "submissions",
+            //TODO: change to a different page or delete?
+            url: "https://www.rolodex.cc/rune",
+            color: "#5E8B7E",
+            category: "roloform",
+          },
+          {
+            index: 4,
+            name: "elaine w ho",
+            url: "https://www.rolodex.cc/ewh",
+            color: "#3B5009",
+            category: "rolobeing",
+          },
+          {
+            index: 5,
+            name: "jackie vitale",
+            url: "https://www.rolodex.cc/jv",
+            color: "#EB9514",
+            category: "rolobeing",
+          },
+          {
+            index: 6,
+            name: "woomin kim",
+            url: "https://www.rolodex.cc/wk",
+            color: "#8F55CD",
+            category: "rolobeing",
+          },
+          {
+            index: 7,
+            name: "yuchen chang & dong xing",
+            url: "https://www.rolodex.cc/yc-xd",
+            color: "#DD5F5F",
+            category: "rolobeing",
+          },
+          {
+            index: 8,
+            name: "elle cheng & qiutong zhai",
+            url: "https://www.rolodex.cc/ec-qz",
+            color: "#F1CF11",
+            category: "rolobeing",
+          },
+          {
+            index: 9,
+            name: "geoffrey van",
+            url: "https://www.rolodex.cc/gv",
+            color: "#34AD3A",
+            category: "rolobeing",
+          },
+        ];
+
+        // Create and append dots
+        for (let i = 0; i < links.length; i++) {
+          const dotIsActive = links[i].url != null;
+          const dot = document.createElement("div");
+          dot.classList.add("dot");
+          //differentiating the dots that should move
+          dot.classList.add("rolodex-dot");
+          dot.style.display = "block";
+
+          if (dotIsActive) {
+            dot.style.cursor = "pointer";
+          }
+
+          // Code for getting items from array in localstorage
+          // dot.style.backgroundColor = visitedArr.includes(links[i].name)
+          //   ? "black"
+          //   : links[i].color;
+          dot.style.backgroundColor = localStorage.getItem(links[i].name)
+            ? links[i].color
+            : "black";
+
+          dot.onclick = () => {
+            localStorage.setItem(links[i].name, true);
+            if (dotIsActive) {
+              window.parent.location.href = links[i].url;
+            }
+          };
+
+          dot.addEventListener("click", () => {
+            localStorage.setItem(links[i].name, true);
+            if (dotIsActive) {
+              dot.style.backgroundColor = links[i].color;
+            }
+          });
+
+          dot.addEventListener("mouseover", () => {
+            if (dotIsActive) {
+              dot.style.backgroundColor = links[i].color;
+            }
+          });
+
+          dot.addEventListener("mouseout", () => {
+            if (dotIsActive) {
+              dot.style.backgroundColor = "black";
+            }
+          });
+
+          //appending dot to rolodex (freeflow world)
+          container.appendChild(dot);
+
+          //appending dot to rololand (index)
+          const dotIndex = document.createElement("div");
+          dotIndex.classList.add("dot");
+          dotIndex.style.display = "block";
+
+          if (dotIsActive) {
+            dotIndex.style.cursor = "pointer";
+          }
+
+          dotIndex.style.backgroundColor = localStorage.getItem(links[i].name)
+            ? "black"
+            : links[i].color;
+
+          dotIndex.onclick = () => {
+            if (dotIsActive) {
+              localStorage.setItem(links[i].name, true);
+              window.parent.location.href = links[i].url;
+            }
+          };
+
+          dotIndex.addEventListener("click", () => {
+            localStorage.setItem(links[i].name, true);
+            if (dotIsActive) {
+              dotIndex.style.backgroundColor = "black";
+            }
+          });
+          const rolobeingName = document.createElement("p");
+          rolobeingName.textContent = links[i].name;
+          rolobeingName.classList.add("index-line-text");
+          const rolobeingInfo = document.createElement("div");
+          rolobeingInfo.classList.add("index-line");
+          rolobeingInfo.appendChild(dotIndex);
+          rolobeingInfo.appendChild(rolobeingName);
+
+          rolobeingName.onclick = () => {
+            if (dotIsActive) {
+              localStorage.setItem(links[i].name, true);
+              window.parent.location.href = links[i].url;
+              rolobeingName.style.cursor = "pointer";
+            }
+          };
+
+          rolobeingName.addEventListener("click", () => {
+            localStorage.setItem(links[i].name, true);
+            if (dotIsActive) {
+              dotIndex.style.backgroundColor = "black";
+            }
+          });
+          if (links[i].category === "roloform") {
+            indexRoloform.appendChild(rolobeingInfo);
+          } else if (links[i].category === "rolobeing") {
+            indexRolobeings.appendChild(rolobeingInfo);
+          }
+        }
+
+        const dots = document.querySelectorAll(".rolodex-dot");
+
+        // Set initial position
+        dots.forEach((dot) => {
+          dot.style.top = "50%";
+          dot.style.left = "50%";
+          dot.style.transition = "none";
+          dot.style.transform = `translate(-50%, -50%) rotate(${
+            Math.random() * 360
+          }deg)`;
+        });
+
+        void dots[0].offsetWidth; // force reflow
+
+        // --- movement logic based on screen size ---
+        function moveDot(dot) {
+          const screenWidth = window.innerWidth;
+          const screenHeight = window.innerHeight;
+
+          const maxDistanceX = screenWidth * 0.4; // max 40% of screen width
+          const maxDistanceY = screenHeight * 0.4; // max 40% of screen height
+
+          const angle = Math.random() * Math.PI * 2;
+          const translateX = Math.cos(angle) * maxDistanceX;
+          const translateY = Math.sin(angle) * maxDistanceY;
+
+          dot.style.transition = "transform 15s linear";
+          dot.style.transform = `translate(${translateX}px, ${translateY}px) rotate(${
+            Math.random() * 360
+          }deg)`;
+        }
+
+        // Move and animate dots
+        dots.forEach((dot) => {
+          moveDot(dot); // first move
+
+          dot.addEventListener("transitionend", () => {
+            moveDot(dot); // move again when finished
+          });
+
+          // Hover pause/resume
+          dot.addEventListener("mouseover", () => {
+            const computedStyle = window.getComputedStyle(dot);
+            const matrix = new WebKitCSSMatrix(computedStyle.transform);
+            dot.style.transition = "none";
+            dot.style.transform = `translate(${matrix.m41}px, ${
+              matrix.m42
+            }px) rotate(${Math.random() * 360}deg)`;
+          });
+
+          dot.addEventListener("mouseout", () => {
+            moveDot(dot);
+          });
+        });
+
+        // On screen resize, re-trigger motion to adjust to new screen size
+        window.addEventListener("resize", () => {
+          dots.forEach((dot) => {
+            moveDot(dot); // adapt to new screen dimensions
+          });
+        });
+
+        //Toggle functionality
+        const interactiveText = document.getElementsByClassName(
+          "toggle-label-interactive",
+        )[0];
+        const essayText =
+          document.getElementsByClassName("toggle-label-essay")[0];
+
+        // Attach event listeners after DOM loads
+        // window.onload = function () {
+        const inputEl = document.getElementById("myInput");
+        // Trigger when input gets clicked (selected)
+        inputEl.addEventListener("click", onInputSelected);
+
+        // Function to run when input is selected (focused)
+        function onInputSelected() {
+          console.log("toggle clicked");
+          rololand = !rololand;
+          if (rololand) {
+            essayText.classList.add("italic");
+            interactiveText.classList.remove("italic");
+            rololandContainer.classList.remove("hidden");
+            rolodexContainer.classList.remove("zIndex900");
+            rololandContainer.classList.add("zIndex900");
+            dots.forEach((dot) => {
+              dot.classList.add("hidden"); // making dots invisible, but allowing animation to continue
+            });
+          } else {
+            essayText.classList.remove("italic");
+            interactiveText.classList.add("italic");
+            rololandContainer.classList.add("hidden");
+            rolodexContainer.classList.add("zIndex900");
+            rololandContainer.classList.remove("zIndex900");
+            dots.forEach((dot) => {
+              dot.classList.remove("hidden"); // making dots invisible, but allowing animation to continue
+            });
+          }
+        }
+      }
+    </script>
+  </body>
+</html>

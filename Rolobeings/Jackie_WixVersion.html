@@ -1,0 +1,1097 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wdth,wght@0,62.5..100,100..900;1,62.5..100,100..900&display=swap"
+      rel="stylesheet"
+    />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Jackie Vitale</title>
+    <style>
+      /* Entry overlay: w/ prompt and dot to click in */
+      .entry-overlay {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        position: fixed;
+        z-index: 888;
+        left: 0;
+        top: 0;
+        width: 100vw;
+        height: 100vh;
+        overflow: auto;
+        background-color: rgba(247, 247, 237, 0.95);
+        opacity: 1; /* Fully visible */
+        transition: opacity 1.5s ease; /* Smooth fade-out effect */
+      }
+      .hidden-entry-overlay {
+        opacity: 0;
+        pointer-events: none; /* Prevent interaction */
+      }
+      #entry-dot {
+        width: 15px;
+        height: 15px;
+        background-color: transparent;
+        border: 1px solid black;
+        border-radius: 50%;
+        cursor: pointer;
+        transition: background-color 0.5s ease; /* Smooth fade-out effect */
+      }
+      .prompt-text {
+        font-family: "Noto Sans", sans-serif;
+        font-optical-sizing: auto;
+        font-weight: 300;
+        font-size: 14px;
+        font-style: normal;
+        font-variation-settings: "wdth" 87.5;
+        color: black;
+      }
+
+      #fish .stroke {
+        fill: none;
+        stroke-width: 2;
+        stroke-linecap: round;
+        stroke-dasharray: 100;
+        stroke-dashoffset: 100;
+        animation: draw 1s ease forwards;
+        opacity: 0;
+      }
+
+      #fish {
+        transition: opacity 0.8s ease;
+      }
+
+      @keyframes draw {
+        to {
+          stroke-dashoffset: 0;
+          opacity: 1;
+        }
+      }
+
+      body {
+        margin: 0;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        background-color: #f0f0f000;
+        font-family: "Noto Sans", sans-serif;
+        font-optical-sizing: auto;
+        font-weight: 200;
+        font-size: 14px;
+        font-style: normal;
+        font-variation-settings: "wdth" 100;
+        color: black;
+        overflow: hidden;
+      }
+
+      @media (max-width: 768px) {
+        body {
+          font-size: 16px;
+        }
+      }
+
+      @media (max-width: 480px) {
+        body {
+          font-size: 12px;
+        }
+      }
+
+      /* @media (max-width: 390px) {
+        body {
+            font-size: 10px;
+        }
+        } */
+
+      /* Toggle styling */
+      .toggle {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        position: absolute;
+        z-index: 99;
+        right: 1rem;
+        top: 1rem;
+        font-family: "Noto Sans", sans-serif;
+        font-optical-sizing: auto;
+        font-weight: 300;
+        font-size: 13px;
+        font-style: normal;
+        font-variation-settings: "wdth" 87.5;
+      }
+      /* The box around the toggle */
+      .switch {
+        position: relative;
+        display: inline-block;
+        width: 2rem;
+        height: 0.9rem;
+        margin: 0rem 0.4rem;
+      }
+
+      /* Hide default HTML checkbox */
+      .switch input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+      }
+
+      /* The slider */
+      .slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #9e9e9e;
+        -webkit-transition: 0.4s;
+        transition: 0.4s;
+      }
+
+      .slider:before {
+        position: absolute;
+        content: "";
+        height: 0.7rem;
+        width: 0.7rem;
+        left: 0.1rem;
+        bottom: 0.1rem;
+        background-color: white;
+        -webkit-transition: 0.4s;
+        transition: 0.4s;
+      }
+
+      input:checked + .slider {
+        background-color: #9e9e9e;
+      }
+
+      input:focus + .slider {
+        box-shadow: 0 0 1px #9e9e9e;
+      }
+
+      input:checked + .slider:before {
+        -webkit-transform: translateX(1.1rem);
+        -ms-transform: translateX(1.1rem);
+        transform: translateX(1.1rem);
+      }
+
+      /* Rounded sliders */
+      .slider.round {
+        border-radius: 34px;
+      }
+
+      .slider.round:before {
+        border-radius: 50%;
+      }
+
+      .italic {
+        font-style: italic;
+      }
+
+      .slideshow-container {
+        display: flex;
+        position: relative;
+        width: 80vw;
+        height: 80vh;
+        overflow: visible;
+        /* background-color: blue; */
+        /* align-items: center; */
+        justify-content: center;
+      }
+
+      .blob {
+        position: absolute;
+        /* top: 40%;
+  left: 50%; */
+        transform: translateZ(0);
+        width: 105%;
+        height: 80%;
+        background: rgba(86, 81, 71, 0.05);
+        /* solid fallback with transparency */
+        border-radius: 50%;
+        will-change: transform, filter;
+        backface-visibility: hidden;
+        z-index: 1;
+        display: block;
+      }
+
+      .blur {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        filter: blur(100px);
+      }
+
+      .text-slide {
+        position: absolute;
+        width: 90%;
+        height: 100%;
+        color: white;
+        /* background-color: red; */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 100;
+        text-align: left;
+        z-index: 10;
+        padding: 2rem;
+        box-sizing: border-box;
+        overflow-y: auto;
+        white-space: pre-wrap;
+        left: 45%;
+        transform: translateX(-50%);
+      }
+
+      .controls {
+        position: absolute;
+        top: 82%;
+        left: 0;
+        right: 0;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        transform: translateY(-50%);
+        z-index: 100;
+        pointer-events: none;
+      }
+
+      .controls button {
+        margin: 2rem;
+        width: 15px;
+        height: 15px;
+        border: 1px solid black;
+        border-radius: 50%;
+        background: transparent;
+        font-size: 0;
+        cursor: pointer;
+        pointer-events: all;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        transition:
+          box-shadow 0.3s ease,
+          transform 0.2s ease;
+      }
+
+      #slide-text {
+        padding-top: 100px;
+        /* height: 90vh; */
+      }
+
+      /* Chrome, Safari, Edge */
+      .text-slide::-webkit-scrollbar {
+        width: 0px;
+        /* Completely hides scrollbar */
+      }
+
+      .text-slide::-webkit-scrollbar-thumb {
+        background: transparent;
+      }
+
+      /* Firefox */
+      .text-slide {
+        scrollbar-width: none;
+        /* Hides scrollbar */
+        -ms-overflow-style: none;
+        /* IE/Edge */
+      }
+
+      .text-slide {
+        -ms-overflow-style: none;
+        /* IE/Edge */
+        scrollbar-width: none;
+        /* Firefox */
+
+        /* Create fade effect at top & bottom */
+        -webkit-mask-image: linear-gradient(
+          to bottom,
+          transparent,
+          black 20%,
+          black 80%,
+          transparent
+        );
+        -webkit-mask-repeat: no-repeat;
+        -webkit-mask-size: 100% 100%;
+        mask-image: linear-gradient(
+          to bottom,
+          transparent,
+          black 20%,
+          black 80%,
+          transparent
+        );
+        mask-repeat: no-repeat;
+        mask-size: 100% 100%;
+      }
+
+      .text-slide::-webkit-scrollbar {
+        display: none;
+        /* Chrome/Safari */
+      }
+
+      .controls button:disabled {
+        opacity: 0;
+        cursor: default;
+        transform: none;
+      }
+
+      .controls button:active {
+        box-shadow: 0 0 20px 5px rgba(255, 255, 255, 0.4);
+        transform: scale(1);
+      }
+
+      .controls button:hover:not(:disabled) {
+        transform: scale(1.3);
+      }
+
+      /* The pulsing element */
+      .pulse {
+        width: 120px;
+        height: 120px;
+        /* background-color: black; */
+        box-shadow: 0 0 10px 5px rgba(0, 0, 0, 0.4);
+        border-radius: 50%;
+        animation: pulseScale 2s infinite ease-in-out;
+        /* Smooth scaling */
+        transform-origin: center;
+      }
+
+      /* Keyframes for pulsing */
+      @keyframes pulseScale {
+        0% {
+          transform: scale(1);
+          box-shadow: 0 0 10px 5px rgba(0, 0, 0, 0.2);
+        }
+        50% {
+          transform: scale(1.2);
+          box-shadow: 0 0 10px 5px rgba(0, 0, 0, 0.4);
+        }
+        100% {
+          transform: scale(1);
+          box-shadow: 0 0 10px 5px rgba(0, 0, 0, 0.2);
+        }
+      }
+
+      /* Optional: paused state */
+      .paused {
+        animation-play-state: paused;
+      }
+
+      .full-essay-container {
+        color: black;
+        background: transparent;
+        overflow-y: scroll;
+        height: 100vh;
+        width: 100%;
+        /* padding-top: 130px; */
+        scrollbar-width: thin;
+        margin-left: 2vw;
+        scrollbar-color: rgba(0, 0, 0, 0) transparent;
+      }
+
+      .full-essay-container::-webkit-scrollbar {
+        width: 6px;
+      }
+
+      .full-essay-container::-webkit-scrollbar-thumb {
+        background-color: rgba(0, 0, 0, 0.2);
+        border-radius: 3px;
+      }
+
+      .full-essay-container::-webkit-scrollbar-track {
+        background: transparent;
+      }
+
+      .header {
+        width: 100%;
+        height: 100px;
+        overflow: hidden;
+        display: flex;
+        justify-content: center;
+        position: relative;
+        padding: 20px;
+      }
+
+      .dot {
+        position: absolute;
+        height: 15px;
+        width: 15px;
+        background-color: transparent;
+        border: 1px solid black;
+        border-radius: 50%;
+        cursor: pointer;
+        z-index: 10;
+        /* Ensure dots are clickable */
+      }
+
+      /* Positioning the dots in a triangle formation */
+      #dot1 {
+        top: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+      }
+
+      #dot1::after {
+        content: "Rolodex Homepage";
+        font-family: "Noto Sans", sans-serif;
+        font-optical-sizing: auto;
+        font-weight: 300;
+        font-size: 10px;
+        font-style: normal;
+        font-variation-settings: "wdth" 100;
+        position: absolute;
+        top: -20px;
+        left: 50%;
+        transform: translateX(10%);
+        background-color: black;
+        color: white;
+        padding: 5px 10px;
+        border-radius: 5px;
+        white-space: nowrap;
+        opacity: 0;
+        transition: opacity 0.3s ease-in-out;
+        pointer-events: none;
+        z-index: 15;
+      }
+
+      #dot1:hover::after {
+        opacity: 1;
+      }
+
+      #dot2 {
+        top: 60px;
+        left: calc(50% - 30px);
+      }
+
+      #dot2::after {
+        content: "Jackie Vitale's Bio";
+        font-family: "Noto Sans", sans-serif;
+        font-optical-sizing: auto;
+        font-weight: 300;
+        font-size: 10px;
+        font-style: normal;
+        font-variation-settings: "wdth" 100;
+        position: absolute;
+        top: -20px;
+        left: 50%;
+        transform: translateX(-110%);
+        background-color: black;
+        color: white;
+        padding: 5px 10px;
+        border-radius: 5px;
+        white-space: nowrap;
+        opacity: 0;
+        transition: opacity 0.3s ease-in-out;
+        pointer-events: none;
+        z-index: 15;
+      }
+
+      #dot2:hover::after {
+        opacity: 1;
+      }
+
+      #dot3 {
+        top: 60px;
+        left: calc(50% + 15px);
+        background-color: black;
+      }
+
+      #dot3::after {
+        content: "Refresh Content";
+        font-family: "Noto Sans", sans-serif;
+        font-optical-sizing: auto;
+        font-weight: 300;
+        font-size: 10px;
+        font-style: normal;
+        font-variation-settings: "wdth" 100;
+        position: absolute;
+        top: -20px;
+        left: 50%;
+        transform: translateX(10%);
+        background-color: black;
+        color: white;
+        padding: 5px 10px;
+        border-radius: 5px;
+        white-space: nowrap;
+        opacity: 0;
+        transition: opacity 0.3s ease-in-out;
+        pointer-events: none;
+        z-index: 15;
+      }
+
+      #dot3:hover::after {
+        opacity: 1;
+      }
+
+      .full-essay-container {
+        font-size: 0.9rem;
+      }
+
+      #dot1::after,
+      #dot2::after,
+      #dot3::after {
+        font-size: 10px;
+        padding: 4px 8px;
+      }
+
+      .fish-layer {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        opacity: 0;
+        transition: opacity 0.5s ease;
+      }
+
+      .surround-fish {
+        opacity: 0;
+        transition: opacity 1s ease-in-out;
+        will-change: opacity;
+        width: 1200px;
+        /* Base size */
+        z-index: -10;
+      }
+
+      @media (min-width: 768px) {
+        .surround-fish {
+          width: 2000px;
+          /* Larger screens */
+        }
+      }
+
+      .surround-fish.visible {
+        opacity: 0.5;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="entry-overlay">
+      <p class="prompt-text">A ROLODEX MEAL</p>
+      <div id="entry-dot"></div>
+    </div>
+    <div class="header">
+      <div class="dot" id="dot1" role="button"></div>
+      <div class="dot" id="dot2" role="button"></div>
+      <div class="dot" id="dot3" role="button"></div>
+    </div>
+    <div class="toggle">
+      <p class="toggle-label-interactive italic">interactive read</p>
+      <label class="switch">
+        <input id="myInput" type="checkbox" />
+        <span class="slider round"></span>
+      </label>
+      <p class="toggle-label-essay">full essay</p>
+    </div>
+    <div class="controls">
+      <button id="prevBtn" onclick="prevSlide()"></button>
+      <button id="nextBtn" class="pulse" onclick="nextSlide()"></button>
+    </div>
+    <div class="slideshow-container">
+      <div class="blur"><div class="blob" id="blob"></div></div>
+
+      <div
+        id="fish-pngs"
+        style="
+          position: absolute;
+          width: 60%;
+          left: 50%;
+          top: 50%; /* Center vertically */
+          transform: translate(-50%, -50%) rotate(-90deg); /* Rotate CCW and center */
+          z-index: 0;
+        "
+      >
+        <img
+          src="https://static.wixstatic.com/media/7ec13e_0f9f0f2896494bed8358172678f60ed9~mv2.png"
+          class="fish-layer"
+          onerror="this.style.display = 'none'"
+        />
+        <img
+          src="https://static.wixstatic.com/media/7ec13e_e189a16e41c640a399cdac2deeea6e61~mv2.png"
+          class="fish-layer"
+          onerror="this.style.display = 'none'"
+        />
+        <img
+          src="https://static.wixstatic.com/media/7ec13e_31dd4282b9794b72ac19eaffb2c9f5ac~mv2.png"
+          class="fish-layer"
+          onerror="this.style.display = 'none'"
+        />
+        <img
+          src="https://static.wixstatic.com/media/7ec13e_738d02c77a344fa7ac4a6e2b96a11735~mv2.png"
+          class="fish-layer"
+          onerror="this.style.display = 'none'"
+        />
+
+        <img
+          src="https://static.wixstatic.com/media/7ec13e_1b66107bad324284a7cfc4fde29bd95e~mv2.png"
+          class="fish-layer"
+          onerror="this.style.display = 'none'"
+        />
+        <img
+          src="https://static.wixstatic.com/media/7ec13e_c7e6516c14884b2a8ef001a8f0f196de~mv2.png"
+          class="fish-layer"
+          onerror="this.style.display = 'none'"
+        />
+        <img
+          src="https://static.wixstatic.com/media/7ec13e_528f5940b56e4f90a6349541d1c04889~mv2.png"
+          class="fish-layer"
+          onerror="this.style.display = 'none'"
+        />
+        <img
+          src="https://static.wixstatic.com/media/7ec13e_3f748d3a8a664ec1a600cd500283ddd8~mv2.png"
+          class="fish-layer"
+          onerror="this.style.display = 'none'"
+        />
+        <img
+          src="https://static.wixstatic.com/media/7ec13e_19c297e7731246c188cf269a4579713f~mv2.png"
+          class="fish-layer"
+          onerror="this.style.display = 'none'"
+        />
+        <img
+          src="https://static.wixstatic.com/media/7ec13e_7519089b12114df38962166accc628a4~mv2.png"
+          class="fish-layer"
+          onerror="this.style.display = 'none'"
+        />
+        <img
+          src="https://static.wixstatic.com/media/7ec13e_8a60038598824b3db3c116d8958be818~mv2.png"
+          class="fish-layer"
+          onerror="this.style.display = 'none'"
+        />
+        <img
+          src="https://static.wixstatic.com/media/7ec13e_5bff7ac9ba894f379153e604aa9f8463~mv2.png"
+          class="fish-layer"
+          onerror="this.style.display = 'none'"
+        />
+        <img
+          src="https://static.wixstatic.com/media/7ec13e_69768ce406e3494dad26e795576f80c0~mv2.png"
+          class="fish-layer"
+          onerror="this.style.display = 'none'"
+        />
+        <img
+          src="https://static.wixstatic.com/media/7ec13e_53e2cff9ba1540f380862999dac7fe56~mv2.png"
+          class="fish-layer"
+          onerror="this.style.display = 'none'"
+        />
+      </div>
+
+      <div
+        id="surrounding-fish"
+        style="
+          position: absolute;
+          width: 100%;
+          height: 100%;
+          top: 0;
+          left: 0;
+          pointer-events: none;
+          z-index: 3;
+          padding: 5% 10%; /* Create safe space around the text */
+          box-sizing: border-box;
+        "
+      >
+        <img
+          src="https://static.wixstatic.com/media/7ec13e_e189a16e41c640a399cdac2deeea6e61~mv2.png"
+          class="surround-fish"
+          style="
+            position: absolute;
+            top: 15em;
+            left: 15em;
+            transform: rotate(60deg);
+            width: 2000px;
+            max-width: none;
+          "
+        />
+
+        <img
+          src="https://static.wixstatic.com/media/7ec13e_31dd4282b9794b72ac19eaffb2c9f5ac~mv2.png"
+          class="surround-fish"
+          style="
+            position: absolute;
+            top: 40em;
+            left: -30em;
+            transform: rotate(-30deg);
+            width: 2000px;
+            max-width: none;
+          "
+        />
+
+        <img
+          src="https://static.wixstatic.com/media/7ec13e_738d02c77a344fa7ac4a6e2b96a11735~mv2.png"
+          class="surround-fish"
+          style="
+            position: absolute;
+            bottom: 15em;
+            left: -15em;
+            transform: rotate(-15deg);
+            width: 2000px;
+            max-width: none;
+          "
+        />
+
+        <img
+          src="https://static.wixstatic.com/media/7ec13e_1b66107bad324284a7cfc4fde29bd95e~mv2.png"
+          class="surround-fish"
+          style="
+            position: absolute;
+            bottom: 5em;
+            left: -90em;
+            transform: rotate(25deg);
+            width: 2000px;
+            max-width: none;
+          "
+        />
+
+        <img
+          src="https://static.wixstatic.com/media/7ec13e_c7e6516c14884b2a8ef001a8f0f196de~mv2.png"
+          class="surround-fish"
+          style="
+            position: absolute;
+            top: 40em;
+            right: -18em;
+            transform: rotate(-60deg);
+            width: 2000px;
+            max-width: none;
+          "
+        />
+
+        <img
+          src="https://static.wixstatic.com/media/7ec13e_528f5940b56e4f90a6349541d1c04889~mv2.png"
+          class="surround-fish"
+          style="
+            position: absolute;
+            top: 30em;
+            left: -3em;
+            transform: rotate(15deg);
+            width: 2000px;
+            max-width: none;
+          "
+        />
+
+        <img
+          src="https://static.wixstatic.com/media/7ec13e_3f748d3a8a664ec1a600cd500283ddd8~mv2.png"
+          class="surround-fish"
+          style="
+            position: absolute;
+            bottom: 45em;
+            left: -28em;
+            transform: rotate(-90deg);
+            width: 2000px;
+            max-width: none;
+          "
+        />
+
+        <img
+          src="https://static.wixstatic.com/media/7ec13e_19c297e7731246c188cf269a4579713f~mv2.png"
+          class="surround-fish"
+          style="
+            position: absolute;
+            bottom: 20em;
+            right: -15em;
+            transform: rotate(120deg);
+            width: 2000px;
+            max-width: none;
+          "
+        />
+
+        <img
+          src="https://static.wixstatic.com/media/7ec13e_7519089b12114df38962166accc628a4~mv2.png"
+          class="surround-fish"
+          style="
+            position: absolute;
+            top: 60em;
+            right: -21em;
+            transform: rotate(-75deg);
+            width: 2000px;
+            max-width: none;
+          "
+        />
+
+        <img
+          src="https://static.wixstatic.com/media/7ec13e_8a60038598824b3db3c116d8958be818~mv2.png"
+          class="surround-fish"
+          style="
+            position: absolute;
+            top: 75em;
+            left: -10em;
+            transform: rotate(45deg);
+            width: 2000px;
+            max-width: none;
+          "
+        />
+
+        <img
+          src="https://static.wixstatic.com/media/7ec13e_5bff7ac9ba894f379153e604aa9f8463~mv2.png"
+          class="surround-fish"
+          style="
+            position: absolute;
+            top: 8em;
+            right: -15em;
+            transform: rotate(-120deg);
+            width: 2000px;
+            max-width: none;
+          "
+        />
+
+        <img
+          src="https://static.wixstatic.com/media/7ec13e_69768ce406e3494dad26e795576f80c0~mv2.png"
+          class="surround-fish"
+          style="
+            position: absolute;
+            bottom: 1em;
+            right: -70em;
+            transform: rotate(0deg);
+            width: 2000px;
+            max-width: none;
+          "
+        />
+
+        <img
+          src="https://static.wixstatic.com/media/7ec13e_53e2cff9ba1540f380862999dac7fe56~mv2.png"
+          class="surround-fish"
+          style="
+            position: absolute;
+            top: -5em;
+            left: -99em;
+            transform: rotate(50deg);
+            width: 2000px;
+            max-width: none;
+          "
+        />
+      </div>
+
+      <div class="text-slide" style="position: relative; z-index: 2">
+        <p id="slide-text"></p>
+      </div>
+    </div>
+
+    <script>
+      let fullessay = false;
+
+      // Entry overlay
+      var entryOverlay = document.getElementsByClassName("entry-overlay")[0];
+      const entryDot = document.getElementById("entry-dot");
+      entryDot.addEventListener("mouseover", () => {
+        entryDot.style.backgroundColor = "#EB9514";
+      });
+      entryDot.addEventListener("mouseout", () => {
+        entryDot.style.backgroundColor = "transparent";
+      });
+      entryDot.addEventListener("click", () => {
+        entryOverlay.classList.add("hidden-entry-overlay");
+      });
+
+      const slides = [
+        `I heard a talk by Nate Hagens, a sort of jack-of-all-trades thinker about the future. He was discussing how we might approach and plan for the next 30 years — which will look very different from the last 30 years. He expects this transformation of society to be the result of a mishmash of climate change, what he calls “paleolithic brains vs godlike technology”, plus the shrinking of the economy that will occur when we run out of the oil in the ground that powers our current world. At the end of the talk, someone asked what were the most important investments we should be making to secure our future.`,
+        `His response was a lovely one: friendships.`,
+        `Many of us have gotten a little taste of that during the Covid-19 pandemic. In an unstable situation, our social nodes lift us up out of the muck. For me personally, that rising tide has been a group chat, consisting of my tight circle of seven friends that live in my hometown of Stuart, Fla. Most of us grew up here together, and we have shaped each other in fundamental ways. When Ali asked me to write about food, comfort, and community, I thought I would host a big dinner for the group chat gals, and see what came from that.`,
+        `We live in South Florida, where we can spread out in the sunshine. I’ve just built a firepit in my backyard out of some spare concrete blocks, and decided I would cook the bulk of the meal over an open fire, which felt elemental and fun and the correct vibe for the occasion. I invited my friends and their partners and children. Everyone brought chairs and blankets (because I do not have patio furniture), and forks (because I do not have enough of those).`,
+        `It was a very dreamy evening. I splurged on black grouper and marinated it in shio koji and some mole paste my friend Micah brought back from Oaxaca. I cooked it in foil over the fire. My friend Hannah brought a crate of old clothes for people to try on. Whitney made a lemon cake with blueberries from her mother’s garden. My dog kept trying to eat all of the food off of the too-low serving table.`,
+        `Baby Alice (who is actually five) wore butterfly wings strapped to her shoulders, and when one friend commented on how beautiful they were, she went to her backpack and pulled out an additional pair of butterfly wings and a collection of flowy scarves, and several people did an impromptu butterfly dance with her. The stars were out and I have no lights in the yard, but Mimi happened to have lanterns with her, so we could see and smile at each other through the fire and moonshine and LED light.`,
+        `We all need food to survive, in a physiological sense, and that binds us. But also, it is our most useful vehicle for metaphor and storytelling and culture-building and examining the liminality of life. Food is at every step, from seed to shit, undergoing a state of transformation. So are we. So are our relationships. So is the planet. It feels right and good that what we eat — so mundane and so transcendent — is the foundational building block for our everyday routines, but also our biggest milestones and strongest memories and most sacred religious rites.`,
+        `For me, and I think for many of my privileged western ilk, living in the world is becoming a more and more overwhelming prospect. We’ve put our big fat foot in it in so many ways, and we’re going to be feeling the effects of that probably for the rest of our lives and well beyond. We need to employ an active, house-on-fire attitude. But also, we need to grow gardens and snuggle our dogs and read stories and take walks in the woods and invite our friends over for dinner. If we are going to face the future, we need to clad ourselves in the softest, strongest armor possible. Taking the time to cook elaborate dinners for the people I love feels like a worthy act of resilience. And resilience, along with community and comfort and joy and justice, is what we all need to be cultivating right now.`,
+        `My top tips for cooking a big, nourishing, dinner for people you love:`,
+        `• Be ambitious with the menu. It’s extremely fulfilling to spend a full day cooking a meal. But don’t go overboard. You should be stressed at least once or twice during preparations, but mostly not stressed. Says the great MFK Fisher: “Sharing food with another human being is an intimate act that should not be indulged in lightly.”\n\n• Let people participate. Someone else can make dessert, and it’s totally cool to ask a few folks to come early and help tidy and set things up. You just spent the whole day cooking, and anyway they would want to be involved.\n\n• Include an interactive element — a fire, a low-stakes game, a collective art project, or dancing are all good ideas.\n\n• Invite a couple people you don’t know all that well. It spices up the dynamic. Plus people are better behaved in front of someone new.\n\n• Don’t clean up until the next day. Fuck that trash.`,
+        `Some recipes for feasting:`,
+        `Nice bread and fancy butter.\n\n1. Bake or buy nice bread.\n\n2. Take fancy butter and let it come to room temperature. Chop a bunch of herbs. Add the herbs, some edible flowers, a dollop of honey, roasted garlic if you have it, and some generous cracks of black pepper to the butter and smoosh through to incorporate with your fingers.\n\n3. Serve together.`,
+        `Fish on the fire.\n\n1. Marinate fish in something you like. For my dinner I did 50/50 smoked shio koji and red mole paste. Another nice option would be miso, soy sauce, honey, and minced garlic. But also if you are pressed for time, don’t bother marinating. Sprinkle the fish generously with salt and squeeze some lemon juice over the flesh 10 minutes before cooking.\n\n2. Make a fire and fashion a grate that can sit atop it.\n\n3. Cut the fish with kitchen shears and rub with olive oil. Wrap each individual fish in a foil packet. You can add herbs or pickled onions or greens or citrus slices in with the fish.\n\n4. Place foil packets of fish on the grate over the fire and cook for 7-10 minutes. Just open up a packet to be sure the flesh is cooked through.`,
+        `A good tomato salad.\n\n1. Make a dressing of olive oil, lemon juice (and zest!), honey, salt, and a splash of vanilla extract. Add it to extremely tasty cherry tomatoes, mix, and marinate for a few minutes or a few hours.\n\n2. Add a lot of mint and basil to the tomatoes. Maybe sorrel or arugula if you have.\n\n3. Throw in torn croutons or kalamata olives or feta cheese.\n\n4. Serve it real quick.`,
+      ];
+
+      const colors = [
+        "#565147",
+        "#501937",
+        "#676E74",
+        "#565147",
+        "#2c3d27",
+        "#356725",
+        "#676E74",
+        "#6B645C",
+        "#501937",
+        "#3a94a7",
+        "#501937",
+        "#a7893a",
+        "#3a68a7",
+        "#c81b28",
+        "#dcdcdc",
+      ];
+
+      const blobShapes = [
+        "50% 50% 40% 60% / 60% 40% 50% 50%",
+        "60% 40% 30% 70% / 70% 30% 60% 40%",
+        "70% 30% 60% 40% / 30% 70% 40% 60%",
+        "40% 60% 50% 50% / 60% 40% 70% 30%",
+        "55% 45% 35% 65% / 65% 35% 55% 45%",
+        "45% 55% 65% 35% / 35% 65% 45% 55%",
+        "30% 70% 50% 50% / 70% 30% 60% 40%",
+        "60% 40% 60% 40% / 40% 60% 40% 60%",
+        "65% 35% 55% 45% / 45% 55% 35% 65%",
+        "50% 50% 50% 50% / 50% 50% 50% 50%",
+        "55% 45% 60% 40% / 60% 40% 55% 45%",
+        "40% 60% 70% 30% / 70% 30% 40% 60%",
+        "60% 50% 55% 45% / 45% 55% 50% 60%",
+        "35% 65% 45% 55% / 55% 45% 65% 35%",
+      ];
+
+      let currentSlide = 0;
+
+      const blob = document.getElementById("blob");
+      const slideText = document.getElementById("slide-text");
+      const prevBtn = document.getElementById("prevBtn");
+      const nextBtn = document.getElementById("nextBtn");
+
+      // Pause animation on hover
+      nextBtn.addEventListener("mouseenter", () => {
+        nextBtn.classList.add("paused");
+      });
+
+      function updateFish() {
+        const fishLayers = document.querySelectorAll("#fish-pngs .fish-layer");
+        fishLayers.forEach((img, index) => {
+          img.style.opacity = index <= currentSlide ? 1 : 0;
+        });
+      }
+
+      function updateSlide() {
+        blob.style.backgroundColor =
+          colors[Math.min(currentSlide, colors.length - 1)];
+        blob.style.borderRadius =
+          blobShapes[Math.min(currentSlide, blobShapes.length - 1)];
+        prevBtn.disabled = currentSlide === 0;
+        nextBtn.disabled = currentSlide === slides.length - 1;
+        updateFish();
+        const fish = document.getElementById("fish-pngs");
+
+        const surroundFishImages = document.querySelectorAll(
+          "#surrounding-fish .surround-fish",
+        );
+
+        if (slides[currentSlide] === "__FULL_ESSAY__" || fullessay == true) {
+          document.getElementById("surrounding-fish").style.display = "block";
+          surroundFishImages.forEach((img, index) => {
+            setTimeout(() => {
+              img.classList.add("visible");
+            }, index * 100); // Staggered fade-in for a nice effect
+          });
+        } else {
+          document.getElementById("surrounding-fish").style.display = "none";
+          surroundFishImages.forEach((img) => img.classList.remove("visible"));
+        }
+
+        if (slides[currentSlide] === "__FULL_ESSAY__" || fullessay == true) {
+          if (slides[currentSlide] === "__FULL_ESSAY__") {
+            //Programatically trigger the switch if user reaches full essay through next buttons
+            fullessay = !fullessay;
+            document.getElementById("myInput").click();
+            essayText.classList.add("italic");
+            interactiveText.classList.remove("italic");
+            //Reset slides and fullessay var
+            currentSlide = 0;
+          }
+
+          blob.style.backgroundColor = "#dcdcdc";
+          blob.style.borderRadius = "50%";
+          blob.style.opacity = "0.2";
+          fish.style.opacity = "0"; // fade out fish
+
+          slideText.innerHTML = `
+        <div class="full-essay-container">
+            <p><br/><br/><br/><br/>${slides.slice(0, -1).join("</p><p>")}</p>
+            <div style="text-align: center; margin-top: 1.5rem; position: relative;">
+            <img src="https://static.wixstatic.com/media/7ec13e_c3caf04255b145b19190ececb5a590c1~mv2.png" 
+                alt="full-fish" 
+                style="
+                    width: 220px; 
+                    height: auto; 
+                    opacity: 0.9; 
+                    margin-top: -100px; /* Allows slight overlap */
+                    margin-right: -70px
+                " />
+            </div>
+        </div>
+        `;
+        } else {
+          blob.style.backgroundColor = colors[currentSlide];
+          blob.style.borderRadius = blobShapes[currentSlide];
+          blob.style.opacity = "1";
+          fish.style.opacity = "1"; // fade fish back in
+          slideText.textContent = slides[currentSlide];
+        }
+      }
+
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "ArrowRight") {
+          nextSlide();
+        } else if (e.key === "ArrowLeft") {
+          prevSlide();
+        }
+      });
+
+      function nextSlide() {
+        nextBtn.classList.remove("pulse");
+        if (currentSlide < slides.length - 1) {
+          currentSlide++;
+          updateSlide();
+        }
+      }
+
+      function prevSlide() {
+        if (currentSlide > 0) {
+          currentSlide--;
+          updateSlide();
+        }
+      }
+
+      updateSlide();
+      document.getElementById("dot3").addEventListener("click", () => {
+        window.parent.location.href = "https://www.rolodex.cc/jv"; // Refresh current page
+      });
+
+      // Set up event listeners
+      document.getElementById("dot1").addEventListener("click", (event) => {
+        event.preventDefault();
+        // Navigate to home page
+        window.parent.location.href = "https://www.rolodex.cc/rolodex-home"; // Update with your actual home page URL
+      });
+
+      document.getElementById("dot2").addEventListener("click", (event) => {
+        event.preventDefault();
+        // Navigate to about page
+        window.parent.location.href = "https://www.rolodex.cc/jv-bio"; // Update with your actual about page URL
+      });
+
+      const interactiveText = document.getElementsByClassName(
+        "toggle-label-interactive",
+      )[0];
+      const essayText =
+        document.getElementsByClassName("toggle-label-essay")[0];
+
+      // Attach event listeners after DOM loads
+      window.onload = function () {
+        const inputEl = document.getElementById("myInput");
+        // Trigger when input gets focus (selected)
+        inputEl.addEventListener("click", onInputSelected);
+
+        // Function to run when input is selected (focused)
+        function onInputSelected() {
+          nextBtn.classList.remove("pulse");
+          fullessay = !fullessay;
+          updateSlide();
+          if (fullessay) {
+            essayText.classList.add("italic");
+            interactiveText.classList.remove("italic");
+            prevBtn.disabled = true;
+            nextBtn.disabled = true;
+          } else {
+            essayText.classList.remove("italic");
+            interactiveText.classList.add("italic");
+            prevBtn.disabled = currentSlide === 0;
+            nextBtn.disabled = currentSlide === slides.length - 1;
+          }
+        }
+      };
+    </script>
+  </body>
+</html>

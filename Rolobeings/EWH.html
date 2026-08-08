@@ -1,0 +1,824 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wdth,wght@0,62.5..100,100..900;1,62.5..100,100..900&display=swap"
+      rel="stylesheet"
+    />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Elaine W Ho</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.js"></script>
+    <style>
+      /* Entry overlay: w/ prompt and dot to click in */
+      .entry-overlay {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        position: fixed;
+        z-index: 888;
+        left: 0;
+        top: 0;
+        width: 100vw;
+        height: 100vh;
+        overflow: auto;
+        background-color: #f7f7ed;
+        opacity: 1; /* Fully visible */
+        transition: opacity 1.5s ease; /* Smooth fade-out effect */
+      }
+      .hidden-entry-overlay {
+        opacity: 0;
+        pointer-events: none; /* Prevent interaction */
+      }
+      .prompt-text {
+        font-family: "Noto Sans", sans-serif;
+        font-optical-sizing: auto;
+        font-weight: 300;
+        font-size: 15px;
+        font-style: normal;
+        font-variation-settings: "wdth" 87.5;
+        color: black;
+      }
+      #entry-dot {
+        width: 15px;
+        height: 15px;
+        background-color: transparent;
+        border: 1px solid black;
+        border-radius: 50%;
+        cursor: pointer;
+        transition: background-color 0.5s ease; /* Smooth fade-out effect */
+      }
+
+      /* Reset styles to prevent Wix conflicts */
+      #body {
+        overflow: hidden;
+        margin: 0;
+        height: 100vh;
+      }
+
+      #rolodex-app * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      #rolodex-app {
+        font-family: "Noto Sans", sans-serif;
+        font-optical-sizing: auto;
+        font-weight: 200;
+        font-size: 14px;
+        font-style: normal;
+        font-variation-settings: "wdth" 100;
+        padding: 0;
+        width: 100%;
+        /* height: auto; */
+        height: 95vh;
+        position: relative;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        justify-content: center; /* Center horizontally */
+        align-items: flex-start; /* Align to top */
+      }
+
+      .header {
+        width: 100%;
+        height: 100px;
+        overflow: hidden;
+        display: flex;
+        justify-content: center;
+        position: relative;
+        padding: 20px;
+      }
+
+      .dot {
+        position: absolute;
+        height: 15px;
+        width: 15px;
+        background-color: transparent;
+        border: 1px solid black;
+        border-radius: 50%;
+        cursor: pointer;
+        z-index: 10;
+      }
+
+      /* Positioning the dots in a triangle formation */
+      #dot1 {
+        top: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+      }
+
+      #dot1::after {
+        content: "Rolodex Homepage";
+        font-family: "Noto Sans", sans-serif;
+        font-optical-sizing: auto;
+        font-weight: 300;
+        font-size: 10px;
+        font-style: normal;
+        font-variation-settings: "wdth" 100;
+        position: absolute;
+        top: -20px;
+        left: 50%;
+        transform: translateX(10%);
+        background-color: black;
+        color: white;
+        padding: 2px 8px;
+        border-radius: 5px;
+        white-space: nowrap;
+        opacity: 0;
+        transition: opacity 0.3s ease-in-out;
+        pointer-events: none;
+        z-index: 15;
+      }
+
+      #dot1:hover::after {
+        opacity: 1;
+      }
+
+      #dot2 {
+        top: 60px;
+        left: calc(50% - 30px);
+      }
+
+      #dot2::after {
+        content: "Elaine W Ho's Bio";
+        font-family: "Noto Sans", sans-serif;
+        font-optical-sizing: auto;
+        font-weight: 300;
+        font-size: 10px;
+        font-style: normal;
+        font-variation-settings: "wdth" 100;
+        position: absolute;
+        top: -20px;
+        left: 50%;
+        transform: translateX(-110%);
+        background-color: black;
+        color: white;
+        padding: 2px 8px;
+        border-radius: 5px;
+        white-space: nowrap;
+        opacity: 0;
+        transition: opacity 0.3s ease-in-out;
+        pointer-events: none;
+        z-index: 15;
+      }
+
+      #dot2:hover::after {
+        opacity: 1;
+      }
+
+      #dot3 {
+        top: 60px;
+        left: calc(50% + 15px);
+        background-color: black;
+      }
+
+      #dot3::after {
+        content: "Refresh Content";
+        font-family: "Noto Sans", sans-serif;
+        font-optical-sizing: auto;
+        font-weight: 300;
+        font-size: 10px;
+        font-style: normal;
+        font-variation-settings: "wdth" 100;
+        position: absolute;
+        top: -20px;
+        left: 50%;
+        transform: translateX(10%);
+        background-color: black;
+        color: white;
+        padding: 2px 8px;
+        border-radius: 5px;
+        white-space: nowrap;
+        opacity: 0;
+        transition: opacity 0.3s ease-in-out;
+        pointer-events: none;
+        z-index: 15;
+      }
+
+      #dot3:hover::after {
+        opacity: 1;
+      }
+
+      .container {
+        display: flex;
+        flex-direction: column;
+        width: 100%; /* Use full width */
+        max-width: 100%;
+        height: calc(
+          100vh - 120px
+        ); /* Adjust height based on screen minus header */
+        margin: 0 auto;
+        overflow-y: auto; /* Ensure vertical scrolling */
+        position: relative;
+        align-items: center; /* Center content horizontally */
+      }
+
+      .paragraph {
+        margin-bottom: 3rem; /* Increased space between paragraphs */
+        opacity: 1;
+        transition: opacity 1s ease-out;
+        width: 100%;
+        text-align: left; /* Left align text */
+        max-width: 100%; /* Allow paragraphs to take full width */
+        padding: 0; /* Remove any default padding */
+      }
+
+      .sentence {
+        display: inline;
+        opacity: 0;
+        transform: translateY(10px);
+        transition:
+          opacity 0.6s ease-out,
+          transform 0.6s ease-out;
+        text-align: left; /* Left align text */
+      }
+
+      .visible {
+        opacity: 1 !important;
+        transform: translateY(0);
+      }
+
+      .italic {
+        font-style: italic;
+      }
+
+      .active {
+        opacity: 1;
+      }
+
+      #fullpiece {
+        width: 96%; /* Take up almost full width */
+        /* min-height: fit-content; */
+        height: 100vh;
+        padding: 20px 0px 20px 0px;
+        overflow: visible; /* Changed from scroll to visible */
+        position: relative;
+        text-align: left; /* Left align text content */
+        margin: 0 auto; /* Center the content area */
+      }
+
+      .full-visible {
+        opacity: 1 !important;
+        transition: opacity 2s ease-in-out;
+      }
+
+      .keyword {
+        position: absolute;
+        color: black;
+        opacity: 1;
+        transition: opacity 0.5s ease-out;
+        font-style: italic;
+        pointer-events: none; /* Prevent keywords from blocking clicks */
+      }
+
+      .fade-out {
+        opacity: 0;
+      }
+      #comp-m6yzx843inlineContent-gridContainer {
+        min-height: unset !important; /* Remove the forced min-height */
+        height: auto !important; /* Allow the content to define height */
+        overflow: visible !important; /* Prevent unwanted scrolling */
+      }
+      [data-mesh-id="comp-m6z0g5au"] {
+        min-height: "100vh" !important;
+      }
+
+      /* Toggle styling */
+      .toggle {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        position: absolute;
+        z-index: 99;
+        right: 1rem;
+        top: 1rem;
+        font-family: "Noto Sans", sans-serif;
+        font-optical-sizing: auto;
+        font-weight: 300;
+        font-size: 13px;
+        font-style: normal;
+        font-variation-settings: "wdth" 87.5;
+      }
+      /* The box around the toggle */
+      .switch {
+        position: relative;
+        display: inline-block;
+        width: 2rem;
+        height: 0.9rem;
+        margin: 0rem 0.4rem !important;
+      }
+
+      /* Hide default HTML checkbox */
+      .switch input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+      }
+
+      /* The slider */
+      .slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #9e9e9e;
+        -webkit-transition: 0.4s;
+        transition: 0.4s;
+      }
+
+      .slider:before {
+        position: absolute;
+        content: "";
+        height: 0.7rem;
+        width: 0.7rem;
+        left: 0.1rem;
+        bottom: 0.1rem;
+        background-color: white;
+        -webkit-transition: 0.4s;
+        transition: 0.4s;
+      }
+
+      input:checked + .slider {
+        background-color: #9e9e9e;
+      }
+
+      input:focus + .slider {
+        box-shadow: 0 0 1px #9e9e9e;
+      }
+
+      input:checked + .slider:before {
+        -webkit-transform: translateX(1.1rem);
+        -ms-transform: translateX(1.1rem);
+        transform: translateX(1.1rem);
+      }
+
+      /* Rounded sliders */
+      .slider.round {
+        border-radius: 34px;
+      }
+
+      .slider.round:before {
+        border-radius: 50%;
+      }
+
+      /* Responsive adjustments */
+      @media (max-width: 768px) {
+        #fullpiece {
+          width: 92%; /* Slightly narrower on tablets */
+          padding: 20px 4%; /* Larger percentage padding on smaller screens */
+        }
+      }
+
+      @media (max-width: 480px) {
+        #fullpiece {
+          width: 90%; /* Even narrower on phones */
+          padding: 20px 5%; /* Even larger percentage padding on phones */
+        }
+      }
+
+      /* Firefox */
+      .text-slide {
+        scrollbar-width: none;
+        /* Hides scrollbar */
+        -ms-overflow-style: none;
+        /* IE/Edge */
+      }
+
+      .text-slide {
+        -ms-overflow-style: none;
+        /* IE/Edge */
+        scrollbar-width: none;
+        /* Firefox */
+
+        /* Create fade effect at top & bottom */
+        -webkit-mask-image: linear-gradient(
+          to bottom,
+          transparent,
+          black 6%,
+          black 80%,
+          transparent
+        );
+        -webkit-mask-repeat: no-repeat;
+        -webkit-mask-size: 100% 100%;
+        mask-image: linear-gradient(
+          to bottom,
+          transparent,
+          black 6%,
+          black 80%,
+          transparent
+        );
+        mask-repeat: no-repeat;
+        mask-size: 100% 100%;
+      }
+
+      .text-slide::-webkit-scrollbar {
+        display: none;
+        /* Chrome/Safari */
+      }
+    </style>
+  </head>
+  <body id="body">
+    <div class="entry-overlay">
+      <p class="prompt-text">A TRUTH CONSIDERED</p>
+      <div id="entry-dot"></div>
+    </div>
+    <main id="rolodex-app">
+      <div class="header">
+        <div class="dot" id="dot1" role="button"></div>
+        <div class="dot" id="dot2" role="button"></div>
+        <div class="dot" id="dot3" role="button"></div>
+      </div>
+      <div class="toggle">
+        <p class="toggle-label-interactive italic">interactive read</p>
+        <label class="switch">
+          <input id="myInput" type="checkbox" />
+          <span class="slider round"></span>
+        </label>
+        <p class="toggle-label-essay">full essay</p>
+      </div>
+      <div class="container text-slide">
+        <div class="elaine" id="fullpiece"></div>
+        <div class="elaine" id="keywords"></div>
+      </div>
+    </main>
+    <script>
+      // Entry overlay
+      // Store if user has clicked into entry dot
+      let entryClick = false;
+
+      var entryOverlay = document.getElementsByClassName("entry-overlay")[0];
+      const entryDot = document.getElementById("entry-dot");
+      entryDot.addEventListener("mouseover", () => {
+        entryDot.style.backgroundColor = "#3B5009";
+      });
+      entryDot.addEventListener("mouseout", () => {
+        entryDot.style.backgroundColor = "transparent";
+      });
+      entryDot.addEventListener("click", () => {
+        entryClick = true;
+        if (!hasClicked && entryClick) {
+          displayKeywords();
+        }
+        entryOverlay.classList.add("hidden-entry-overlay");
+      });
+
+      const interactiveText = document.getElementsByClassName(
+        "toggle-label-interactive",
+      )[0];
+      const essayText =
+        document.getElementsByClassName("toggle-label-essay")[0];
+
+      window.onload = function () {
+        // const wixContainer = window.parent.document.querySelector(
+        //   '[data-mesh-id="comp-m6z0g5au"]'
+        // );
+        // if (wixContainer) {
+        // wixContainer.style.minWidth = "100vw";
+        // wixContainer.style.width = "100%";
+        // wixContainer.style.maxWidth = "none";
+        // wixContainer.style.minHeight = "100vh";
+        // }
+
+        //Toggle script code
+        const inputEl = document.getElementById("myInput");
+        let fullessay = false;
+        // Trigger when input gets focus (selected)
+        inputEl.addEventListener("click", onInputSelected);
+
+        // Function to run when input is selected (focused)
+        function onInputSelected() {
+          fullessay = !fullessay;
+          if (fullessay) {
+            displayFullEssay();
+            essayText.classList.add("italic");
+            interactiveText.classList.remove("italic");
+          } else {
+            console.log("hit on input selected");
+            displayText();
+            essayText.classList.remove("italic");
+            interactiveText.classList.add("italic");
+          }
+        }
+      };
+      // Define keywords and text arrays as in your original script
+      const keywords = [
+        "cadets",
+        "thermal print-out",
+        "plastic foiled cakes",
+        "fifteen minute cycle",
+        "little canyon",
+        "but if I could describe it to you somehow",
+        "collaboration and concern",
+        "superpowers",
+        "scrambling for care",
+        "And the sun rises, too.",
+      ];
+
+      const text = [
+        [
+          "She pulls up slowly",
+          "with the stroller, packed full of things to occupy children when adults do adult-like things, unsure",
+          "of the procedure for a stroller and three young children to enter a detention centre (they say it's not a prison).",
+          "Uniforms that disguise the laziness of young cadets tell her in a pressed tone that only two persons at a time are allowed to visit the incarcerated, and—",
+          "her hands still gripped on the stroller",
+          "as if to steady herself on this shaky territory - she flusters.",
+        ],
+        [
+          "I had only laterally sensed this interaction, actually. Z, a member of the concern group, was actively concerned, while I was instead fascinated by the RPG-like sparseness of a check- in lobby",
+          "complete with stained yellow walls, a restroom inaccessible to visitors,",
+          "and a wall lined with tin lockers that click open automatically by entering thermal print-out combination codes. The youngest of L's children",
+          "adapts to the game environment quickly. In her white princess dress,",
+          "she prances around the room as if it were her castle, landing",
+          "with a flounce into a peculiar, wood-panelled corner space that looks something between a confessional and changing nook. She tucks herself in",
+          "shortly, waiting for someone to discover her.",
+          "I don't react quickly enough though, and a few seconds later she's come out again, peeling open one of the plastic foiled cakes that her mother has equipped her with",
+          "for such in- between moments.",
+        ],
+        [
+          "Yes, yes, don't worry, one of us can watch over your kids, you can go in. Just call when you are out, we will find a place Nearby.",
+        ],
+        [
+          "My attention only turns back to hear Z's wise child heart",
+          "offering for us to take care of two of her children while she and the youngest (A, two-and-a-half years old) visit her husband.",
+          "Actually, we were here to visit detainees as well, but not relatives and maybe not loved ones—simply by picking",
+          "from a list of names and case numbers and the patchy notes made during previous visits by volunteers of the detainees' concern group.",
+        ],
+        [
+          "I am not part of the group, but maybe I am concerned,",
+          "and maybe it's nice to meet Z all the way out here in what I call the southern stretches of that administrating capital to the north — because it feels like the same horror of foreign land that most people react with",
+          "when they find out where I live.",
+          "The detention centre",
+          "(they say it's not a prison)",
+          "is only a fifteen minute cycle ride away from my place, but actually I have not been much to this side of this man-made bay. Maybe once for a family brunch a few years ago, and there was another time when N and I had agreed to call one another from a quiet place in nature,",
+          "though I was too late to hike to the little canyon as originally planned and could only make it to this artificially long pier, just a few minutes away from the detention centre, though I didn't know it at the time. That conversation was filled with pauses, and the sun",
+          "set steadily over them. By the time we finished the call, I was cold.",
+        ],
+        [
+          "The concern group is a particularly local phenomenon, or at least I have not heard",
+          "the term used much outside of these communities. But local here is colonised",
+          "and pidgin, so our concern is a translation from another language, now interpretable a level up from simply paying attention to — a different tint to what you hear elsewhere called an interest group.",
+          "Amidst the urgency of all of humanity's interests and concerns, it seems particularly over-indulgent—that euphemism",
+          "for discussing use-value — to wade into the subtle shades of word choice,",
+          "but if I could describe it to you somehow,",
+          "I guess it would be an attempt to understand the compulsions which turn feelings and forms of attention into something political.",
+          "Concern and interest can collate bodies, you could say. It's a question of when things and people and bodies are used or put into action, of when they become useful, of how we do or do not organise.",
+        ],
+        [
+          "Today then, we spontaneously organised as a group of three. Z followed the original plan to visit P (2383-12), and I went outside to wait",
+          "with A (seven-years-old) and A (five-years-old). We walked up and down the slope of the detention centre a few times, ping-ponged by security guards uncomfortable with the sight of loitering people within their gates.",
+          "Finally shooed outside of the compound, we snacked on cakes and split",
+          "branches by the side of the road while autumn mosquitoes snacked on us, making new topographies of collaboration and concern.",
+          "Twenty minutes passed, or was it two hours? It is remarkable what can be consolidated with the materiality of an inadvertent coming together of bodies.",
+          "Convened interests include: dancing and demonstrating",
+          "superpowers",
+          "and watching water poured from a bottle make tiny torrents pulled by mysterious forces forward and across and down,",
+          "down, down until they've faded invisibly into the pavement. Concerns include:",
+          "when mother comes back and the chilly sting of touching eyes with mosquito balm-stained fingers—",
+          "and the possibility of being deported.",
+        ],
+        [
+          "If politics and interests and concerns are inseparable, as one dictionary entry tells me, our party begins on this day, a meeting by chance at the furthermost fringes of this city,",
+          "somewhere in the fissures of legal admissability",
+          "(they say it's not a prison)",
+          "—at the peopled margins where care intersects with powerlessness.",
+        ],
+        [
+          "That's the part that isn't mentioned as much amidst all the scrambling for care",
+          "these days, because there is always something more",
+          "they want you to do. But here on the other side",
+          "of the bay I suddenly find myself complicit",
+          "in a collaborative doing nothing, and the long-forgotten reminder of what it's like to meet people randomly out of nowhere is like",
+          "the awareness of the sun's consistency",
+          "filling up all the pauses made by things that don't need to be spoken.",
+          "And the sun rises, too.",
+        ],
+      ];
+
+      // Store if user has clicked
+      let hasClicked = false;
+
+      // Function to safely get element position relative to the container
+      function getElementPosition(element) {
+        const rect = element.getBoundingClientRect();
+        const container = document.getElementById("fullpiece");
+        const containerRect = container.getBoundingClientRect();
+
+        return {
+          left: rect.left - containerRect.left,
+          top: rect.top - containerRect.top,
+          width: rect.width,
+          height: rect.height,
+        };
+      }
+
+      function displayKeywords() {
+        console.log("hit display keyworks");
+        const fullpiece = document.getElementById("fullpiece");
+
+        // Clear existing keywords
+        document.querySelectorAll(".keyword").forEach((el) => el.remove());
+
+        if (fullpiece.offsetHeight === 0) {
+          fullpiece.style.minHeight = "700px";
+        }
+
+        const containerRect = fullpiece.getBoundingClientRect();
+        const containerWidth = containerRect.width;
+        const containerHeight = containerRect.height;
+
+        const centerXOffset = containerWidth * 0.1;
+        const usableWidth = containerWidth * 0.8;
+        const usedPositions = []; // Store placed keyword positions
+
+        keywords.forEach((word) => {
+          const span = document.createElement("span");
+          span.textContent = word;
+          span.className = "keyword";
+
+          let attempts = 0;
+          let isOverlapping = false;
+          let randomX, randomY;
+
+          do {
+            isOverlapping = false;
+            randomX = Math.floor(centerXOffset + Math.random() * usableWidth);
+            randomY = Math.floor(Math.random() * (containerHeight - 50));
+
+            // Check for overlap
+            for (const pos of usedPositions) {
+              const dx = Math.abs(pos.x - randomX);
+              const dy = Math.abs(pos.y - randomY);
+              if (dx < 80 && dy < 50) {
+                // Adjust spacing as needed
+                isOverlapping = true;
+                break;
+              }
+            }
+
+            attempts++;
+          } while (isOverlapping && attempts < 50); // Limit attempts to avoid infinite loops
+
+          usedPositions.push({ x: randomX, y: randomY });
+
+          span.style.left = `${randomX}px`;
+          span.style.top = `${randomY}px`;
+          span.style.padding = "10px";
+
+          fullpiece.appendChild(span);
+        });
+
+        // Remove keywords after delay
+        setTimeout(() => {
+          if (!hasClicked && !fullessay) {
+            document.querySelectorAll(".keyword").forEach((span, index) => {
+              setTimeout(() => {
+                span.classList.add("fade-out");
+                setTimeout(() => {
+                  if (span.parentNode) {
+                    span.parentNode.removeChild(span);
+                  }
+                }, 500);
+              }, index * 700);
+            });
+            setTimeout(displayText, 7000);
+          }
+        }, 3000);
+      }
+
+      // Original displayText function restored
+      function displayText() {
+        console.log("testing");
+
+        const fullpiece = document.getElementById("fullpiece");
+        fullpiece.innerHTML = ""; // Clear existing content
+
+        let totalDelay = 0;
+        let sentenceDuration = 4000; // How long each sentence stays visible (in ms)
+        const transitionDuration = 800; // How long fade-out lasts (in ms)
+
+        text.forEach((paragraphArray, index) => {
+          // Create a paragraph container
+          const paragraph = document.createElement("div");
+          paragraph.className = "paragraph";
+
+          paragraphArray.forEach((sentence, sentenceIndex) => {
+            sentenceDuration = sentence.length * 300;
+            // Create a span for each sentence
+            const span = document.createElement("span");
+            span.className = "sentence";
+            span.textContent = sentence + " "; // Ensure spacing
+            paragraph.appendChild(span);
+
+            // Delay showing each sentence
+            setTimeout(() => {
+              span.classList.add("visible");
+
+              // After some time, make it disappear while the next one appears
+              setTimeout(() => {
+                span.classList.remove("visible");
+                span.classList.add("hidden");
+              }, sentenceDuration); // Delay before fading out
+            }, totalDelay);
+
+            totalDelay += 5000; // Time before next sentence appears
+          });
+
+          fullpiece.appendChild(paragraph);
+
+          // Add a spacer div after each paragraph (except the last one)
+          if (index < text.length - 1) {
+            const spacer = document.createElement("div");
+            spacer.className = "paragraph-spacer";
+            spacer.style.height = "40px"; // Explicit height for the gap
+            fullpiece.appendChild(spacer);
+          }
+        });
+
+        const sentences = document.getElementsByClassName("sentence");
+        setTimeout(() => {
+          // Loop through each sentence and apply the class
+          for (let sentence of sentences) {
+            sentence.classList.add("full-visible");
+          }
+        }, totalDelay);
+      }
+
+      // Modified displayFullEssay function
+      function displayFullEssay() {
+        // hasClicked = true;
+        const fullpiece = document.getElementById("fullpiece");
+        fullpiece.innerHTML = "";
+
+        // Ensure the container is tall enough
+        fullpiece.style.minHeight = "fit-content";
+
+        text.forEach((paragraphArray, index) => {
+          const paragraph = document.createElement("div");
+          paragraph.className = "paragraph full-visible";
+
+          paragraphArray.forEach((sentence) => {
+            const span = document.createElement("span");
+            span.className = "sentence full-visible";
+            span.textContent = sentence + " ";
+            paragraph.appendChild(span);
+          });
+
+          fullpiece.appendChild(paragraph);
+
+          // Add a spacer div after each paragraph (except the last one)
+          if (index < text.length - 1) {
+            const spacer = document.createElement("div");
+            spacer.className = "paragraph-spacer";
+            spacer.style.height = "40px"; // Explicit height for the gap
+            fullpiece.appendChild(spacer);
+          }
+        });
+
+        // Scroll to top to ensure visibility of the beginning
+        window.scrollTo(0, 0);
+      }
+
+      // Initialize after DOM load
+      function initializeApp() {
+        // Set up event listeners
+        document.getElementById("dot1").addEventListener("click", (event) => {
+          event.preventDefault();
+          // Navigate to home page
+          window.parent.location.href = "https://www.rolodex.cc/rolodex-home"; // Update with your actual home page URL
+        });
+
+        document.getElementById("dot2").addEventListener("click", (event) => {
+          event.preventDefault();
+          // Navigate to about page
+          window.parent.location.href = "https://www.rolodex.cc/ewh-bio"; // Update with your actual about page URL
+        });
+
+        document.getElementById("dot3").addEventListener("click", (event) => {
+          event.preventDefault();
+          window.parent.location.href = "https://www.rolodex.cc/ewh";
+        });
+
+        // Start the animation sequence if not clicked already
+        setTimeout(() => {
+          if (!hasClicked && entryClick) {
+            displayKeywords();
+          }
+        }, 1000);
+      }
+
+      // Use a safer approach to DOM ready
+      if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", initializeApp);
+      } else {
+        initializeApp();
+      }
+    </script>
+  </body>
+</html>

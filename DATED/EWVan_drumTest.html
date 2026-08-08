@@ -1,0 +1,246 @@
+<!doctype html>
+<html>
+  <head>
+    <style>
+      #drum {
+        width: 50%;
+        margin: auto;
+        position: relative;
+        margin-top: 100px;
+      }
+      audio {
+        position: relative;
+        left: 50%;
+        transform: translate(-50%);
+      }
+      h2 {
+        text-align: center;
+        margin: 50px;
+      }
+      .top {
+        border: 5px solid blue;
+        width: 200px;
+        margin: auto;
+        height: 100px;
+        border-radius: 100%;
+        background: white;
+        box-shadow: 0px 2px 10px black inset;
+        position: relative;
+      }
+      .mid {
+        width: 180px;
+        background: blue;
+        height: 150px;
+        margin: auto;
+        position: relative;
+        top: -60px;
+        z-index: -1;
+      }
+      .bottom {
+        width: 180px;
+        margin: auto;
+        height: 100px;
+        border-radius: 100%;
+        background: blue;
+        position: relative;
+        top: -120px;
+        box-shadow: 0px 25px 20px black;
+      }
+      .mid::before {
+        content: "";
+        position: absolute;
+        left: -8px;
+        height: 130px;
+        border: 10px solid blue;
+        transform: rotate(-5deg);
+      }
+      .mid::after {
+        content: "";
+        position: absolute;
+        right: -8px;
+        height: 130px;
+        border: 10px solid blue;
+        transform: rotate(5deg);
+      }
+      .bar {
+        height: 130px;
+        border: 3px solid;
+        width: 0px;
+        display: inline-block;
+        position: relative;
+      }
+      .b1 {
+        left: 20px;
+        transform: rotate(-2deg);
+        top: -48px;
+      }
+      .b2 {
+        left: 130px;
+        transform: rotate(2deg);
+        top: -42px;
+      }
+      .stick {
+        height: 130px;
+        border: 3px solid brown;
+        width: 0px;
+        display: inline-block;
+        position: absolute;
+        border-radius: 50px;
+        top: -70px;
+      }
+      .s1 {
+        transform: rotate(-45deg);
+      }
+      .s2 {
+        left: 180px;
+        transform: rotate(45deg);
+      }
+      .active1 {
+        animation: tap1 2.1s;
+      }
+      .active2 {
+        animation: tap2 2.1s;
+      }
+      @keyframes tap1 {
+        9% {
+          transform: rotate(-45deg);
+          height: 130px;
+        }
+        24.6% {
+          transform: rotate(-45deg);
+          height: 130px;
+        }
+        39% {
+          transform: rotate(-45deg);
+          height: 130px;
+        }
+        54% {
+          transform: rotate(-45deg);
+          height: 130px;
+        }
+        68% {
+          transform: rotate(-45deg);
+          height: 130px;
+        }
+        87.7% {
+          transform: rotate(-45deg);
+          height: 130px;
+        }
+        0% {
+          transform: rotate(-60deg);
+          height: 90px;
+        }
+        17.3% {
+          transform: rotate(-60deg);
+          height: 90px;
+        }
+        31.5% {
+          transform: rotate(-60deg);
+          height: 90px;
+        }
+        47% {
+          transform: rotate(-60deg);
+          height: 90px;
+        }
+        62% {
+          transform: rotate(-60deg);
+          height: 90px;
+        }
+        78.4% {
+          transform: rotate(-60deg);
+          height: 90px;
+        }
+        95% {
+          transform: rotate(-60deg);
+          height: 90px;
+        }
+      }
+      @keyframes tap2 {
+        0% {
+          transform: rotate(45deg);
+          height: 130px;
+        }
+        17.3% {
+          transform: rotate(45deg);
+          height: 130px;
+        }
+        31.5% {
+          transform: rotate(45deg);
+          height: 130px;
+        }
+        47% {
+          transform: rotate(45deg);
+          height: 130px;
+        }
+        62% {
+          transform: rotate(45deg);
+          height: 130px;
+        }
+        78.4% {
+          transform: rotate(45deg);
+          height: 130px;
+        }
+        95% {
+          transform: rotate(45deg);
+          height: 130px;
+        }
+        9.9% {
+          transform: rotate(60deg);
+          height: 90px;
+        }
+        24.6% {
+          transform: rotate(60deg);
+          height: 90px;
+        }
+        39% {
+          transform: rotate(60deg);
+          height: 90px;
+        }
+        54% {
+          transform: rotate(60deg);
+          height: 90px;
+        }
+        68% {
+          transform: rotate(60deg);
+          height: 90px;
+        }
+        87.7% {
+          transform: rotate(60deg);
+          height: 90px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <h1 style="color: green">GeeksforGeeks</h1>
+    <h2>How to Sync CSS Animations with HTML5 Audio ?</h2>
+    <h3>A Drum Sound with CSS Animation</h3>
+    <div id="drum">
+      <div class="top">
+        <div class="stick s1"></div>
+        <div class="stick s2"></div>
+      </div>
+      <div class="mid"></div>
+      <div class="bottom">
+        <div class="bar b1"></div>
+        <div class="bar b2"></div>
+      </div>
+      <audio
+        src="https://media.geeksforgeeks.org/wp-content/uploads/20221030123223/Bongos.wav"
+        controls
+      ></audio>
+    </div>
+    <script>
+      var audio = document.getElementsByTagName("audio")[0];
+      audio.onplay = () => {
+        document.getElementsByClassName("stick")[0].classList.add("active1");
+        document.getElementsByClassName("stick")[1].classList.add("active2");
+        console.log("hi");
+      };
+      audio.onpause = () => {
+        document.getElementsByClassName("stick")[0].classList.remove("active1");
+        document.getElementsByClassName("stick")[1].classList.remove("active2");
+      };
+    </script>
+  </body>
+</html>

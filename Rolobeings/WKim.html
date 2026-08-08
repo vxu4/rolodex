@@ -1,0 +1,841 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wdth,wght@0,62.5..100,100..900;1,62.5..100,100..900&display=swap"
+      rel="stylesheet"
+    />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Woomin Kim</title>
+    <video playsinline autoplay loop muted>
+      <source
+        src="https://video.wixstatic.com/video/2fa7ac_dffdbf662348491fab22f64dae57babc/1080p/mp4/file.mp4"
+        type="video/mp4"
+      />
+      <source src="your-video-url.webm" type="video/webm" />
+      Your browser does not support the video tag
+    </video>
+    <style>
+      /* Entry overlay: w/ prompt and dot to click in */
+      .entry-overlay {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        position: fixed;
+        z-index: 888;
+        left: 0;
+        top: 0;
+        width: 100vw;
+        height: 100vh;
+        overflow: auto;
+        background-color: rgba(247, 247, 237, 0.95);
+        opacity: 1; /* Fully visible */
+        transition: opacity 1.5s ease; /* Smooth fade-out effect */
+      }
+      .hidden-entry-overlay {
+        opacity: 0;
+        pointer-events: none; /* Prevent interaction */
+      }
+      .prompt-text {
+        font-family: "Noto Sans", sans-serif;
+        font-optical-sizing: auto;
+        font-weight: 300;
+        font-size: 15px;
+        font-style: normal;
+        font-variation-settings: "wdth" 87.5;
+        color: black;
+      }
+      #entry-dot {
+        width: 15px;
+        height: 15px;
+        background-color: transparent;
+        border: 1px solid black;
+        border-radius: 50%;
+        cursor: pointer;
+        transition: background-color 0.5s ease; /* Smooth fade-out effect */
+      }
+
+      #dot-nav {
+        height: 100px;
+        overflow: hidden;
+        display: flex;
+        justify-content: center;
+        position: relative;
+        padding: 20px;
+      }
+
+      .dot {
+        position: absolute;
+        height: 15px;
+        width: 15px;
+        background-color: transparent;
+        border: 1px solid white;
+        border-radius: 50%;
+        cursor: pointer;
+        z-index: 10;
+      }
+
+      /* Positioning the dots in a triangle formation */
+      #dot1 {
+        top: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+      }
+
+      #dot1::after {
+        content: "Rolodex Homepage";
+        font-family: "Noto Sans", sans-serif;
+        font-optical-sizing: auto;
+        font-weight: 300;
+        font-size: 10px;
+        font-style: normal;
+        font-variation-settings: "wdth" 100;
+        position: absolute;
+        top: -20px;
+        left: 50%;
+        transform: translateX(10%);
+        background-color: white;
+        color: black;
+        padding: 5px 10px;
+        border-radius: 5px;
+        white-space: nowrap;
+        opacity: 0;
+        transition: opacity 0.3s ease-in-out;
+        pointer-events: none;
+        z-index: 15;
+      }
+
+      #dot1:hover::after {
+        opacity: 1;
+      }
+
+      #dot2 {
+        top: 60px;
+        left: calc(50% - 30px);
+        background-color: transparent;
+      }
+
+      #dot2::after {
+        content: "Woomin Kim's Bio";
+        font-family: "Noto Sans", sans-serif;
+        font-optical-sizing: auto;
+        font-weight: 300;
+        font-size: 10px;
+        font-style: normal;
+        font-variation-settings: "wdth" 100;
+        position: absolute;
+        top: -20px;
+        left: 50%;
+        transform: translateX(-110%);
+        background-color: white;
+        color: black;
+        padding: 5px 10px;
+        border-radius: 5px;
+        white-space: nowrap;
+        opacity: 0;
+        transition: opacity 0.3s ease-in-out;
+        pointer-events: none;
+        z-index: 15;
+      }
+
+      #dot2:hover::after {
+        opacity: 1;
+      }
+
+      #dot3 {
+        top: 60px;
+        left: calc(50% + 15px);
+        background-color: #f7f7ed;
+      }
+
+      #dot3::after {
+        content: "Refresh Content";
+        font-family: "Noto Sans", sans-serif;
+        font-optical-sizing: auto;
+        font-weight: 300;
+        font-size: 10px;
+        font-style: normal;
+        font-variation-settings: "wdth" 100;
+        position: absolute;
+        top: -20px;
+        left: 50%;
+        transform: translateX(10%);
+        background-color: white;
+        color: black;
+        padding: 5px 10px;
+        border-radius: 5px;
+        white-space: nowrap;
+        opacity: 0;
+        transition: opacity 0.3s ease-in-out;
+        pointer-events: none;
+        z-index: 15;
+      }
+
+      #dot3:hover::after {
+        opacity: 1;
+      }
+
+      header {
+        position: relative;
+        height: 100vh;
+        overflow: hidden;
+      }
+
+      video {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        z-index: -1;
+      }
+
+      #proj-description {
+        width: 35vw;
+        font-family: "Noto Sans", sans-serif;
+        font-optical-sizing: auto;
+        font-weight: 200;
+        font-size: 14px;
+        font-style: normal;
+        font-variation-settings: "wdth" 100;
+        color: white;
+        display: block;
+        position: absolute;
+        top: 2vh;
+        left: 3vw;
+      }
+
+      #island-01 {
+        width: 30vw;
+        position: absolute;
+        top: 15%;
+        right: 10%;
+      }
+
+      #island-02 {
+        width: 22vw;
+        position: absolute;
+        top: 37%;
+        left: 20%;
+      }
+
+      #island-03 {
+        width: 35vw;
+        position: absolute;
+        bottom: 10%;
+        left: 10%;
+      }
+
+      /* Style the Image Used to Trigger the Modal */
+      .orig-island {
+        display: block;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: 0.3s;
+      }
+
+      .orig-island:hover {
+        opacity: 0.5;
+      }
+
+      /* The Modal (background) */
+      .modal {
+        display: none; /* Hidden by default */
+        position: fixed; /* Stay in place */
+        z-index: 30; /* Sit on top */
+        padding-top: 100px; /* Location of the box */
+        left: 0;
+        top: 0;
+        width: 100%; /* Full width */
+        height: 100%; /* Full height */
+        overflow: auto; /* Enable scroll if needed */
+        background-color: #698ba9; /* Fallback color */
+        background-color: rgba(255, 255, 255, 0.35); /* White w/ opacity */
+      }
+
+      /* Add Animation - Zoom in the Modal */
+      .modal,
+      .modal-content,
+      #caption {
+        animation-name: fadein;
+        animation-duration: 0.3s;
+      }
+      @keyframes fadein {
+        0% {
+          opacity: 0;
+        }
+        100% {
+          opacity: 1;
+        }
+      }
+
+      /* The Close Button */
+      .close {
+        position: absolute;
+        top: 1vh;
+        right: 2vw;
+        color: #f1f1f1;
+        font-size: 40px;
+        font-weight: bold;
+        transition: 0.3s;
+      }
+      .close:hover,
+      .close:focus {
+        color: #bbb;
+        text-decoration: none;
+        cursor: pointer;
+      }
+
+      /* Container used to center middle image */
+      .middle-image-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+        width: 100%;
+        height: 65vh;
+      }
+
+      .middle-image {
+        width: 65vw;
+      }
+
+      /* 100% Image Width on Smaller Screens */
+      @media only screen and (max-width: 700px) {
+        .modal-content {
+          width: 100%;
+        }
+      }
+
+      /* Modal Content for each island */
+      #modal-content-01 {
+        margin: auto;
+        display: none;
+        width: 100vw;
+        max-width: 100vw;
+      }
+      /* Modal Content for each island */
+      #modal-content-02 {
+        margin: auto;
+        display: none;
+        width: 100vw;
+        max-width: 100vw;
+      }
+      /* Modal Content for each island */
+      #modal-content-03 {
+        margin: auto;
+        display: none;
+        width: 100vw;
+        max-width: 100vw;
+      }
+
+      .caption {
+        font-family: "Noto Sans", sans-serif;
+        font-optical-sizing: auto;
+        font-weight: 200;
+        font-size: 14px;
+        font-style: normal;
+        font-variation-settings: "wdth" 100;
+        color: white;
+        width: 45vw;
+        position: absolute;
+        top: 1vh;
+        left: 3vw;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: left;
+      }
+
+      p {
+        font-family: "Noto Sans", sans-serif;
+        font-optical-sizing: auto;
+        font-weight: 200;
+        font-size: 14px;
+        font-style: normal;
+        font-variation-settings: "wdth" 100;
+      }
+
+      .sticker-lineup {
+        display: flex;
+        flex-direction: row;
+        width: 58vw;
+        justify-content: space-between;
+        align-items: end;
+        position: absolute;
+        bottom: 20vh;
+        right: 5vw;
+        height: 30vh;
+      }
+
+      .ref-image {
+        width: 10vw;
+        display: block;
+        position: absolute;
+        z-index: 35;
+        cursor: pointer;
+      }
+
+      /* Sticker styling */
+      .sticker {
+        position: absolute;
+        z-index: 35;
+      }
+
+      /* Sticker add button styling */
+      .sticker-button {
+        background-color: rgba(255, 255, 255, 0.1); /* Semi-transparent white */
+        border: 1px solid white;
+        border-radius: 4px;
+        color: white;
+        padding: 1vh 1vw;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-family: "Noto Sans", sans-serif;
+        font-optical-sizing: auto;
+        font-weight: 300;
+        font-size: 13px;
+        font-style: italic;
+        font-variation-settings: "wdth" 87.5;
+        cursor: pointer;
+        width: 12vw;
+        z-index: 999;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="entry-overlay">
+      <p class="prompt-text">HOW DO WE FEEL ABOUT STICKERS?</p>
+      <div id="entry-dot"></div>
+    </div>
+    <div id="dot-nav">
+      <div class="dot" id="dot1" role="button"></div>
+      <div class="dot" id="dot2" role="button"></div>
+      <div class="dot" id="dot3" role="button"></div>
+    </div>
+    <div class="body">
+      <p id="proj-description">
+        In Korea, I kept thinking about our conversation; about islands as
+        crystals, contours of islands, artificial stones, pouring cement to make
+        lands, and stickers. I like the idea of stickers more and more, because
+        stickers are just like islands with their contours and floating bodies.
+        <br />
+        <br />
+        With some image collecting I made some drawings of islands, like Lantau
+        Island, Jeju Island, and Long Island, with patterns of stones, as if
+        sliced at the horizon. They are not accurate in shape or true to scale
+        and ratio. I would like for them to look like random stones that are
+        sliced rather than recognizable island geography.
+      </p>
+      <img
+        class="orig-island"
+        id="island-01"
+        alt="small green gem-island"
+        src="https://static.wixstatic.com/media/2fa7ac_fc7dc617605640949b53916dd65ee970~mv2.png"
+      />
+      <img
+        class="orig-island"
+        id="island-02"
+        alt="small brown gem-island"
+        src="https://static.wixstatic.com/media/2fa7ac_f861c0d6de1b4293b9ac37803f8e0dca~mv2.png"
+      />
+      <img
+        class="orig-island"
+        id="island-03"
+        alt="large green gem-island"
+        src="https://static.wixstatic.com/media/2fa7ac_82bdfcbb3d764c2aa0920fc8177b2542~mv2.png"
+      />
+      <!-- The Modal -->
+      <div id="myModal" class="modal">
+        <!-- The Close Button -->
+
+        <span class="close">×</span>
+
+        <!-- Modal Content (The Image) -->
+        <div id="modal-content-01">
+          <div class="caption">
+            <p>
+              <i>Island 01</i> -- Lantau Island 爛頭 <br />
+              Megacrystic granite, rhyolite lava, limestone, marble, Phoenix
+              Mountain 鳳凰山 <br />22° 16' 8.40" N, 113° 57' 5.99" E. <br />17
+              x 6 miles | 27 x 9.5 kilometers
+            </p>
+            <button
+              style="left: 60vw"
+              class="sticker-button"
+              id="sticker-button-1"
+              type="button"
+            >
+              + Add island sticker
+            </button>
+          </div>
+          <div class="middle-image-container">
+            <img
+              class="middle-image"
+              id="1"
+              src="https://static.wixstatic.com/media/2fa7ac_313462f816c64e4aa0fc84f894558721~mv2.png"
+            />
+          </div>
+          <div class="sticker-lineup" id="sticker-lineup-1">
+            <img
+              style="left: 0vw"
+              class="ref-image"
+              id="ref-01-A"
+              src="https://static.wixstatic.com/media/2fa7ac_877a63366988489a96749e81be8f0189~mv2.jpg"
+            />
+            <img
+              style="left: 12vw"
+              class="ref-image"
+              id="ref-01-B"
+              src="https://static.wixstatic.com/media/2fa7ac_86831408c06c494780fcf6acd773bf1c~mv2.jpg"
+            />
+            <img
+              style="left: 24vw"
+              class="ref-image"
+              id="ref-01-C"
+              src="https://static.wixstatic.com/media/2fa7ac_0d5ce420729a42b5a2c29aa1f2f05aa6~mv2.jpg"
+            />
+            <img
+              style="left: 36vw"
+              class="ref-image"
+              id="ref-01-D"
+              src="https://static.wixstatic.com/media/2fa7ac_0f4c03395ca44e07976d32b0befe235a~mv2.jpg"
+            />
+            <img
+              style="left: 48vw"
+              class="ref-image"
+              id="ref-01-E"
+              src="https://static.wixstatic.com/media/2fa7ac_2a0ea9c6d9e34706a4b31d885cc822dc~mv2.jpg"
+            />
+            <!-- <img
+              style="left: 60vw; width: 15vw !important; top: 15vh"
+              class="ref-image"
+              id="ref-01-F"
+              src="https://static.wixstatic.com/media/2fa7ac_fc7dc617605640949b53916dd65ee970~mv2.png"
+            /> -->
+          </div>
+        </div>
+        <div id="modal-content-02">
+          <div class="caption">
+            <p>
+              <i>Island 02</i> -- Jeju Island 제주도 <br />
+              Doldam stone, igneous rock, 90% basalt, tuff rings, lava tubes,
+              Hallasan 한라산 <br />
+              33° 30' 34.99" N, 126° 31' 18.98" E. <br />
+              45 x 19 miles | 73 x 31 kilometers
+            </p>
+            <button
+              style="left: 60vw"
+              class="sticker-button"
+              id="sticker-button-2"
+              type="button"
+            >
+              + Add island sticker
+            </button>
+          </div>
+          <div class="middle-image-container">
+            <img
+              class="middle-image"
+              id="2"
+              src="https://static.wixstatic.com/media/2fa7ac_0aac4e69184c4deb9d179d65ce26fea1~mv2.png"
+            />
+          </div>
+          <div class="sticker-lineup" id="sticker-lineup-2">
+            <img
+              style="left: 0vw"
+              class="ref-image"
+              id="ref-02-A"
+              src="https://static.wixstatic.com/media/2fa7ac_63e771b6e29442369772b8e26b0ae0b5~mv2.jpg"
+            />
+            <img
+              style="left: 12vw"
+              class="ref-image"
+              id="ref-02-B"
+              src="https://static.wixstatic.com/media/2fa7ac_8eebe94f2cc7427f913e6a6022ba54cb~mv2.jpg"
+            />
+            <img
+              style="left: 24vw"
+              class="ref-image"
+              id="ref-02-C"
+              src="https://static.wixstatic.com/media/2fa7ac_2454d79e29b34b0291039b010bfc88bb~mv2.jpg"
+            />
+            <img
+              style="left: 36vw"
+              class="ref-image"
+              id="ref-02-D"
+              src="https://static.wixstatic.com/media/2fa7ac_f01f12f0b7454606ba448591040ecf34~mv2.jpg"
+            />
+            <img
+              style="left: 48vw"
+              class="ref-image"
+              id="ref-02-E"
+              src="https://static.wixstatic.com/media/2fa7ac_f0f0f844f86547bc83de30641c0dab96~mv2.jpg"
+            />
+          </div>
+        </div>
+        <div id="modal-content-03">
+          <div class="caption">
+            <p>
+              <i>Island 03</i> -- Long Island <br />
+              <i>Nassau, Matouwacks, Paumanock, Seawanhacky</i> <br />
+              Pleistocene glacial moraine, shells, gravel, sandy outwash, High
+              Hill <i>Matinecocks</i> <br />
+              118 x 23 miles | 190 x 37 kilometers <br />
+              40° 47' 32.06" N, 73° 8' 17.74" W.
+            </p>
+            <button
+              style="left: 60vw"
+              class="sticker-button"
+              id="sticker-button-3"
+              type="button"
+            >
+              + Add island sticker
+            </button>
+          </div>
+          <div class="middle-image-container">
+            <img
+              class="middle-image"
+              id="3"
+              src="https://static.wixstatic.com/media/2fa7ac_143e3ea57811435d8a33b454595e33b7~mv2.png"
+            />
+          </div>
+          <div class="sticker-lineup" id="sticker-lineup-2">
+            <img
+              style="left: 0vw"
+              class="ref-image"
+              id="ref-03-A"
+              src="https://static.wixstatic.com/media/2fa7ac_1b8a5275561e45089297ada841ef627b~mv2.jpg"
+            />
+            <img
+              style="left: 12vw"
+              class="ref-image"
+              id="ref-03-B"
+              src="https://static.wixstatic.com/media/2fa7ac_4f9aabc1c7f1458a8a7a90ce0545f1d3~mv2.jpg"
+            />
+            <img
+              style="left: 24vw"
+              class="ref-image"
+              id="ref-03-C"
+              src="https://static.wixstatic.com/media/2fa7ac_05ce1d0623234c40935a07b2e6735823~mv2.jpg"
+            />
+            <img
+              style="left: 36vw"
+              class="ref-image"
+              id="ref-03-D"
+              src="https://static.wixstatic.com/media/2fa7ac_605c5d3d5c8b4da39f22c7c92fc568a1~mv2.jpg"
+            />
+            <img
+              style="left: 48vw"
+              class="ref-image"
+              id="ref-03-E"
+              src="https://static.wixstatic.com/media/2fa7ac_d23b499931324081b5297e8afddd1f44~mv2.jpg"
+            />
+          </div>
+        </div>
+        <span class="letter o solid-circle o1 dot-container">
+          <div class="finaldots" id="firstDotHide"></div>
+        </span>
+      </div>
+    </div>
+    <script>
+      // Dot nav event listeners
+      document.getElementById("dot3").addEventListener("click", () => {
+        window.parent.location.href = "https://www.rolodex.cc/wk"; // Update with your actual home page URL
+      });
+      document.getElementById("dot1").addEventListener("click", (event) => {
+        event.preventDefault();
+        // Navigate to home page
+        window.parent.location.href = "https://www.rolodex.cc/rolodex-home"; // Update with your actual home page URL
+      });
+      document.getElementById("dot2").addEventListener("click", (event) => {
+        event.preventDefault();
+        //TODO: EDIT URL HERE
+        // Navigate to about page
+        window.parent.location.href = "https://www.rolodex.cc/wk-bio"; // Update with your actual about page URL
+      });
+      // if current window, then fill in the active dot
+      if (window.location.href.includes("bio")) {
+        document.getElementById("dot2").style.backgroundColor =
+          "#f7f7ed !important";
+        document.getElementById("dot3").style.backgroundColor =
+          "transaprent !important";
+      } else {
+        document.getElementById("dot3").style.backgroundColor =
+          "#f7f7ed !important";
+        document.getElementById("dot2").style.backgroundColor =
+          "transparent !important";
+      }
+
+      // Entry overlay
+      var entryOverlay = document.getElementsByClassName("entry-overlay")[0];
+      const entryDot = document.getElementById("entry-dot");
+      entryDot.addEventListener("mouseover", () => {
+        entryDot.style.backgroundColor = "#8F55CD";
+      });
+      entryDot.addEventListener("mouseout", () => {
+        entryDot.style.backgroundColor = "transparent";
+      });
+      entryDot.addEventListener("click", () => {
+        entryOverlay.classList.add("hidden-entry-overlay");
+      });
+      // Get the modal
+      var modal = document.getElementById("myModal");
+      var projDescription = document.getElementById("proj-description");
+      var dotNav = document.getElementById("dot-nav");
+      var origIsland01 = document.getElementById("island-01");
+      var origIsland02 = document.getElementById("island-02");
+      var origIsland03 = document.getElementById("island-03");
+
+      // Get the image and insert it inside the modal - use its "alt" text as a caption
+      var island01 = document.getElementById("island-01");
+      var modalContent01 = document.getElementById("modal-content-01");
+      var island02 = document.getElementById("island-02");
+      var modalContent02 = document.getElementById("modal-content-02");
+      var island03 = document.getElementById("island-03");
+      var modalContent03 = document.getElementById("modal-content-03");
+
+      island01.onclick = function () {
+        modalTrigger(1);
+      };
+
+      island02.onclick = function () {
+        modalTrigger(2);
+      };
+
+      island03.onclick = function () {
+        modalTrigger(3);
+      };
+
+      function modalTrigger(num) {
+        modal.style.display = "block";
+        if (num == 1) {
+          modalContent01.style.display = "block";
+        } else if (num == 2) {
+          modalContent02.style.display = "block";
+        } else if (num == 3) {
+          modalContent03.style.display = "block";
+        }
+        projDescription.style.display = "none";
+        dotNav.style.display = "none";
+        origIsland01.style.display = "none";
+        origIsland02.style.display = "none";
+        origIsland03.style.display = "none";
+      }
+
+      // Make ref-images draggable stickers
+      var refImages = document.getElementsByClassName("ref-image");
+      for (let i = 0; i < refImages.length; i++) {
+        dragElement(refImages[i]);
+      }
+
+      function dragElement(elmnt) {
+        var pos1 = 0,
+          pos2 = 0,
+          pos3 = 0,
+          pos4 = 0;
+        if (document.getElementById(elmnt.id + "header")) {
+          // if present, the header is where you move the DIV from:
+          document.getElementById(elmnt.id + "header").onmousedown =
+            dragMouseDown;
+        } else {
+          // otherwise, move the DIV from anywhere inside the DIV:
+          elmnt.onmousedown = dragMouseDown;
+        }
+
+        function dragMouseDown(e) {
+          console.log("hit drag");
+          e = e || window.event;
+          e.preventDefault();
+          // get the mouse cursor position at startup:
+          pos3 = e.clientX;
+          pos4 = e.clientY;
+          document.onmouseup = closeDragElement;
+          // call a function whenever the cursor moves:
+          document.onmousemove = elementDrag;
+        }
+
+        function elementDrag(e) {
+          console.log("hit elementDrag");
+
+          e = e || window.event;
+          e.preventDefault();
+          // calculate the new cursor position:
+          pos1 = pos3 - e.clientX;
+          pos2 = pos4 - e.clientY;
+          pos3 = e.clientX;
+          pos4 = e.clientY;
+          // set the element's new position:
+          elmnt.style.top = elmnt.offsetTop - pos2 + "px";
+          elmnt.style.left = elmnt.offsetLeft - pos1 + "px";
+        }
+        function closeDragElement() {
+          // stop moving when mouse button is released:
+          document.onmouseup = null;
+          document.onmousemove = null;
+        }
+      }
+
+      // Get the <span> element that closes the modal
+      var span = document.getElementsByClassName("close")[0];
+
+      // When the user clicks on <span> (x), close the modal
+      span.onclick = function () {
+        modal.style.display = "none";
+        modalContent01.style.display = "none";
+        modalContent02.style.display = "none";
+        modalContent03.style.display = "none";
+        projDescription.style.display = "block";
+        dotNav.style.display = "flex";
+        origIsland01.style.display = "block";
+        origIsland02.style.display = "block";
+        origIsland03.style.display = "block";
+      };
+
+      //Generate stickers based on which modal's sticker button is clicked
+      const stickerButtonA = document.getElementById("sticker-button-1");
+      stickerButtonA.addEventListener("click", function () {
+        generateStickers(1);
+      });
+      const stickerButtonB = document.getElementById("sticker-button-2");
+      stickerButtonB.addEventListener("click", function () {
+        generateStickers(2);
+      });
+      const stickerButtonC = document.getElementById("sticker-button-3");
+      stickerButtonC.addEventListener("click", function () {
+        generateStickers(3);
+      });
+
+      // Generating stickers with button
+      function generateStickers(num) {
+        executed = true;
+        const stickersrcs = [
+          "https://static.wixstatic.com/media/2fa7ac_fc7dc617605640949b53916dd65ee970~mv2.png",
+          "https://static.wixstatic.com/media/2fa7ac_f861c0d6de1b4293b9ac37803f8e0dca~mv2.png",
+          "https://static.wixstatic.com/media/2fa7ac_82bdfcbb3d764c2aa0920fc8177b2542~mv2.png",
+        ];
+        const finaldots = document.querySelectorAll(".finaldots");
+        const container = document.querySelector(".dot-container");
+        // Create and append sticker
+        const sticker = document.createElement("img");
+        sticker.src = stickersrcs[num - 1];
+        sticker.style.top = `${Math.random() * 100 - 15}%`;
+        sticker.style.left = `${Math.random() * 100 - 15}%`;
+        sticker.classList.add("sticker");
+        sticker.style.display = "block";
+        sticker.style.cursor = "pointer";
+        sticker.className = "sticker";
+        sticker.style.width = "15vw";
+
+        //making sticker draggable
+        dragElement(sticker);
+        container.appendChild(sticker);
+      }
+    </script>
+  </body>
+</html>

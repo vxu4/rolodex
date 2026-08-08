@@ -1,0 +1,384 @@
+<!-- TODO: fonts are not updated here -->
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Rolodex | a.f.t.</title>
+    <link rel="canonical" href="https://www.rolodex.cc" />
+    <meta property="og:title" content="HOME | a.f.t." />
+    <meta property="og:url" content="https://www.rolodex.cc" />
+    <meta property="og:site_name" content="a.f.t." />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="HOME | a.f.t." />
+    <meta
+      name="description"
+      content="Explore Rolodex, an online journal and collective space dedicated to the pursuit of living through art. Featuring works by Ali Van, Miranda Zhen-Yao Van-Boswell, and the a.f.t. cooperative, Rolodex offers an archival space and publishing platform for intersubjective and interwoven experiences. Join our community in New York, the Scottish Highlands, Hong Kong, and Minnesota."
+    />
+    <meta
+      name="keywords"
+      content="Rolodex, online journal, artistic collective, archive, Ali Van, Miranda Zhen-Yao Van-Boswell, a.f.t. cooperative, Seawitch, New York, Scottish Highlands, Hong Kong, Minnesota, relational practice, intersubjective, interwoven, artist constellation, stars, dots, publishing space, community, index, beings, slow transpiration, pursuit of living"
+    />
+    <meta name="author" content="Rolodex" />
+
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        height: 100%;
+        /* display: flex;
+        justify-content: center; */
+        align-items: center;
+        font-family: Arial, sans-serif;
+        overflow: hidden; /* Hide scrollbars */
+      }
+
+      main {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100%;
+        width: 100%;
+      }
+
+      .container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+      }
+
+      .justify-content-center {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+      }
+
+      .rolodex {
+        font-size: 2.5rem; /* Adjusted for better responsiveness */
+        color: black;
+        position: relative;
+        cursor: pointer;
+        text-align: center;
+      }
+
+      .solid-circle {
+        position: relative;
+        display: inline-block;
+        width: 1.375rem;
+        height: 1.375rem;
+        border-radius: 50%;
+        background-color: black;
+        transition:
+          opacity 1s,
+          transform 1.8s ease-in-out;
+      }
+
+      .finaldots {
+        cursor: pointer;
+        position: absolute;
+        width: 1.375rem;
+        height: 1.375rem;
+        border-radius: 50%;
+        background-color: black;
+        transition: transform 5s ease-in-out;
+      }
+
+      .o1 {
+        top: 0;
+        left: 1.668rem;
+        transform: translateX(-1.65rem);
+      }
+
+      .o2 {
+        bottom: 0;
+        left: -1.66rem;
+        transform: translateX(1.65rem);
+      }
+
+      .final-dot.clicked {
+        background-color: #27000c;
+      }
+
+      .hide {
+        display: none;
+      }
+
+      .hidden {
+        opacity: 0;
+        transition: opacity 1s;
+      }
+
+      .merged {
+        transform: translateX(0);
+      }
+
+      .dot {
+        position: absolute;
+        width: 1.375rem;
+        height: 1.375rem;
+        background-color: black;
+        border-radius: 50%;
+      }
+
+      /* Responsive adjustments */
+      @media (max-width: 600px) {
+        .rolodex {
+          font-size: 2rem;
+        }
+
+        .solid-circle,
+        .finaldots {
+          width: 1rem;
+          height: 1rem;
+        }
+
+        .o1 {
+          left: 1.25rem;
+          transform: translateX(-1.25rem);
+        }
+
+        .o2 {
+          left: -1.25rem;
+          transform: translateX(1.25rem);
+        }
+        .merged {
+          transform: translateX(0);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <div class="container" id="containers">
+        <div class="justify-content-center">
+          <div class="rolodex" id="alldots">
+            <span class="letter r">r</span>
+            <span class="letter o solid-circle o1 dot-container">
+              <div class="finaldots" id="firstDotHide"></div>
+            </span>
+            <span class="letter l">l</span>
+            <span class="letter o solid-circle o2 dot-container">
+              <div class="finaldots"></div>
+            </span>
+            <span class="letter d">d</span>
+            <span class="letter e">e</span>
+            <span class="letter x">x</span>
+          </div>
+        </div>
+      </div>
+    </main>
+    <script>
+      const rolodex = document.querySelector(".rolodex");
+      const dots = document.querySelectorAll(".solid-circle");
+      const letters = document.querySelectorAll(".letter:not(.o)");
+      let hiddenFound = false;
+      let executed = false;
+
+      rolodex.addEventListener("click", function () {
+        letters.forEach((letter) => {
+          if (letter.classList.contains("hidden")) {
+            hiddenFound = true;
+          } else {
+            letter.classList.add("hidden");
+          }
+        });
+
+        setTimeout(function () {
+          dots[0].classList.add("merged");
+          dots[1].classList.add("merged");
+          if (hiddenFound && !executed) {
+            generateDots();
+            letters.forEach((letter) => {
+              letter.classList.add("hidden");
+            });
+          }
+        }, 1200);
+      });
+
+      function generateDots() {
+        executed = true;
+        const finaldots = document.querySelectorAll(".finaldots");
+        const container = document.querySelector(".dot-container");
+
+        const links = [
+          {
+            index: 0,
+            name: "Time",
+            url: "https://www.rolodex.cc/time",
+            color: undefined,
+          },
+          {
+            index: 1,
+            name: "Space",
+            url: "https://www.rolodex.cc/space",
+            color: undefined,
+          },
+          {
+            index: 2,
+            name: "Rune",
+            url: "https://www.rolodex.cc/rune",
+            color: undefined,
+          },
+          {
+            index: 3,
+            name: "Elaine",
+            url: "https://www.rolodex.cc/ewh",
+            color: "yellow",
+          },
+          {
+            index: 4,
+            name: "Jackie",
+            url: "https://www.rolodex.cc/jv",
+            color: "purple",
+          },
+          {
+            index: 5,
+            name: "Paula",
+            url: "https://www.rolodex.cc/pps",
+            color: "orange",
+          },
+          {
+            index: 6,
+            name: "Woomin Kim",
+            url: "https://www.rolodex.cc/wk",
+            color: "red",
+          },
+          {
+            index: 7,
+            name: "Yuchen Chang & Dong Xing",
+            url: "https://www.rolodex.cc/yc-dx",
+            color: "pink",
+          },
+          {
+            index: 7,
+            name: "Yuchen Chang & Dong Xing",
+            url: "https://www.rolodex.cc/ec-qz",
+            color: "blue",
+          },
+          { index: 8, name: "", url: undefined, color: "lightgray" },
+        ];
+
+        // color palette for non-rolobeing pages
+        const colors = ["#8B5E3C", "#A3A847", "#5E8B7E"];
+
+        // Create and append dots
+        for (let i = 0; i < links.length; i++) {
+          const dotIsActive = links[i].url != null;
+          const dot = document.createElement("div");
+          dot.classList.add("dot");
+          dot.style.display = "block";
+
+          if (dotIsActive) {
+            dot.style.cursor = "pointer";
+          }
+
+          dot.style.backgroundColor = links[i].color != null ? "black" : "gray";
+
+          dot.onclick = () => {
+            if (dotIsActive) {
+              window.parent.location.href = links[i].url;
+            }
+          };
+
+          dot.addEventListener("mouseover", () => {
+            if (dotIsActive) {
+              dot.style.backgroundColor =
+                links[i].color != null
+                  ? links[i].color
+                  : colors[i % colors.length];
+            }
+          });
+
+          dot.addEventListener("click", () => {
+            if (dotIsActive) {
+              dot.style.backgroundColor =
+                links[i].color != null
+                  ? links[i].color
+                  : colors[i % colors.length];
+            }
+          });
+
+          container.appendChild(dot);
+        }
+
+        const dots = document.querySelectorAll(".dot");
+
+        // Set initial position
+        dots.forEach((dot) => {
+          dot.style.top = "50%";
+          dot.style.left = "50%";
+          dot.style.transition = "none";
+          dot.style.transform = `translate(-50%, -50%) rotate(${
+            Math.random() * 360
+          }deg)`;
+        });
+
+        void dots[0].offsetWidth; // force reflow
+
+        // --- movement logic based on screen size ---
+        function moveDot(dot) {
+          const screenWidth = window.innerWidth;
+          const screenHeight = window.innerHeight;
+
+          const maxDistanceX = screenWidth * 0.4; // max 40% of screen width
+          const maxDistanceY = screenHeight * 0.4; // max 40% of screen height
+
+          const angle = Math.random() * Math.PI * 2;
+          const translateX = Math.cos(angle) * maxDistanceX;
+          const translateY = Math.sin(angle) * maxDistanceY;
+
+          dot.style.transition = "transform 15s linear";
+          dot.style.transform = `translate(${translateX}px, ${translateY}px) rotate(${
+            Math.random() * 360
+          }deg)`;
+        }
+
+        // Move and animate dots
+        dots.forEach((dot) => {
+          moveDot(dot); // first move
+
+          dot.addEventListener("transitionend", () => {
+            moveDot(dot); // move again when finished
+          });
+
+          // Hover pause/resume
+          dot.addEventListener("mouseover", () => {
+            const computedStyle = window.getComputedStyle(dot);
+            const matrix = new WebKitCSSMatrix(computedStyle.transform);
+            dot.style.transition = "none";
+            dot.style.transform = `translate(${matrix.m41}px, ${
+              matrix.m42
+            }px) rotate(${Math.random() * 360}deg)`;
+          });
+
+          dot.addEventListener("mouseout", () => {
+            moveDot(dot);
+          });
+        });
+
+        // Hide static dots
+        document.querySelector(".o1").style.backgroundColor = "transparent";
+        document.querySelector(".o2").style.backgroundColor = "transparent";
+        finaldots.forEach((element) => {
+          element.classList.add("hide");
+        });
+
+        // On screen resize, re-trigger motion to adjust to new screen size
+        window.addEventListener("resize", () => {
+          dots.forEach((dot) => {
+            moveDot(dot); // adapt to new screen dimensions
+          });
+        });
+      }
+    </script>
+  </body>
+</html>

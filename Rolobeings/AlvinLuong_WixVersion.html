@@ -1,0 +1,1087 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wdth,wght@0,62.5..100,100..900;1,62.5..100,100..900&display=swap"
+      rel="stylesheet"
+    />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Alvin Luong</title>
+    <style>
+      /* Entry overlay: w/ prompt and dot to click in */
+      .entry-overlay {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        position: fixed;
+        z-index: 888;
+        left: 0;
+        top: 0;
+        width: 100vw;
+        height: 100vh;
+        overflow: auto;
+        background-color: rgba(247, 247, 237, 0.95);
+        opacity: 1;
+        /* Fully visible */
+        transition: opacity 1.5s ease;
+        /* Smooth fade-out effect */
+      }
+
+      .hidden-entry-overlay {
+        opacity: 0;
+        pointer-events: none;
+        /* Prevent interaction */
+      }
+
+      #entry-dot {
+        width: 15px;
+        height: 15px;
+        background-color: transparent;
+        border: 1px solid black;
+        border-radius: 50%;
+        cursor: pointer;
+        transition: background-color 0.5s ease;
+        /* Smooth fade-out effect */
+      }
+
+      .prompt-text {
+        font-family: "Noto Sans", sans-serif;
+        font-optical-sizing: auto;
+        font-weight: 300;
+        font-size: 14px;
+        font-style: normal;
+        font-variation-settings: "wdth" 87.5;
+        color: black;
+      }
+
+      body {
+        margin: 0;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        background-color: black;
+        font-family: "Noto Sans", sans-serif;
+        font-optical-sizing: auto;
+        font-weight: 200;
+        font-size: 14px;
+        font-style: normal;
+        font-variation-settings: "wdth" 100;
+        color: white;
+        overflow: hidden;
+      }
+
+      @media (max-width: 768px) {
+        body {
+          font-size: 16px;
+        }
+      }
+
+      @media (max-width: 480px) {
+        body {
+          font-size: 12px;
+        }
+      }
+
+      /* Toggle styling */
+      .toggle {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        position: absolute;
+        z-index: 99;
+        right: 1rem;
+        top: 1rem;
+        font-family: "Noto Sans", sans-serif;
+        font-optical-sizing: auto;
+        font-weight: 300;
+        font-size: 13px;
+        font-style: normal;
+        font-variation-settings: "wdth" 87.5;
+      }
+
+      /* The box around the toggle */
+      .switch {
+        position: relative;
+        display: inline-block;
+        width: 2rem;
+        height: 0.9rem;
+        margin: 0rem 0.4rem;
+      }
+
+      /* Hide default HTML checkbox */
+      .switch input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+      }
+
+      /* The slider */
+      .slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #9e9e9e;
+        -webkit-transition: 0.4s;
+        transition: 0.4s;
+      }
+
+      .slider:before {
+        position: absolute;
+        content: "";
+        height: 0.7rem;
+        width: 0.7rem;
+        left: 0.1rem;
+        bottom: 0.1rem;
+        background-color: white;
+        -webkit-transition: 0.4s;
+        transition: 0.4s;
+      }
+
+      input:checked + .slider {
+        background-color: #9e9e9e;
+      }
+
+      input:focus + .slider {
+        box-shadow: 0 0 1px #9e9e9e;
+      }
+
+      input:checked + .slider:before {
+        -webkit-transform: translateX(1.1rem);
+        -ms-transform: translateX(1.1rem);
+        transform: translateX(1.1rem);
+      }
+
+      /* Rounded sliders */
+      .slider.round {
+        border-radius: 34px;
+      }
+
+      .slider.round:before {
+        border-radius: 50%;
+      }
+
+      .italic {
+        font-style: italic;
+      }
+
+      .slideshow-container {
+        display: flex;
+        position: relative;
+        width: 80vw;
+        height: 80vh;
+        overflow: visible;
+        justify-content: center;
+      }
+
+      .blur {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        filter: blur(100px);
+      }
+
+      .text-slide {
+        position: absolute;
+        width: 90%;
+        height: 100%;
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 100;
+        text-align: left;
+        z-index: 10;
+        padding: 2rem;
+        box-sizing: border-box;
+        overflow-y: auto;
+        white-space: pre-wrap;
+        left: 45%;
+        transform: translateX(-50%);
+      }
+
+      #slide-text {
+        padding-top: 100px;
+      }
+
+      /* Chrome, Safari, Edge */
+      .text-slide::-webkit-scrollbar {
+        width: 0px;
+        /* Completely hides scrollbar */
+      }
+
+      .text-slide::-webkit-scrollbar-thumb {
+        background: transparent;
+      }
+
+      /* Firefox */
+      .text-slide {
+        scrollbar-width: none;
+        /* Hides scrollbar */
+        -ms-overflow-style: none;
+        /* IE/Edge */
+      }
+
+      .text-slide {
+        -ms-overflow-style: none;
+        /* IE/Edge */
+        scrollbar-width: none;
+        /* Firefox */
+      }
+
+      .text-slide::-webkit-scrollbar {
+        display: none;
+        /* Chrome/Safari */
+      }
+
+      .controls {
+        position: absolute;
+        top: 95%;
+        left: 0;
+        right: 0;
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        transform: translateY(-50%);
+        z-index: 2;
+        pointer-events: none;
+      }
+
+      .controls button {
+        margin: 2rem;
+        width: 15px;
+        height: 15px;
+        border: 1px solid white;
+        border-radius: 50%;
+        background: transparent;
+        font-size: 0;
+        cursor: pointer;
+        pointer-events: all;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        transition:
+          box-shadow 0.3s ease,
+          transform 0.2s ease;
+      }
+
+      .controls button:disabled {
+        opacity: 0;
+        cursor: default;
+        transform: none;
+      }
+
+      .controls button:active {
+        box-shadow: 0 0 20px 5px rgba(255, 255, 255, 0.4);
+        transform: scale(1);
+      }
+
+      .controls button:hover:not(:disabled) {
+        transform: scale(1.3);
+      }
+
+      /* The pulsing element */
+      .pulse {
+        width: 120px;
+        height: 120px;
+        /* background-color: black; */
+        box-shadow: 0 0 10px 5px rgba(255, 255, 255, 0.4);
+        border-radius: 50%;
+        animation: pulseScale 2s infinite ease-in-out;
+        /* Smooth scaling */
+        transform-origin: center;
+      }
+
+      /* Keyframes for pulsing */
+      @keyframes pulseScale {
+        0% {
+          transform: scale(1);
+          box-shadow: 0 0 10px 5px rgba(255, 255, 255, 0.4);
+        }
+
+        50% {
+          transform: scale(1.2);
+          box-shadow: 0 0 10px 5px rgba(255, 255, 255, 0.4);
+        }
+
+        100% {
+          transform: scale(1);
+          box-shadow: 0 0 10px 5px rgba(255, 255, 255, 0.4);
+        }
+      }
+      /* Optional: paused state */
+      .paused {
+        animation-play-state: paused;
+      }
+
+      .full-essay-container {
+        color: black;
+        background: transparent;
+        overflow-y: scroll;
+        height: 100vh;
+        width: 100%;
+        /* padding-top: 130px; */
+        scrollbar-width: thin;
+        margin-left: 2vw;
+        scrollbar-color: rgba(0, 0, 0, 0) transparent;
+      }
+
+      .full-essay-container::-webkit-scrollbar {
+        width: 6px;
+      }
+
+      .full-essay-container::-webkit-scrollbar-thumb {
+        background-color: rgba(0, 0, 0, 0.2);
+        border-radius: 3px;
+      }
+
+      .full-essay-container::-webkit-scrollbar-track {
+        background: transparent;
+      }
+
+      .header {
+        width: 100%;
+        height: 100px;
+        overflow: hidden;
+        display: flex;
+        justify-content: center;
+        position: relative;
+        padding: 20px;
+      }
+
+      .dot {
+        position: absolute;
+        height: 15px;
+        width: 15px;
+        background-color: transparent;
+        border: 1px solid #f7f7ed;
+        border-radius: 50%;
+        cursor: pointer;
+        z-index: 10;
+        /* Ensure dots are clickable */
+      }
+
+      /* Positioning the dots in a triangle formation */
+      #dot1 {
+        top: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+      }
+
+      #dot1::after {
+        content: "Rolodex Homepage";
+        font-family: "Noto Sans", sans-serif;
+        font-optical-sizing: auto;
+        font-weight: 300;
+        font-size: 10px;
+        font-style: normal;
+        font-variation-settings: "wdth" 100;
+        position: absolute;
+        top: -20px;
+        left: 50%;
+        transform: translateX(10%);
+        background-color: white;
+        color: black;
+        padding: 5px 10px;
+        border-radius: 5px;
+        white-space: nowrap;
+        opacity: 0;
+        transition: opacity 0.3s ease-in-out;
+        pointer-events: none;
+        z-index: 15;
+      }
+
+      #dot1:hover::after {
+        opacity: 1;
+      }
+
+      #dot2 {
+        top: 60px;
+        left: calc(50% - 30px);
+      }
+
+      #dot2::after {
+        content: "Alvin Luong's Bio";
+        font-family: "Noto Sans", sans-serif;
+        font-optical-sizing: auto;
+        font-weight: 300;
+        font-size: 10px;
+        font-style: normal;
+        font-variation-settings: "wdth" 100;
+        position: absolute;
+        top: -20px;
+        left: 50%;
+        transform: translateX(-110%);
+        background-color: white;
+        color: black;
+        padding: 5px 10px;
+        border-radius: 5px;
+        white-space: nowrap;
+        opacity: 0;
+        transition: opacity 0.3s ease-in-out;
+        pointer-events: none;
+        z-index: 15;
+      }
+
+      #dot2:hover::after {
+        opacity: 1;
+      }
+
+      #dot3 {
+        top: 60px;
+        left: calc(50% + 15px);
+        background-color: #f7f7ed;
+      }
+
+      #dot3::after {
+        content: "Refresh Content";
+        font-family: "Noto Sans", sans-serif;
+        font-optical-sizing: auto;
+        font-weight: 300;
+        font-size: 10px;
+        font-style: normal;
+        font-variation-settings: "wdth" 100;
+        position: absolute;
+        top: -20px;
+        left: 50%;
+        transform: translateX(10%);
+        background-color: white;
+        color: black;
+        padding: 5px 10px;
+        border-radius: 5px;
+        white-space: nowrap;
+        opacity: 0;
+        transition: opacity 0.3s ease-in-out;
+        pointer-events: none;
+        z-index: 15;
+      }
+
+      #dot3:hover::after {
+        opacity: 1;
+      }
+
+      .full-essay-container {
+        font-size: 0.9rem;
+      }
+
+      #dot1::after,
+      #dot2::after,
+      #dot3::after {
+        font-size: 10px;
+        padding: 4px 8px;
+      }
+
+      .fish-layer {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        opacity: 0;
+        transition: opacity 0.5s ease;
+      }
+
+      #bg-img {
+        background-image: url(https://static.wixstatic.com/media/2fa7ac_0d9fa999da2f437ea462d10e58b0bd03~mv2.png);
+        background-size: 100vw;
+        margin: 0;
+        transition: opacity 1s ease-in-out;
+        /* background-image: url(https://static.wixstatic.com/media/2fa7ac_f69b513…~mv2.jpg); */
+        width: 100vw;
+        height: auto;
+        position: absolute;
+        top: 0;
+        left: 0;
+      }
+
+      .img-full {
+        background-size: 100vw;
+        margin: 0;
+        transition: opacity 1s ease-in-out;
+        /* background-image: url(https://static.wixstatic.com/media/2fa7ac_f69b513…~mv2.jpg); */
+        width: 100vw;
+        height: 100vh;
+        position: absolute;
+        top: 0;
+        left: 0;
+      }
+
+      .hidden {
+        opacity: 0;
+      }
+
+      .content-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        width: 35vw;
+        height: 30vh;
+        padding: 10rem;
+        background-color: rgba(255, 255, 255, 0.25);
+        border: 1px solid white;
+        transition: opacity 1s ease-in-out;
+      }
+
+      .paragraph {
+        text-align: justify;
+        text-justify: auto;
+        color: white;
+        font-family: "Noto Sans", sans-serif;
+        font-optical-sizing: auto;
+        font-weight: 200;
+        font-size: 14px;
+        font-style: normal;
+        font-variation-settings: "wdth" 100;
+        transition: opacity 1s ease-in-out;
+      }
+
+      .content-img {
+        position: absolute;
+        border: 1px solid white;
+        max-height: 75vh;
+        width: auto;
+        transition: opacity 1s ease-in-out;
+      }
+
+      .caption-img-container {
+        transition: opacity 1s ease-in-out;
+        transition: opacity 1s ease-in-out;
+        width: 150%;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+      }
+
+      #captioned-img {
+        max-width: 30vw;
+        height: auto;
+        transition: opacity 1s ease-in-out;
+      }
+
+      .captioned-gif {
+        max-width: 15vw;
+        height: auto;
+        padding-right: 0.5rem;
+        transition: opacity 1s ease-in-out;
+      }
+
+      #full-essay-container {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        transition: opacity 1s ease-in-out;
+      }
+
+      .full-essay-wide {
+        width: 40%;
+      }
+
+      #full-essay-img-0 {
+        width: 40%;
+      }
+
+      #full-essay-img-1 {
+        width: 50%;
+        margin: 6rem 0rem 2.5rem;
+      }
+
+      #full-essay-img-2 {
+        width: 25%;
+        margin: 0rem 0.5rem;
+      }
+
+      #full-essay-img-3 {
+        width: 25%;
+        height: 15%;
+        margin: 0rem 0.5rem;
+      }
+
+      #full-essay-img-4 {
+        width: 51.3%;
+        margin: 5rem 0rem 3rem;
+      }
+
+      #full-essay-img-5 {
+        width: 15%;
+        outline: 1px white solid;
+      }
+
+      #full-essay-img-6 {
+        width: 15%;
+        margin: 0rem 1rem;
+        outline: 1px white solid;
+      }
+
+      #full-essay-img-7 {
+        width: 15%;
+        outline: 1px white solid;
+      }
+
+      .horiz-row {
+        display: flex;
+        flex-direction: row;
+        width: 100%;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .spacer {
+        height: 40vh;
+      }
+
+      @media (min-width: 768px) {
+        .surround-fish {
+          width: 2000px;
+          /* Larger screens */
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="entry-overlay">
+      <p class="prompt-text">ON ROOTING | INTERISLAND HISTORIES</p>
+      <div id="entry-dot"></div>
+    </div>
+    <div class="header">
+      <div class="dot" id="dot1" role="button"></div>
+      <div class="dot" id="dot2" role="button"></div>
+      <div class="dot" id="dot3" role="button"></div>
+    </div>
+    <div class="toggle">
+      <p class="toggle-label-interactive italic">interactive read</p>
+      <label class="switch">
+        <input id="myInput" type="checkbox" />
+        <span class="slider round"></span>
+      </label>
+      <p class="toggle-label-essay">full essay</p>
+    </div>
+    <div class="controls">
+      <button id="prevBtn" onclick="prevSlide()"></button>
+      <button id="nextBtn" class="pulse" onclick="nextSlide()"></button>
+    </div>
+    <div id="bg-img">
+      <img
+        class="img-full"
+        id="img-0"
+        src="https://static.wixstatic.com/media/2fa7ac_0d9fa999da2f437ea462d10e58b0bd03~mv2.png"
+      />
+      <img
+        class="img-full hidden"
+        id="img-1"
+        src="https://static.wixstatic.com/media/2fa7ac_a870be75846a4e448f96e84195fe5e12~mv2.png"
+      />
+      <img
+        class="img-full hidden"
+        id="img-2"
+        src="https://static.wixstatic.com/media/2fa7ac_8ef189116ba64a59a508030db3e6b667~mv2.png"
+      />
+      <img
+        class="img-full hidden"
+        id="img-3"
+        src="https://static.wixstatic.com/media/2fa7ac_a968801cd6914f58a364f399dc65c1f9~mv2.png"
+      />
+      <img
+        class="img-full hidden"
+        id="img-4"
+        src="https://static.wixstatic.com/media/2fa7ac_016ee21976484a8682156357bf9c8ac2~mv2.png"
+      />
+      <img
+        class="img-full hidden"
+        id="img-5"
+        src="https://static.wixstatic.com/media/2fa7ac_0dddb60269b04e7bbec0e1480279cf78~mv2.png"
+      />
+      <img
+        class="img-full hidden"
+        id="img-6"
+        src="https://static.wixstatic.com/media/2fa7ac_d7b608afdbb8422b81642037fbebd933~mv2.png"
+      />
+      <img
+        class="img-full hidden"
+        id="img-7"
+        src="https://static.wixstatic.com/media/2fa7ac_0d9fa999da2f437ea462d10e58b0bd03~mv2.png"
+      />
+      <img
+        class="img-full hidden"
+        id="img-8"
+        src="https://static.wixstatic.com/media/2fa7ac_8ef189116ba64a59a508030db3e6b667~mv2.png"
+      />
+    </div>
+    <div class="text-slide" id="content" style="position: relative; z-index: 2">
+      <!-- Style 1 -->
+      <div class="content-container hidden">
+        <p class="paragraph"></p>
+        <p class="paragraph"></p>
+        <div class="caption-img-container"></div>
+      </div>
+      <!-- Style 2 -->
+      <img class="content-img hidden" url="" />
+      <!-- full essay -->
+      <div class="hidden" id="full-essay-container">
+        <div class="full-essay-wide paragraph">
+          At a zenith in Hong Kong’s history emerged the development of The Sea
+          Ranch where Seawitch now resides. A moment that was a mere decade
+          since the riots within the colony and the deep upheavals across the
+          border in the Mainland. Perhaps then, The Sea Ranch was built on the
+          southern side of Lantau Island, rather than the north, east, or west
+          to avoid the sight of refugees from the Mainland in pursuit of Hong
+          Kong. Such a stain would ruin this sanctuary hidden from the wretched
+          of the earth.
+        </div>
+        <p class="full-essay-wide paragraph">
+          Yet, by the time that The Sea Ranch was completed in 1979, a different
+          group of refugees emerged and disrupted the prized view of the
+          southern horizon. Initially invisible due to their vast distance away
+          from The Sea Ranch, the Vietnamese had gradually grown from being
+          doubtful floaters in the gaze of the southern sea to being fully
+          realized bodies and vessels that crashed, drowned, and emerged onto
+          the islands that constitute Hong Kong. The refugees from Vietnam had
+          landed on Lantau Island and were later placed in prison camps at Chi
+          Ma Wan and Tong Fuk Miu Wan. Nearby, the refugees were also detained
+          on the Soko Islands. Separated only by a short distance of hill,
+          forest, and sea, The Sea Ranch was seemingly surrounded by the
+          wretched of the earth.
+        </p>
+        <p class="caption">
+          A former Vietnamese refugee camp at Chi Ma Wan, Lantau Island
+        </p>
+        <img
+          id="full-essay-img-0"
+          src="https://static.wixstatic.com/media/2fa7ac_f4a561ed35d74d7899a6550db5ebad2d~mv2.jpg"
+          alt="A yellow house, a former Vietnamese refugee camp at Chi Ma Wan, Lantau Island."
+        />
+        <img
+          id="full-essay-img-1"
+          src="https://static.wixstatic.com/media/2fa7ac_8511ac7540454395b93e0e2085720abe~mv2.jpg"
+          alt="A wide view of a former prison camp on Lantau Island."
+        />
+        <div class="horiz-row">
+          <img
+            id="full-essay-img-2"
+            src="https://static.wixstatic.com/media/2fa7ac_416a4e4036bc4f29842ff36b7a736230~mv2.jpg"
+            alt="A vertical close up into one of the courtyards in the prison camp."
+          />
+          <img
+            id="full-essay-img-3"
+            src="https://static.wixstatic.com/media/2fa7ac_a800c212d12a4bf5a0c0ca76a9803b3f~mv2.jpg"
+            alt="A Location map of Chi Ma Wan"
+          />
+        </div>
+        <img
+          id="full-essay-img-4"
+          src="https://static.wixstatic.com/media/2fa7ac_10394bc2abfa48138ad5ce7c2a3bfa4d~mv2.jpg"
+          alt="An image of a green building, surrounded by overgrown foliage"
+        />
+        <div class="full-essay-wide paragraph">
+          The Sea Ranch is now patinaed and bleached from decades of touch by
+          crustaceans, humans and the airy spry of the briny sea. The aged
+          private ferry that shuttles its residence to and from Cheung Chau had
+          needed repair on the first weekend that I had arrived to Seawitch. The
+          burbling ferry can be heard across the entire community, signaling to
+          the residents to make haste for the journeys.
+        </div>
+        <p class="full-essay-wide paragraph">
+          The Vietnamese had long left the perimeter of The Sea Ranch and in
+          their place in these twilight days, the wretched have returned and
+          even set foot in this once kettled place. Migrant workers from the
+          Mainland have started to live in The Sea Ranch through an oblique
+          arrangement with a local landlord who had converted once lavish flats
+          into dense dormitories of bunk beds, cold industrial lighting, and a
+          canteen. The workers, who are mostly men appearing in their twenties
+          or fifties, make round-the-clock trips from their own private boat
+          between The Sea Ranch and neighboring Shek Kwu Chau island to build a
+          waste incinerator plant. Their leisurely hours are spent fishing by
+          the pier of The Sea Ranch and video calling family and friends from
+          the balconies of The Sea Ranch. When the workers head out to Cheung
+          Chau, they bring back cartons of Coca Cola and Snow Beer. Even without
+          their industrial clothing, the workers in their leisurely atire stand
+          out in their appearance from the long-term residents of The Sea Ranch.
+          A gem of colonial Hong Kong has become the staging ground for the
+          waste disposable of the contemporary special administrative region. A
+          place once a symbol of distinction and difference from the masses in
+          colony and the Mainland has become a place among the masses.
+        </p>
+        <p class="caption">Workers arriving from their night shift.</p>
+        <div class="horiz-row">
+          <img
+            id="full-essay-img-5"
+            src="https://static.wixstatic.com/media/2fa7ac_f6e889a5877949aabb49a74824b4b03e~mv2.gif"
+            alt="A gif of a port lights rippling on the night water"
+          />
+          <img
+            id="full-essay-img-6"
+            src="https://static.wixstatic.com/media/2fa7ac_09d93679b3a74a57b76f3fcedcc1e8ca~mv2.gif"
+            alt="A gif of a ferry's lights moving through the night"
+          />
+          <img
+            id="full-essay-img-7"
+            src="https://static.wixstatic.com/media/2fa7ac_ae5b613a9c7a403693e5fb1d2debe3a5~mv2.gif"
+            alt="A gif of a ferry docking at the port at Sea Ranch"
+          />
+        </div>
+        <div class="spacer"></div>
+      </div>
+    </div>
+
+    <script>
+      let fullessay = false;
+
+      // Entry overlay
+      var entryOverlay = document.getElementsByClassName("entry-overlay")[0];
+      const entryDot = document.getElementById("entry-dot");
+      entryDot.addEventListener("mouseover", () => {
+        entryDot.style.backgroundColor = "#B42F11";
+      });
+      entryDot.addEventListener("mouseout", () => {
+        entryDot.style.backgroundColor = "transparent";
+      });
+      entryDot.addEventListener("click", () => {
+        entryOverlay.classList.add("hidden-entry-overlay");
+      });
+
+      const slideContent = [
+        {
+          // 0
+          text: [
+            "At a zenith in Hong Kong’s history emerged the development of The Sea Ranch where Seawitch now resides. A moment that was a mere decade since the riots within the colony and the deep upheavals across the border in the Mainland. Perhaps then, The Sea Ranch was built on the southern side of Lantau Island, rather than the north, east, or west to avoid the sight of refugees from the Mainland in pursuit of Hong Kong. Such a stain would ruin this sanctuary hidden from the wretched of the earth.",
+            "Yet, by the time that The Sea Ranch was completed in 1979, a different group of refugees emerged and disrupted the prized view of the southern horizon. Initially invisible due to their vast distance away from The Sea Ranch, the Vietnamese had gradually grown from being doubtful floaters in the gaze of the southern sea to being fully realized bodies and vessels that crashed, drowned, and emerged onto the islands that constitute Hong Kong. The refugees from Vietnam had landed on Lantau Island and were later placed in prison camps at Chi Ma Wan and Tong Fuk Miu Wan. Nearby, the refugees were also detained on the Soko Islands. Separated only by a short distance of hill, forest, and sea, The Sea Ranch was seemingly surrounded by the wretched of the earth.",
+          ],
+          img: null,
+        },
+        {
+          // 1
+          text: [
+            "A former Vietnamese refugee camp at Chi Ma Wan, Lantau Island",
+          ],
+          img: [
+            "https://static.wixstatic.com/media/2fa7ac_f4a561ed35d74d7899a6550db5ebad2d~mv2.jpg",
+          ],
+        },
+        {
+          // 2
+          text: null,
+          img: [
+            "https://static.wixstatic.com/media/2fa7ac_416a4e4036bc4f29842ff36b7a736230~mv2.jpg",
+          ],
+        },
+        {
+          // 3
+          text: null,
+          img: null,
+        },
+        {
+          // 4
+          text: null,
+          img: null,
+        },
+        {
+          // 5
+          text: null,
+          img: null,
+        },
+        {
+          // 6
+          text: null,
+          img: null,
+        },
+        {
+          // 7
+          text: [
+            "The Sea Ranch is now patinaed and bleached from decades of touch by crustaceans, humans and the airy spry of the briny sea. The aged private ferry that shuttles its residence to and from Cheung Chau had needed repair on the first weekend that I had arrived to Seawitch. The burbling ferry can be heard across the entire community, signaling to the residents to make haste for the journeys.",
+            "The Vietnamese had long left the perimeter of The Sea Ranch and in their place in these twilight days, the wretched have returned and even set foot in this once kettled place. Migrant workers from the Mainland have started to live in The Sea Ranch through an oblique arrangement with a local landlord who had converted once lavish flats into dense dormitories of bunk beds, cold industrial lighting, and a canteen. The workers, who are mostly men appearing in their twenties or fifties, make round-the-clock trips from their own private boat between The Sea Ranch and neighboring Shek Kwu Chau island to build a waste incinerator plant. Their leisurely hours are spent fishing by the pier of The Sea Ranch and video calling family and friends from the balconies of The Sea Ranch. When the workers head out to Cheung Chau, they bring back cartons of Coca Cola and Snow Beer. Even without their industrial clothing, the workers in their leisurely atire stand out in their appearance from the long-term residents of The Sea Ranch. A gem of colonial Hong Kong has become the staging ground for the waste disposable of the contemporary special administrative region. A place once a symbol of distinction and difference from the masses in colony and the Mainland has become a place among the masses.",
+          ],
+          img: null,
+        },
+        {
+          // 8
+          text: ["Workers arriving from their night shift"],
+          img: [
+            "https://static.wixstatic.com/media/2fa7ac_f6e889a5877949aabb49a74824b4b03e~mv2.gif",
+            "https://static.wixstatic.com/media/2fa7ac_09d93679b3a74a57b76f3fcedcc1e8ca~mv2.gif",
+            "https://static.wixstatic.com/media/2fa7ac_ae5b613a9c7a403693e5fb1d2debe3a5~mv2.gif",
+          ],
+        },
+      ];
+
+      let currentSlide = 0;
+      let previousSlide = 0;
+
+      const bgImg = document.getElementById("bg-img");
+      const slideText = document.getElementById("content");
+      const fullEssayContainer = document.getElementById(
+        "full-essay-container",
+      );
+
+      const prevBtn = document.getElementById("prevBtn");
+      const nextBtn = document.getElementById("nextBtn");
+      const contentContainer =
+        document.getElementsByClassName("content-container")[0];
+      const captionImgContainer = document.getElementsByClassName(
+        "caption-img-container",
+      )[0];
+      const paragraph = document.getElementsByClassName("paragraph")[0];
+      const paragraph01 = document.getElementsByClassName("paragraph")[1];
+      const contentImg = document.getElementsByClassName("content-img")[0];
+
+      // Pause animation on hover
+      nextBtn.addEventListener("mouseenter", () => {
+        nextBtn.classList.add("paused");
+      });
+
+      // Updates the content of the slides
+      function updateContent() {
+        if (slideContent[currentSlide].text && slideContent[currentSlide].img) {
+          // text and image slides
+          paragraph.textContent = slideContent[currentSlide].text[0];
+          paragraph01.textContent = "";
+          if (slideContent[currentSlide].img.length > 1) {
+            captionImgContainer.innerHTML = `<img class="captioned-gif" src="${slideContent[currentSlide].img[0]}" /><img class="captioned-gif" src="${slideContent[currentSlide].img[1]}" /><img class="captioned-gif" src="${slideContent[currentSlide].img[2]}" />`;
+          } else {
+            captionImgContainer.innerHTML = `<img id="captioned-img" src="${slideContent[currentSlide].img[0]}" />`;
+          }
+          contentContainer.classList.remove("hidden");
+          contentImg.classList.add("hidden");
+        } else if (slideContent[currentSlide].text) {
+          // only text slides
+          paragraph.textContent = slideContent[currentSlide].text[0];
+          paragraph01.textContent = slideContent[currentSlide].text[1];
+          captionImgContainer.innerHTML = "";
+          contentContainer.classList.remove("hidden");
+          contentImg.classList.add("hidden");
+        } else if (slideContent[currentSlide].img) {
+          // only image slides
+          contentContainer.classList.add("hidden");
+          contentImg.classList.remove("hidden");
+          // captionImgContainer.innerHTML = "";
+          contentImg.src = slideContent[currentSlide].img[0];
+        } else {
+          // no text or image slides
+          paragraph.textContent = "";
+          paragraph01.textContent = "";
+          captionImgContainer.innerHTML = "";
+          contentImg.src = "";
+          contentContainer.classList.add("hidden");
+          contentImg.classList.add("hidden");
+        }
+      }
+
+      function updateSlide() {
+        if (previousSlide !== currentSlide) {
+          prevImg = document.getElementById(`img-${previousSlide}`);
+          prevImg.classList.add("hidden");
+        }
+
+        const currImg = document.getElementById(`img-${currentSlide}`);
+        currImg.classList.remove("hidden");
+
+        prevBtn.disabled = currentSlide === 0;
+        nextBtn.disabled = currentSlide === slideContent.length - 1;
+
+        updateContent();
+
+        if (fullessay == true) {
+          const currImg = document.getElementById(`img-${currentSlide}`);
+          currImg.classList.add("hidden");
+          const fullEssayBg = document.getElementById(`img-${0}`);
+          fullEssayBg.classList.remove("hidden");
+          fullEssayContainer.classList.remove("hidden");
+          contentContainer.classList.add("hidden");
+          contentImg.classList.add("hidden");
+        } else {
+          fullEssayContainer.classList.add("hidden");
+          updateContent();
+        }
+      }
+
+      // controls for next and back buttons
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "ArrowRight") {
+          nextSlide();
+        } else if (e.key === "ArrowLeft") {
+          prevSlide();
+        }
+      });
+
+      function nextSlide() {
+        nextBtn.classList.remove("pulse");
+        if (currentSlide < slideContent.length - 1) {
+          previousSlide = currentSlide;
+          currentSlide++;
+          updateSlide();
+        }
+      }
+
+      function prevSlide() {
+        if (currentSlide > 0) {
+          previousSlide = currentSlide;
+          currentSlide--;
+          updateSlide();
+        }
+      }
+
+      updateSlide();
+
+      document.getElementById("dot3").addEventListener("click", () => {
+        window.parent.location.href = "https://www.rolodex.cc/al"; // Refresh current page
+      });
+
+      // Set up event listeners
+      document.getElementById("dot1").addEventListener("click", (event) => {
+        event.preventDefault();
+        // Navigate to home page
+        window.parent.location.href = "https://www.rolodex.cc/rolodex-home"; // Update with your actual home page URL
+      });
+
+      document.getElementById("dot2").addEventListener("click", (event) => {
+        event.preventDefault();
+        // Navigate to about page
+        window.parent.location.href = "https://www.rolodex.cc/al-bio"; // Update with your actual about page URL
+      });
+
+      const interactiveText = document.getElementsByClassName(
+        "toggle-label-interactive",
+      )[0];
+      const essayText =
+        document.getElementsByClassName("toggle-label-essay")[0];
+
+      // Attach event listeners after DOM loads
+      window.onload = function () {
+        const inputEl = document.getElementById("myInput");
+        // Trigger when input gets focus (selected)
+        inputEl.addEventListener("click", onInputSelected);
+        updateContent();
+        // Function to run when input is selected (focused)
+        function onInputSelected() {
+          nextBtn.classList.remove("pulse");
+          fullessay = !fullessay;
+          updateSlide();
+          if (fullessay) {
+            essayText.classList.add("italic");
+            interactiveText.classList.remove("italic");
+            prevBtn.disabled = true;
+            nextBtn.disabled = true;
+          } else {
+            essayText.classList.remove("italic");
+            interactiveText.classList.add("italic");
+            prevBtn.disabled = currentSlide === 0;
+            nextBtn.disabled = currentSlide === slideContent.length - 1;
+          }
+        }
+      };
+    </script>
+  </body>
+</html>

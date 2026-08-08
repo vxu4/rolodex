@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DrumChallenge.com</title>
+    <style>
+      #div_patterns {
+        display: inline-block;
+        margin: 20px;
+      }
+      #div_tempo {
+        display: inline-block;
+        margin: 20px;
+      }
+      #drumscore {
+        position: relative;
+        width: 100%;
+        height: 200px;
+      }
+      #drumscore canvas {
+        position: absolute;
+        top: 0px;
+        left: 0px;
+      }
+      canvas {
+        border: 1px solid black;
+        width: 100%;
+        height: 200px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="params">
+      <div id="div_patterns"></div>
+      <div id="div_tempo">
+        <span>Tempo :</span>
+        <input type="text" id="value_tempo" value="60" />
+
+        <span>Delai :</span>
+        <span id="value_delai"></span>
+
+        <span>Timer :</span>
+        <span id="value_timer"></span>
+      </div>
+      <button id="launch" class="launch" type="button">Lancer challenge</button>
+    </div>
+    <div id="drumscore">
+      <canvas id="score"></canvas>
+      <canvas id="scoreCanvas"></canvas>
+    </div>
+    <script src="metronome.js"></script>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const audioContext = new (window.AudioContext ||
+          window.webkitAudioContext)();
+        const metronome = new Metronome(audioContext);
+
+        var Current_Audio = false;
+        var Challenge_Launched = false;
+        var Current_Animation = false;
+        var Timer_Challenge = false;
+        var Timer_General = false;
+        var Tempo = 60;
+        var Delai;
+        var Distance_Between_Notes = 30;
+        var General_Timer = 0;
+        var NextNoteTime = 0;
+        //
+        //
+        //
+        const LaunchButton = document.getElementById("launch");
+        LaunchButton.addEventListener("click", function () {
+          if (Challenge_Launched == false) {
+            CreerChallenge();
+            Challenge_Launched = true;
+
+            metronome.setTempo(30);
+            metronome.start();
+
+            Timer_General = setInterval(SetGeneralTimer, 1000);
+            NextNoteTime = performance.now();
+            //drawNotes();
+            requestAnimationFrame(drawNotes);
+          } else {
+            Challenge_Launched = false;
+            clearTimeout(Timer_Challenge);
+            clearInterval(Timer_General);
+            metronome.stop();
+            //cancelAnimationFrame(Current_Animation);
+          }
+        });
+        //
+        //
+        //
+        function SetTempo() {
+          Tempo = InputTempo.value;
+          Delai = (60000 / Tempo).toFixed(2);
+          document.getElementById("value_tempo").innerHTML = Tempo;
+          document.getElementById("value_delai").innerHTML = Delai + "ms";
+          metronome.setTempo(Tempo);
+          /*if (Challenge_Launched){
+                clearTimeout(Timer_Challenge);
+                //Timer_Challenge = setTimeout(drawNotes, Delai);
+            }*/
+        }
+        //
+        //
+        //
+        const drumscore = document.getElementById("drumscore");
+        //
+        // Canvas et contexte de la partition
+        //
+        const score = document.getElementById("score");
+        const scorectx = score.getContext("2d");
+        scorectx.canvas.width = drumscore.offsetWidth;
+        scorectx.canvas.height = drumscore.offsetHeight;
+        //
+        // Canvas et contexte des notes
+        //
+        const canvas = document.getElementById("scoreCanvas");
+        const ctx = canvas.getContext("2d");
+        ctx.canvas.width = drumscore.offsetWidth;
+        ctx.canvas.height = drumscore.offsetHeight;
+        //
+        // Lignes de la partition
+        //
+        const ScoreLines = [60, 80, 100, 120, 140];
+        //
+        //
+        //
+        const Elements = [{ Name: "Snare", Line: ScoreLines[2] }];
+        //
+        // Patterns
+        //
+        const Patterns = [
+          {
+            Name: "Rll",
+            Element: "Snare",
+            Notes: ["R", "l", "l"],
+            Checkbox: false,
+            Label: false,
+            Checked: false,
+          },
+          {
+            Name: "rrL",
+            Element: "Snare",
+            Notes: ["r", "r", "L"],
+            Checkbox: false,
+            Label: false,
+            Checked: false,
+          },
+        ];
+        //
+        // Affichage patterns
+        //
+        const DivPatterns = document.getElementById("div_patterns");
+        Patterns.forEach((pattern) => {
+          pattern.Checkbox = document.createElement("input");
+          pattern.Checkbox.type = "checkbox";
+
+          pattern.Label = document.createElement("label");
+          pattern.Label.htmlFor = pattern.Name;
+          pattern.Label.appendChild(document.createTextNode(pattern.Name));
+
+          DivPatterns.appendChild(pattern.Checkbox);
+          DivPatterns.appendChild(pattern.Label);
+        });
+        //
+        // Sounds
+        //
+        const Sounds = [
+          {
+            Element: "Snare",
+            Type: "Normal",
+            URL: "",
+            Audio: new Audio("snare_normal.wav"),
+          },
+          {
+            Element: "Snare",
+            Type: "Ghost",
+            Audio: new Audio("snare_ghost.wav"),
+          },
+        ];
+        //
+        // Notes à afficher
+        //
+
+        const measures = 20;
+        const noteWidth = 10;
+        const noteHeight = 10;
+        const scrollSpeed = 3;
+        //
+        // Main Droite ou Gauche
+        //
+        const isAccented = (str) => str === str.toUpperCase();
+        const isRightHand = (str) => str.toUpperCase() === "R";
+
+        //
+        // Créer le challenge
+        //
+        var notes = [];
+        var current_pattern;
+        //
+        // Dessiner la partition
+        //
+        function CreerChallenge() {
+          notes = [];
+          for (var i = 0; i < measures; i++) {
+            current_pattern = Patterns[Math.floor(Math.random() * 2)];
+
+            for (var j = 0; j < current_pattern.Notes.length; j++) {
+              notes.push({
+                x:
+                  canvas.width / 2 +
+                  180 +
+                  notes.length * Distance_Between_Notes +
+                  1,
+                y: isRightHand(current_pattern.Notes[j])
+                  ? ScoreLines[2] - 5
+                  : ScoreLines[2] + 5,
+                w: isAccented(current_pattern.Notes[j]) ? 7 : 4,
+                h: isAccented(current_pattern.Notes[j]) ? 5 : 3,
+                Audio: isAccented(current_pattern.Notes[j])
+                  ? new Audio("snare_normal.wav")
+                  : new Audio("snare_ghost.wav"),
+              });
+            }
+          }
+          console.log(notes);
+        }
+        //
+        // Dessiner la partition
+        //
+        function drawScore() {
+          scorectx.clearRect(0, 0, canvas.width, canvas.height);
+          scorectx.strokeStyle = "#A0A0A0";
+
+          ScoreLines.forEach((Line) => {
+            scorectx.beginPath();
+            scorectx.moveTo(0, Line);
+            scorectx.lineTo(canvas.width, Line);
+            scorectx.stroke();
+          });
+
+          scorectx.beginPath();
+          scorectx.moveTo(canvas.width / 2, ScoreLines[0]);
+          scorectx.lineTo(canvas.width / 2, ScoreLines[ScoreLines.length - 1]);
+          scorectx.stroke();
+        }
+        //
+        //
+        //
+        function nextNote() {
+          const secondsPerBeat = 60.0 / Tempo;
+          NextNoteTime += 1000 / Distance_Between_Notes;
+        }
+
+        //
+        // Dessiner et animer les notes
+        //
+        function drawNotes() {
+          NextNoteTime = performance.now();
+
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+          notes.forEach((note) => {
+            //ctx.fillRect(note.x, note.y, note.w, note.w);
+            ctx.beginPath();
+            ctx.ellipse(
+              note.x,
+              note.y,
+              note.w,
+              note.h,
+              Math.PI,
+              0,
+              2 * Math.PI
+            );
+            ctx.fill();
+
+            if (note.x > canvas.width / 2 - 5 && note.x <= canvas.width / 2) {
+              Current_Audio = note.Audio;
+              note.Audio.play();
+            }
+
+            //note.x -= scrollSpeed;
+            note.x -= Tempo / 15;
+          });
+
+          //const endTime = performance.now()
+
+          //console.log(`Call to doSomething took ${endTime - startTime} milliseconds ` + endTime)
+          //Current_Animation = requestAnimationFrame(drawNotes);
+          if (Challenge_Launched) {
+            //Timer_Challenge = setTimeout(drawNotes, 1);
+            Timer_Challenge = setTimeout(
+              () => requestAnimationFrame(drawNotes),
+              1
+            );
+          }
+        }
+
+        function SetGeneralTimer() {
+          const startTime = performance.now();
+          General_Timer++;
+          document.getElementById("value_timer").innerHTML = General_Timer;
+          const endTime = performance.now();
+        }
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,1987 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wdth,wght@0,62.5..100,100..900;1,62.5..100,100..900&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wdth,wght@0,62.5..100,100..900;1,62.5..100,100..900&display=swap"
+      rel="stylesheet"
+    />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Paula Pacheco</title>
+    <style>
+      body {
+        background-image: url(https://static.wixstatic.com/media/2fa7ac_d0075ed56e354c9db9353aaeec2c080b~mv2.jpg);
+        background-size: 100vw;
+      }
+
+      .bg-2 {
+        z-index: 10;
+        margin: 0;
+        padding: 0;
+        top: 0;
+        right: 0;
+        width: 100vw;
+        height: 100vh;
+        position: absolute;
+        background-image: url(https://static.wixstatic.com/media/2fa7ac_a30e4b1c74ae4db79e4f1bcc5e7caddd~mv2.jpg);
+        background-size: 100vw;
+        opacity: 0;
+        transition: opacity 1.5s ease-in-out;
+      }
+      .hidden {
+        display: none;
+      }
+      .show {
+        display: absolute;
+      }
+
+      /* Entry overlay: w/ prompt and dot to click in */
+      .entry-overlay {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        position: fixed;
+        z-index: 888;
+        left: 0;
+        top: 0;
+        width: 100vw;
+        height: 100vh;
+        overflow: auto;
+        background-color: rgba(247, 247, 237, 0.95);
+        opacity: 1; /* Fully visible */
+        transition: opacity 1.5s ease; /* Smooth fade-out effect */
+      }
+      .hidden-entry-overlay {
+        opacity: 0;
+        pointer-events: none; /* Prevent interaction */
+      }
+      .prompt-text {
+        font-family: "Noto Sans", sans-serif;
+        font-optical-sizing: auto;
+        font-weight: 300;
+        font-size: 15px;
+        font-style: normal;
+        font-variation-settings: "wdth" 87.5;
+        color: black;
+      }
+      #entry-dot {
+        width: 15px;
+        height: 15px;
+        background-color: transparent;
+        border: 1px solid black;
+        border-radius: 50%;
+        cursor: pointer;
+        transition: background-color 0.5s ease; /* Smooth fade-out effect */
+      }
+
+      #dot-nav {
+        height: 100px;
+        overflow: hidden;
+        display: flex;
+        justify-content: center;
+        position: relative;
+      }
+
+      .dot {
+        position: absolute;
+        height: 15px;
+        width: 15px;
+        background-color: transparent;
+        border: 1px solid black;
+        border-radius: 50%;
+        cursor: pointer;
+        z-index: 100;
+      }
+
+      /* Positioning the dots in a triangle formation */
+      #dot1 {
+        top: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+      }
+
+      #dot1::after {
+        content: "Rolodex Homepage";
+        font-family: "Noto Sans", sans-serif;
+        font-optical-sizing: auto;
+        font-weight: 300;
+        font-size: 10px;
+        font-style: normal;
+        font-variation-settings: "wdth" 100;
+        position: absolute;
+        top: -20px;
+        left: 50%;
+        transform: translateX(10%);
+        background-color: black;
+        color: white;
+        padding: 3px 8px;
+        border-radius: 5px;
+        white-space: nowrap;
+        opacity: 0;
+        transition: opacity 0.3s ease-in-out;
+        pointer-events: none;
+        z-index: 100;
+      }
+
+      #dot1:hover::after {
+        opacity: 1;
+      }
+
+      #dot2 {
+        top: 60px;
+        left: calc(50% - 30px);
+        background-color: transparent;
+      }
+
+      #dot2::after {
+        content: "Paula Pacheco's Bio";
+        font-family: "Noto Sans", sans-serif;
+        font-optical-sizing: auto;
+        font-weight: 300;
+        font-size: 10px;
+        font-style: normal;
+        font-variation-settings: "wdth" 100;
+        position: absolute;
+        top: -20px;
+        left: 50%;
+        transform: translateX(-110%);
+        background-color: black;
+        color: white;
+        padding: 3px 8px;
+        border-radius: 5px;
+        white-space: nowrap;
+        opacity: 0;
+        transition: opacity 0.3s ease-in-out;
+        pointer-events: none;
+        z-index: 100;
+      }
+
+      #dot2:hover::after {
+        opacity: 1;
+      }
+
+      #dot3 {
+        top: 60px;
+        left: calc(50% + 15px);
+        background-color: black;
+      }
+
+      #dot3::after {
+        content: "Refresh Content";
+        font-family: "Noto Sans", sans-serif;
+        font-optical-sizing: auto;
+        font-weight: 300;
+        font-size: 10px;
+        font-style: normal;
+        font-variation-settings: "wdth" 100;
+        position: absolute;
+        top: -20px;
+        left: 50%;
+        transform: translateX(10%);
+        background-color: black;
+        color: white;
+        padding: 3px 8px;
+        border-radius: 5px;
+        white-space: nowrap;
+        opacity: 0;
+        transition: opacity 0.3s ease-in-out;
+        pointer-events: none;
+        z-index: 100;
+      }
+
+      #dot3:hover::after {
+        opacity: 1;
+      }
+
+      /* Toggle styling */
+      .toggle {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        position: absolute;
+        z-index: 99;
+        right: 1rem;
+        top: 1rem;
+        font-family: "Noto Sans", sans-serif;
+        font-optical-sizing: auto;
+        font-weight: 300;
+        font-size: 13px;
+        font-style: normal;
+        font-variation-settings: "wdth" 87.5;
+      }
+
+      /* The box around the toggle */
+      .switch {
+        position: relative;
+        display: inline-block;
+        width: 2rem;
+        height: 0.9rem;
+        margin: 0rem 0.4rem;
+      }
+
+      /* Hide default HTML checkbox */
+      .switch input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+      }
+
+      /* The slider */
+      .slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #9e9e9e;
+        -webkit-transition: 0.4s;
+        transition: 0.4s;
+      }
+
+      .slider:before {
+        position: absolute;
+        content: "";
+        height: 0.7rem;
+        width: 0.7rem;
+        left: 0.1rem;
+        bottom: 0.1rem;
+        background-color: white;
+        -webkit-transition: 0.4s;
+        transition: 0.4s;
+      }
+
+      input:checked + .slider {
+        background-color: #9e9e9e;
+      }
+
+      input:focus + .slider {
+        box-shadow: 0 0 1px #9e9e9e;
+      }
+
+      input:checked + .slider:before {
+        -webkit-transform: translateX(1.1rem);
+        -ms-transform: translateX(1.1rem);
+        transform: translateX(1.1rem);
+      }
+
+      /* Rounded sliders */
+      .slider.round {
+        border-radius: 34px;
+      }
+
+      .slider.round:before {
+        border-radius: 50%;
+      }
+
+      .italic {
+        font-style: italic;
+      }
+
+      .interactive-read-wrapper {
+        display: block;
+      }
+
+      .fragment {
+        position: absolute;
+        cursor: pointer;
+        z-index: 33;
+        transition:
+          filter 0.3s ease,
+          drop-shadow 0.2s ease;
+      }
+
+      #piece-01 {
+        width: 6vw;
+        position: absolute;
+        top: 34rem;
+        right: 18rem;
+      }
+
+      #piece-02 {
+        width: 9vw;
+        position: absolute;
+        top: 18rem;
+        right: 14rem;
+      }
+
+      #piece-03 {
+        width: 9vw;
+        position: absolute;
+        top: 13rem;
+        left: 15rem;
+      }
+
+      #piece-04 {
+        width: 15vw;
+        position: absolute;
+        top: 11rem;
+        left: 10rem;
+      }
+
+      #piece-05 {
+        width: 17vw;
+        position: absolute;
+        bottom: 6rem;
+        left: 9rem;
+      }
+
+      #piece-06 {
+        width: 6.5vw;
+        position: absolute;
+        top: 14rem;
+        right: 11rem;
+      }
+
+      #piece-07 {
+        width: 31vw;
+        position: absolute;
+        top: 2rem;
+        left: 8rem;
+        rotate: -16deg;
+      }
+
+      #piece-08 {
+        width: 12vw;
+        position: absolute;
+        top: 10.5rem;
+        right: 14rem;
+        rotate: -5deg;
+      }
+
+      #piece-09 {
+        width: 8vw;
+        position: absolute;
+        bottom: 14rem;
+        right: 18rem;
+        rotate: 11deg;
+      }
+
+      #piece-10 {
+        width: 24vw;
+        top: 3rem;
+        right: 16rem;
+      }
+
+      #piece-11 {
+        width: 15vw;
+        bottom: 8rem;
+        left: 8.3rem;
+      }
+
+      #piece-12 {
+        width: 17vw;
+        bottom: 10rem;
+        left: 15rem;
+      }
+
+      #piece-13 {
+        width: 15vw;
+        bottom: 10rem;
+        right: 7rem;
+      }
+
+      #piece-14 {
+        width: 15vw;
+        top: 10rem;
+        left: 12.5rem;
+      }
+
+      #piece-15 {
+        width: 28vw;
+        bottom: 4rem;
+        right: 5rem;
+      }
+
+      #piece-16 {
+        width: 100%;
+        top: 3rem;
+        right: 16rem;
+      }
+
+      /* The Modal (background) */
+      .modal {
+        position: fixed; /* Stay in place */
+        z-index: 30; /* Sit on top */
+        left: 0;
+        top: 0;
+        width: 100%; /* Full width */
+        height: 100%; /* Full height */
+        overflow: auto; /* Enable scroll if needed */
+        background-color: #5e5e5e; /* Fallback color */
+        background-color: rgba(94, 94, 94, 0.5); /* White w/ opacity */
+        display: none;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+      }
+
+      /* Add Animation - Zoom in the Modal */
+      .modal,
+      .modal-content,
+      #caption {
+        animation-name: fadein;
+        animation-duration: 0.3s;
+      }
+      @keyframes fadein {
+        0% {
+          opacity: 0;
+        }
+        100% {
+          opacity: 1;
+        }
+      }
+
+      /* The Close Button */
+      .close {
+        position: absolute;
+
+        color: #f1f1f1;
+        font-size: 40px;
+        font-weight: bold;
+        transition: 0.3s;
+      }
+      .close-wider {
+        top: 20vh;
+        right: 30vw;
+        z-index: 999;
+      }
+      .close-closer {
+        top: 18vh;
+        right: 28vw;
+        z-index: 999;
+      }
+      .close:hover,
+      .close:focus {
+        color: #bbb;
+        text-decoration: none;
+        cursor: pointer;
+      }
+
+      /* TODO: change this to album slideshow Container used to center middle image */
+      .middle-image-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+        width: 65vw;
+        height: 65vh;
+        /* background-color: rgba(255, 255, 255, 0.5);
+        border: 1.5px solid white; */
+      }
+      .middle-image {
+        width: 35vw;
+      }
+      .height35vw {
+        height: 35vw;
+        width: auto !important;
+      }
+      #album-image {
+        width: 35vw;
+      }
+      #surreal-image {
+        border: 1px solid white;
+        width: 40vw;
+      }
+
+      /* 100% Image Width on Smaller Screens */
+      @media screen and (max-width: 700px) {
+        .modal-content {
+          width: 100%;
+        }
+      }
+
+      /* Modal Content */
+      .column-text {
+        /* background: rgba(255, 255, 255, 0.75); */
+        padding: 0rem 1rem;
+        /* border: 1.5px solid white; */
+        z-index: 50;
+      }
+      #poem-text {
+        display: none;
+        width: 22vw;
+      }
+      #archive-text {
+        display: none;
+        width: 30vw;
+      }
+      #house-text {
+        display: none;
+        width: 30vw;
+      }
+      #body-text {
+        display: none;
+        width: 30vw;
+      }
+      #modal-content-02 {
+        margin: auto;
+        display: none;
+      }
+      #album-slideshow {
+        display: none;
+      }
+      #surreal-slideshow {
+        display: none;
+      }
+      #modal-content-03 {
+        margin: auto;
+        display: none;
+      }
+
+      #column-wrapper {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        width: 100%;
+        align-items: center;
+      }
+
+      p {
+        font-family: "Noto Sans", sans-serif;
+        font-optical-sizing: auto;
+        font-weight: 200;
+        font-size: 14px;
+        font-style: normal;
+        font-variation-settings: "wdth" 100;
+      }
+
+      @media screen and (min-width: 770px) {
+        .modal {
+          left: 5%;
+          width: 90%;
+        }
+      }
+      @media screen and (min-width: 1340px) {
+        .modal {
+          left: 0;
+          width: 100%;
+        }
+      }
+
+      .controls {
+        position: absolute;
+        top: 95%;
+        left: 0;
+        right: 0;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        transform: translateY(-50%);
+        z-index: 100;
+        pointer-events: none;
+      }
+
+      .controls button {
+        margin: 2rem;
+        width: 15px;
+        height: 15px;
+        border: 1px solid black;
+        border-radius: 50%;
+        background: rgba(0, 0, 0, 0.5);
+        font-size: 0;
+        cursor: pointer;
+        pointer-events: all;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        transition:
+          box-shadow 0.3s ease,
+          transform 0.2s ease;
+      }
+
+      .controls button:disabled {
+        opacity: 0;
+        cursor: default;
+        transform: none;
+      }
+
+      .controls button:active {
+        box-shadow: 0 0 20px 5px rgba(255, 255, 255, 0.4);
+        transform: scale(1);
+      }
+
+      .controls button:hover:not(:disabled) {
+        transform: scale(1.3);
+      }
+
+      .glow {
+        filter: drop-shadow(0px 0px 12px rgba(89, 89, 89, 0.75));
+      }
+
+      /* The pulsing element */
+      .pulse {
+        width: 120px;
+        height: 120px;
+        /* background-color: black; */
+        box-shadow: 0 0 10px 5px rgba(255, 255, 255, 0.4);
+        border-radius: 50%;
+        animation: pulseScale 2s infinite ease-in-out;
+        /* Smooth scaling */
+        transform-origin: center;
+      }
+      /* Keyframes for pulsing */
+      @keyframes pulseScale {
+        0% {
+          transform: scale(1);
+          box-shadow: 0 0 10px 5px rgba(0, 0, 0, 0.2);
+        }
+        50% {
+          transform: scale(1.2);
+          box-shadow: 0 0 10px 5px rgba(0, 0, 0, 0.4);
+        }
+        100% {
+          transform: scale(1);
+          box-shadow: 0 0 10px 5px rgba(0, 0, 0, 0.2);
+        }
+      }
+      /* Optional: paused state */
+      .paused {
+        animation-play-state: paused;
+      }
+
+      #full-essay {
+        display: none;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+      }
+
+      #table {
+        display: flex;
+        flex-direction: row;
+        border: 1px solid black;
+        width: 90vw;
+      }
+
+      .column {
+        display: flex;
+        flex-direction: column;
+        width: 25%;
+      }
+      .column-head {
+        display: flex;
+        width: 100%;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        border-bottom: 1px dotted black;
+        font-family: "Noto Sans", sans-serif;
+        font-optical-sizing: auto;
+        font-weight: 300;
+        font-size: 15px;
+        font-style: italic;
+        font-variation-settings: "wdth" 87.5;
+      }
+      .column-content {
+        padding: 0.5rem;
+        height: 75vh;
+        overflow-y: scroll;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+      #poem-title {
+        font-style: italic;
+        font-style: underline;
+      }
+      #poem-dedication {
+        font-size: 10px;
+      }
+      .column-img {
+        width: 100%;
+      }
+      .column-fragment {
+        width: 65%;
+      }
+      /* Style for footnote references in the main text */
+      sup.footnote-ref {
+        font-family: "Noto Sans", sans-serif;
+        font-optical-sizing: auto;
+        font-weight: 300;
+        font-size: 10px;
+        font-variation-settings: "wdth" 100;
+        color: #f78bee;
+        padding-left: 0.1rem;
+      }
+      ol.footnote {
+        font-family: "Noto Sans", sans-serif;
+        font-optical-sizing: auto;
+        font-weight: 200;
+        font-size: 10px;
+        font-variation-settings: "wdth" 100;
+        padding-left: 0.6rem;
+        margin-top: 2em;
+        border-top: 1px solid #ccc;
+        padding-top: 0.5em;
+      }
+      /* Style for the number in the footnote list */
+      ol.footnote li::marker {
+        font-family: "Noto Sans", sans-serif;
+        font-optical-sizing: auto;
+        font-weight: 300;
+        font-size: 10px;
+        font-variation-settings: "wdth" 100;
+        color: #f78bee;
+      }
+
+      /* Scroll bar styling
+                  For Webkit-based browsers (Chrome, Edge, Safari) */
+      ::-webkit-scrollbar {
+        width: 5px; /* Width of the scrollbar */
+      }
+      ::-webkit-scrollbar-track {
+        background: transparent; /* Background of the scrollbar track */
+      }
+      ::-webkit-scrollbar-thumb {
+        background: rgba(
+          158,
+          158,
+          158,
+          0.5
+        ); /* Color of the scrollbar handle */
+        border-radius: 5px; /* Rounded corners */
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: rgba(158, 158, 158, 0.9); /* Handle color on hover */
+      }
+    </style>
+  </head>
+  <body>
+    <div class="entry-overlay">
+      <!-- TODO: change prompt text to Pau's -->
+      <p class="prompt-text">ON ROOTING | LOST HOMES</p>
+      <div id="entry-dot"></div>
+    </div>
+    <div class="bg-2 show"></div>
+
+    <div class="header">
+      <div id="dot-nav">
+        <div class="dot" id="dot1" role="button"></div>
+        <div class="dot" id="dot2" role="button"></div>
+        <div class="dot" id="dot3" role="button"></div>
+      </div>
+      <div class="toggle">
+        <p class="toggle-label-interactive italic">interactive read</p>
+        <label class="switch">
+          <input id="myInput" type="checkbox" />
+          <span class="slider round"></span>
+        </label>
+        <p class="toggle-label-essay">full essay</p>
+      </div>
+    </div>
+    <div class="body">
+      <div id="interactive-read-wrapper">
+        <div id="column-wrapper">
+          <!-- Poem content -->
+          <div id="poem-text" class="column-text">
+            <!-- <div class="column-head">poem</div> -->
+            <div class="column-content">
+              <p id="poem-title">if i were to build a home after the fire</p>
+              <p id="poem-dedication">for pipe</p>
+              <p>
+                if i were to build a home after the fire <br />i would start
+                with the kitchen <br /><br />i would buy a big wood table
+                <br />off of facebook marketplace <br /><br />i would start by
+                making breakfast <br />looking out an imaginary window
+                <br /><br />i would make pasta in the ashes <br />of what was
+                lost<br />
+                cakes from the soil that’s left <br />and hope that you come
+                have some<br /><br />
+                if i rebuild a home after the fire <br />i would stock the
+                pantry <br />with all the candy our child selves craved
+                <br />all the crunchiest treats and<br />
+                no bread would go stale under the refrigerator light
+                <br /><br />if i rebuild our home after the fire<br />
+                i will make our mother’s recipes on the stove <br />and the
+                sauces would never turn bitter, or sour<br />
+                even under the sun
+              </p>
+            </div>
+            <div class="fragments">
+              <img
+                as="image"
+                class="fragment"
+                id="piece-01"
+                alt="Blue bowl with a flower design"
+                src="https://static.wixstatic.com/media/2fa7ac_541e41fb4ea340c58ce2507580df0579~mv2.png"
+              />
+              <img
+                as="image"
+                class="fragment"
+                id="piece-03"
+                alt="A cut out of white lace curtains, blue tinted from the light"
+                src="https://static.wixstatic.com/media/2fa7ac_0c2786b1fbee4329ad8b386e6691664a~mv2.png"
+              />
+
+              <img
+                as="image"
+                class="fragment"
+                id="piece-10"
+                alt="A cut out of a calendar, with two lion cubs on the top"
+                src="https://static.wixstatic.com/media/2fa7ac_f2698484c3e44444a478df4fb98780f9~mv2.png"
+              />
+            </div>
+          </div>
+          <!-- Archive content  -->
+          <div id="archive-text" class="column-text">
+            <!-- <div class="column-head">archive</div> -->
+            <div class="column-content">
+              <p>
+                this archive speaks to the trauma that my body holds but also to
+                its ephemeral and incomplete nature. i don’t remember most of my
+                childhood, i also have very few belongings to remind me that i
+                was, indeed, a child: just a crocheted crossbody bag i used to
+                wear and a little ceramic doll. the rest of my childhood is
+                entrapped within the walls of my childhood home, a home i will
+                likely never return to. it is, like the memories of my growing
+                up, lost to me. this project attempts to be an archive of those
+                ghosts, both material and metaphysical by returning to the one
+                other thing i have left, the photos.
+              </p>
+              <p>
+                this archive is about the pitfalls and failures of rescuing
+                memory, combined with the fantasies and possibilities of
+                homemaking. bringing old family photographs together with AI, i
+                attempt to recreate lost objects from my childhood home to form
+                a wonky and incomplete patchwork of an imagined and impossible
+                home.
+              </p>
+              <p>
+                the process is as follows: i gather photographs from interiors
+                in my childhood: pictures of birthday parties, christmas present
+                exchanges–  an everyday life i can’t really remember. i study
+                them. sometimes a specific object sends a zap through my body… i
+                recognize something. it is comforting to think not all is lost
+                in me.
+              </p>
+              <!-- <img
+                class="column-img"
+                src="https://static.wixstatic.com/media/2fa7ac_e5c13ccd67dd4c0db8b6cec812d71894~mv2.jpg"
+                alt="A photo of two children, one looking to the side, and the baby looking up"
+              /> -->
+              <p>
+                then, i use AI to “clean” the pictures. i click on the contours
+                and bodies and erase them. the process is off putting, almost
+                violent. what does it mean to erase oneself? one’s loved ones? i
+                instead think of it more in terms of what is salvageable about
+                these pictures to begin with, what is still real and material
+                about them. the objects “rescued” from these old photographs
+                often turn out incomplete and wonky. an image of a melting
+                birthday cake, the leftover pattern of a smushed pillow, our 90s
+                tv missing a piece as if someone took a bite from it. it is an
+                archival exercise, speaking to what Julieta Singh calls “the
+                ghost archive.”<sup class="footnote-ref">1</sup> the exercise is
+                indeed that, making sense of what is left, in the same way we
+                put together fractured memories to make sense of our past, of
+                what happened to us, and of the choices we made around them.
+              </p>
+              <!-- <img
+                class="column-img"
+                src="https://static.wixstatic.com/media/2fa7ac_39301151dba949eb98462e37a2650ba2~mv2.jpg"
+                alt="A photo of a baby looking up"
+              /> -->
+              <ol class="footnote">
+                <li>
+                  The stories that comprise us have left us both wanting more,
+                  wishing we had access to a fuller narrative frame. I call this
+                  wishing-wanting desire "the ghost archive." Everything we need
+                  to know but cannot know as we keep circling and sniffing
+                  around the edges. Everything that keeps affecting us and
+                  affecting others through us. Everything that remains right
+                  there, but just out of reach. — Singh,
+                  <i>The Ghost Archive</i>, p. 96.
+                </li>
+              </ol>
+            </div>
+            <img
+              as="image"
+              class="fragment"
+              id="piece-04"
+              alt="A cut out image of a stuffed barney toy lying down"
+              src="https://static.wixstatic.com/media/2fa7ac_9c4166e7143746ddbafa210f1a53214c~mv2.png"
+            />
+            <img
+              as="image"
+              class="fragment"
+              id="piece-08"
+              alt="A cutout of a box TV with a blank screen."
+              src="https://static.wixstatic.com/media/2fa7ac_7642416d243349e3bd7385540583ab92~mv2.png"
+            />\
+            <img
+              as="image"
+              class="fragment"
+              id="piece-11"
+              alt="A cutout of a wooden chair, visible from the backside."
+              src="https://static.wixstatic.com/media/2fa7ac_0def3d88157641b39ae526c88bddfbe0~mv2.png"
+            />
+            <img
+              as="image"
+              class="fragment"
+              id="piece-12"
+              alt="A cutout of a pink and purple pillow."
+              src="https://static.wixstatic.com/media/2fa7ac_18046d2d04f24a48809bcff68cc410a9~mv2.png"
+            />
+
+            <img
+              id="piece-13"
+              class="fragment"
+              src="https://static.wixstatic.com/media/2fa7ac_4dc9e2be7d6442b1acae1b719ce05f10~mv2.png"
+              alt="Image of a white birthday cake, warped by AI."
+            />
+          </div>
+          <!-- House content  -->
+          <div id="house-text" class="column-text">
+            <!-- <div class="column-head">house</div> -->
+            <div class="column-content">
+              <p>
+                what would it be like to alchemize this lost archive into a
+                material one? what would it be like to make a home out of these
+                ghost objects? i imagine the relationships of these ghost
+                objects to a home in the same way that traumatic memories<sup
+                  class="footnote-ref"
+                  >2</sup
+                >
+                exist in our bodies, jumbled and incoherent, both surreal and
+                absurd, present yet never in full shape.
+              </p>
+              <p>
+                it is also an attempt at restoration of the archive.<sup
+                  class="footnote-ref"
+                  >3</sup
+                >
+                the restoration of a lost home, of a transgressed body. this
+                archive is my desperate attempt at saying: “i existed, i was
+                there, i will not abandon myself.”
+              </p>
+
+              <p>
+                in this house the memories collide into infinite, ridiculous
+                possibilities. a pillow becomes a wall. a tablecloth paints the
+                ceiling blue. nobody lives in the house yet it is fully alive
+                with residues of lives past. but i fear that i am trying to
+                theorize a feeling that is indeed quite simple: the building of
+                the house<sup class="footnote-ref">4</sup> is a dramatic
+                gesture.<sup class="footnote-ref">5</sup> an archive i can
+                inhabit. a reclamation of a childhood lost. a place to finally
+                live with ghosts.
+              </p>
+              <ol class="footnote">
+                <li>
+                  “[T]raumatic memories tend to arise as fragmented splinters of
+                  inchoate and indigestible sensations, emotions, images,
+                  smells, tastes, thoughts…jumbled fragments cannot be
+                  remembered in the narrative sense per se but are perpetually
+                  being replayed and reexperienced as unbidden and incoherent
+                  intrusions or physical symptoms.” — Levine,
+                  <i
+                    >Trauma and Memory: Brain and Body in a Search for the
+                    Living Past</i
+                  >, p. 7-8.
+                </li>
+                <li>
+                  “What is placed in or left out of the archive is a political
+                  act, dictated by the archivist and the political context in
+                  which she lives (...) Sometimes the proof is never committed
+                  to the archive—it is not considered important enough to
+                  record, or if it is, not important enough to preserve.
+                  Sometimes there is a deliberate act of destruction.” —
+                  Machado,
+                  <i>In the Dream House</i>, p. 13.
+                </li>
+                <li>
+                  “The house is not essential for domestic abuse, but hell, it
+                  helps: a private space where private dramas are enacted
+                  behind, as the cliché goes, closed doors; but also windows
+                  sealed against the sound, drawn curtains, silent phones. A
+                  house is never apolitical. It is conceived, constructed,
+                  occupied, and policed by people with power, needs, and fears.
+                  Windex is political. So is the incense you burn to hide the
+                  smell of sex, or a fight.” — Machado,
+                  <i>In the Dream House</i>, p. 76.
+                </li>
+                <li>
+                  <strong>“Dream House as Idiom.</strong> I always thought the
+                  expression “safe as houses” meant that houses were safe
+                  places. It’s a beautiful idea; like running home with a
+                  late-summer thunderstorm hung down your neck. There’s the
+                  house, waiting for you; a barrier from nature, from scrutiny,
+                  from other people. Standing on the other side of the glass,
+                  watching the sky playfully pummel the earth like a sibling.
+                  But house idioms and their variants, in fact, often signify
+                  the opposite of safety and security. If something is a house
+                  of cards it is precarious, easily disrupted. If the writing is
+                  on the wall we can see the end of something long before it
+                  arrives. If we do not throw stones in glass houses, it is
+                  because the house is constructed of hypocrisy, readily
+                  shattered. All expressions of weakness, of the inevitability
+                  of failure. “Safe as houses” is something closer to “the house
+                  always wins.” Instead of a shared structure providing shelter,
+                  it means that the person in charge is secure; everyone else
+                  should be afraid.”— Machado, <i>In the Dream House</i>, p. 78.
+                </li>
+              </ol>
+            </div>
+            <img
+              as="image"
+              class="fragment"
+              id="piece-05"
+              alt="A checkered orange and purple plush chair."
+              src="https://static.wixstatic.com/media/2fa7ac_60f870049114419ab2e98b4d81c64d09~mv2.png"
+            />
+            <img
+              as="image"
+              class="fragment"
+              id="piece-06"
+              alt="A brown vase, small bowl, and orange-brown mug."
+              src="https://static.wixstatic.com/media/2fa7ac_679e8ec2a7144648b974e7a2a5a6ca9c~mv2.png"
+            />
+            <img
+              as="image"
+              class="fragment"
+              id="piece-15"
+              alt="Cut out of a potted green plant."
+              src="https://static.wixstatic.com/media/2fa7ac_1b4d6ddb38f84cb78d6ed35e3f469f24~mv2.png"
+            />
+            <img
+              class="fragment"
+              src="https://static.wixstatic.com/media/2fa7ac_81ea19f2225c43348343153905cc87b1~mv2.png"
+              alt="Two framed photograph, one of a baby and one of a couple."
+              id="piece-14"
+            />
+          </div>
+          <!-- Body content  -->
+          <div id="body-text" class="column-text">
+            <!-- <div class="column-head">body</div> -->
+            <div class="column-content">
+              <p>
+                i spend a lot of time away from my body. at its worst, the pain
+                of my past becomes so unbearable that i dissociate into a
+                suicidal daze. yet all i do these days is to be a body. i sleep,
+                i brush my teeth, i eat hospital food, i pace barefoot on the
+                cold hallway, i get my vitals taken every morning. i am vitals
+                and symptoms and body. i am learning to be a body again, as if i
+                was trying to teach myself to walk. get out of bed, brush your
+                teeth, feed yourself. like watering a plant just enough to keep
+                it alive. to be in this body, away from the daze, is one of the
+                hardest things. my trauma, my mistakes, my unheard apologies,
+                all demand me to be away from this body, to dissociate<sup
+                  class="footnote-ref"
+                  >6</sup
+                >, to divorce myself from this body as one leaves a home.
+              </p>
+              <!-- <img
+                class="column-img"
+                src="https://static.wixstatic.com/media/2fa7ac_7b88ad1ced824f4f8e337ab8c8cd394c~mv2.png"
+                alt="Image of a an empty kitchen room, with a countertop, sink, and fridge."
+              /> -->
+              <p>
+                how can this home be rebuilt and hospitable to life while full
+                of absurdity and broken memories, in the same way that a
+                traumatized body and mind can (and demand to) become a safe
+                place again? if trauma has led me to a place of
+                disembodiment<sup class="footnote-ref">7</sup>, healing is to
+                embody, to become the body that has been given to you and so
+                many times denied. healing is to rebuild the home and to inhabit
+                it. in the house, the body finally renews itself into something
+                to inhabit. a home.
+              </p>
+              <ol class="footnote">
+                <li>
+                  “While most survivors of childhood abuse describe a degree of
+                  proficiency in the use of trance, some develop a kind of
+                  dissociative virtuosity. They may learn to ignore severe pain,
+                  to hide their memories in complex amnesias, to alter their
+                  sense of time, place, or person, and to induce hallucinations
+                  or possession states. Sometimes these alterations of
+                  consciousness are deliberate, but often they become automatic
+                  and feel alien and involuntary.” — Levine,
+                  <i
+                    >Trauma and Memory: Brain and Body in a Search for the
+                    Living Past</i
+                  >, p. 102.
+                </li>
+                <li>
+                  “Embodiment is political, especially when many of us have been
+                  systematically disembodied on multiple fronts. To find peace
+                  within chaos, it’s an act of resistance, to accept the chaos,
+                  to move with it, to return home to a body that has never felt
+                  like yours requires so much patience that at times it almost
+                  feels easier to give up.” — Róisín,
+                  <i>Who is Wellness For?</i>, p. 132.
+                </li>
+              </ol>
+            </div>
+            <img
+              as="image"
+              class="fragment"
+              id="piece-07"
+              alt="A small vase with yellow and red flowers."
+              src="https://static.wixstatic.com/media/2fa7ac_1f02bd8e705048d6857858d8c4d54e04~mv2.png"
+            />
+            <img
+              as="image"
+              class="fragment"
+              id="piece-09"
+              alt="A fragment of a wicker chair with pink, blue, and purple pillows."
+              src="https://static.wixstatic.com/media/2fa7ac_95d4f6ca379146208291b5ae6f6b3a6b~mv2.png"
+            />
+          </div>
+          <div class="controls">
+            <button id="prevBtn0" onclick="prevSlide(0)"></button>
+            <button id="nextBtn0" class="pulse" onclick="nextSlide(0)"></button>
+          </div>
+        </div>
+      </div>
+      <div id="full-essay">
+        <div id="table">
+          <div class="column">
+            <div class="column-head">poem</div>
+            <div class="column-content">
+              <p id="poem-title">if i were to build a home after the fire</p>
+              <p id="poem-dedication">for pipe</p>
+              <p>
+                if i were to build a home after the fire <br />i would start
+                with the kitchen <br /><br />i would buy a big wood table
+                <br />off of facebook marketplace <br /><br />i would start by
+                making breakfast <br />looking out an imaginary window
+                <br /><br />i would make pasta in the ashes <br />of what was
+                lost<br />
+                cakes from the soil that’s left <br />and hope that you come
+                have some<br /><br />
+                if i rebuild a home after the fire <br />i would stock the
+                pantry <br />with all the candy our child selves craved
+                <br />all the crunchiest treats and<br />
+                no bread would go stale under the refrigerator light
+                <br /><br />if i rebuild our home after the fire<br />
+                i will make our mother’s recipes on the stove <br />and the
+                sauces would never turn bitter, or sour<br />
+                even under the sun
+              </p>
+            </div>
+          </div>
+          <div class="column">
+            <div class="column-head">archive</div>
+            <div class="column-content">
+              <p>
+                this archive speaks to the trauma that my body holds but also to
+                its ephemeral and incomplete nature. i don’t remember most of my
+                childhood, i also have very few belongings to remind me that i
+                was, indeed, a child: just a crocheted crossbody bag i used to
+                wear and a little ceramic doll. the rest of my childhood is
+                entrapped within the walls of my childhood home, a home i will
+                likely never return to. it is, like the memories of my growing
+                up, lost to me. this project attempts to be an archive of those
+                ghosts, both material and metaphysical by returning to the one
+                other thing i have left, the photos.
+              </p>
+              <p>
+                this archive is about the pitfalls and failures of rescuing
+                memory, combined with the fantasies and possibilities of
+                homemaking. bringing old family photographs together with AI, i
+                attempt to recreate lost objects from my childhood home to form
+                a wonky and incomplete patchwork of an imagined and impossible
+                home.
+              </p>
+              <p>
+                the process is as follows: i gather photographs from interiors
+                in my childhood: pictures of birthday parties, christmas present
+                exchanges–  an everyday life i can’t really remember. i study
+                them. sometimes a specific object sends a zap through my body… i
+                recognize something. it is comforting to think not all is lost
+                in me.
+              </p>
+              <img
+                class="column-img"
+                src="https://static.wixstatic.com/media/2fa7ac_e5c13ccd67dd4c0db8b6cec812d71894~mv2.jpg"
+                alt="A photo of two children, one looking to the side, and the baby looking up"
+              />
+              <p>
+                then, i use AI to “clean” the pictures. i click on the contours
+                and bodies and erase them. the process is off putting, almost
+                violent. what does it mean to erase oneself? one’s loved ones? i
+                instead think of it more in terms of what is salvageable about
+                these pictures to begin with, what is still real and material
+                about them. the objects “rescued” from these old photographs
+                often turn out incomplete and wonky. an image of a melting
+                birthday cake, the leftover pattern of a smushed pillow, our 90s
+                tv missing a piece as if someone took a bite from it. it is an
+                archival exercise, speaking to what Julieta Singh calls “the
+                ghost archive.”<sup class="footnote-ref">1</sup> the exercise is
+                indeed that, making sense of what is left, in the same way we
+                put together fractured memories to make sense of our past, of
+                what happened to us, and of the choices we made around them.
+              </p>
+              <img
+                class="column-img"
+                src="https://static.wixstatic.com/media/2fa7ac_39301151dba949eb98462e37a2650ba2~mv2.jpg"
+                alt="A photo of a baby looking up"
+              />
+              <ol class="footnote">
+                <li>
+                  The stories that comprise us have left us both wanting more,
+                  wishing we had access to a fuller narrative frame. I call this
+                  wishing-wanting desire "the ghost archive." Everything we need
+                  to know but cannot know as we keep circling and sniffing
+                  around the edges. Everything that keeps affecting us and
+                  affecting others through us. Everything that remains right
+                  there, but just out of reach. — Singh,
+                  <i>The Ghost Archive</i>, p. 96.
+                </li>
+              </ol>
+            </div>
+          </div>
+          <div class="column">
+            <div class="column-head">house</div>
+            <div class="column-content">
+              <p>
+                what would it be like to alchemize this lost archive into a
+                material one? what would it be like to make a home out of these
+                ghost objects? i imagine the relationships of these ghost
+                objects to a home in the same way that traumatic memories<sup
+                  class="footnote-ref"
+                  >2</sup
+                >
+                exist in our bodies, jumbled and incoherent, both surreal and
+                absurd, present yet never in full shape.
+              </p>
+              <p>
+                it is also an attempt at restoration of the archive.<sup
+                  class="footnote-ref"
+                  >3</sup
+                >
+                the restoration of a lost home, of a transgressed body. this
+                archive is my desperate attempt at saying: “i existed, i was
+                there, i will not abandon myself.”
+              </p>
+              <img
+                class="column-fragment"
+                src="https://static.wixstatic.com/media/2fa7ac_81ea19f2225c43348343153905cc87b1~mv2.png"
+                alt="Two framed photograph, one of a baby and one of a couple."
+                id="piece-16"
+              />
+              <img
+                class="column-fragment"
+                src="https://static.wixstatic.com/media/2fa7ac_4dc9e2be7d6442b1acae1b719ce05f10~mv2.png"
+                alt="Image of a white birthday cake, warped by AI."
+              />
+              <p>
+                in this house the memories collide into infinite, ridiculous
+                possibilities. a pillow becomes a wall. a tablecloth paints the
+                ceiling blue. nobody lives in the house yet it is fully alive
+                with residues of lives past. but i fear that i am trying to
+                theorize a feeling that is indeed quite simple: the building of
+                the house<sup class="footnote-ref">4</sup> is a dramatic
+                gesture.<sup class="footnote-ref">5</sup> an archive i can
+                inhabit. a reclamation of a childhood lost. a place to finally
+                live with ghosts.
+              </p>
+              <ol class="footnote">
+                <li>
+                  “[T]raumatic memories tend to arise as fragmented splinters of
+                  inchoate and indigestible sensations, emotions, images,
+                  smells, tastes, thoughts…jumbled fragments cannot be
+                  remembered in the narrative sense per se but are perpetually
+                  being replayed and reexperienced as unbidden and incoherent
+                  intrusions or physical symptoms.” — Levine,
+                  <i
+                    >Trauma and Memory: Brain and Body in a Search for the
+                    Living Past</i
+                  >, p. 7-8.
+                </li>
+                <li>
+                  “What is placed in or left out of the archive is a political
+                  act, dictated by the archivist and the political context in
+                  which she lives (...) Sometimes the proof is never committed
+                  to the archive—it is not considered important enough to
+                  record, or if it is, not important enough to preserve.
+                  Sometimes there is a deliberate act of destruction.” —
+                  Machado, <i>In the Dream House</i>, p. 13.
+                </li>
+                <li>
+                  “The house is not essential for domestic abuse, but hell, it
+                  helps: a private space where private dramas are enacted
+                  behind, as the cliché goes, closed doors; but also windows
+                  sealed against the sound, drawn curtains, silent phones. A
+                  house is never apolitical. It is conceived, constructed,
+                  occupied, and policed by people with power, needs, and fears.
+                  Windex is political. So is the incense you burn to hide the
+                  smell of sex, or a fight.” — Machado,
+                  <i>In the Dream House</i>, p. 76.
+                </li>
+                <li>
+                  <strong>“Dream House as Idiom.</strong> I always thought the
+                  expression “safe as houses” meant that houses were safe
+                  places. It’s a beautiful idea; like running home with a
+                  late-summer thunderstorm hung down your neck. There’s the
+                  house, waiting for you; a barrier from nature, from scrutiny,
+                  from other people. Standing on the other side of the glass,
+                  watching the sky playfully pummel the earth like a sibling.
+                  But house idioms and their variants, in fact, often signify
+                  the opposite of safety and security. If something is a house
+                  of cards it is precarious, easily disrupted. If the writing is
+                  on the wall we can see the end of something long before it
+                  arrives. If we do not throw stones in glass houses, it is
+                  because the house is constructed of hypocrisy, readily
+                  shattered. All expressions of weakness, of the inevitability
+                  of failure. “Safe as houses” is something closer to “the house
+                  always wins.” Instead of a shared structure providing shelter,
+                  it means that the person in charge is secure; everyone else
+                  should be afraid.” — Machado, <i>In the Dream House</i>, p.
+                  78.
+                </li>
+              </ol>
+            </div>
+          </div>
+          <div class="column">
+            <div class="column-head">body</div>
+            <div class="column-content">
+              <p>
+                i spend a lot of time away from my body. at its worst, the pain
+                of my past becomes so unbearable that i dissociate into a
+                suicidal daze. yet all i do these days is to be a body. i sleep,
+                i brush my teeth, i eat hospital food, i pace barefoot on the
+                cold hallway, i get my vitals taken every morning. i am vitals
+                and symptoms and body. i am learning to be a body again, as if i
+                was trying to teach myself to walk. get out of bed, brush your
+                teeth, feed yourself. like watering a plant just enough to keep
+                it alive. to be in this body, away from the daze, is one of the
+                hardest things. my trauma, my mistakes, my unheard apologies,
+                all demand me to be away from this body, to dissociate<sup
+                  class="footnote-ref"
+                  >6</sup
+                >, to divorce myself from this body as one leaves a home.
+              </p>
+              <img
+                class="column-img"
+                src="https://static.wixstatic.com/media/2fa7ac_7b88ad1ced824f4f8e337ab8c8cd394c~mv2.png"
+                alt="Image of a an empty kitchen room, with a countertop, sink, and fridge."
+              />
+              <p>
+                how can this home be rebuilt and hospitable to life while full
+                of absurdity and broken memories, in the same way that a
+                traumatized body and mind can (and demand to) become a safe
+                place again? if trauma has led me to a place of
+                disembodiment<sup class="footnote-ref">7</sup>, healing is to
+                embody, to become the body that has been given to you and so
+                many times denied. healing is to rebuild the home and to inhabit
+                it. in the house, the body finally renews itself into something
+                to inhabit. a home.
+              </p>
+              <ol class="footnote">
+                <li>
+                  “While most survivors of childhood abuse describe a degree of
+                  proficiency in the use of trance, some develop a kind of
+                  dissociative virtuosity. They may learn to ignore severe pain,
+                  to hide their memories in complex amnesias, to alter their
+                  sense of time, place, or person, and to induce hallucinations
+                  or possession states. Sometimes these alterations of
+                  consciousness are deliberate, but often they become automatic
+                  and feel alien and involuntary.” — Levine,
+                  <i
+                    >Trauma and Memory: Brain and Body in a Search for the
+                    Living Past</i
+                  >, p. 102.
+                </li>
+                <li>
+                  “Embodiment is political, especially when many of us have been
+                  systematically disembodied on multiple fronts. To find peace
+                  within chaos, it’s an act of resistance, to accept the chaos,
+                  to move with it, to return home to a body that has never felt
+                  like yours requires so much patience that at times it almost
+                  feels easier to give up.” — Róisín,
+                  <i>Who is Wellness For?</i>, p. 132.
+                </li>
+              </ol>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- The Modal -->
+      <div id="myModal" class="modal">
+        <!-- The Close Button -->
+        <span class="close">×</span>
+        <!-- 2, 1 - Modal Content: album images  -->
+        <!-- 2, 2 - Modal Content: surreal images  -->
+        <div class="album-modal" id="modal-content-02">
+          <div id="album-slideshow">
+            <div class="middle-image-container">
+              <!-- TODO: finish alt text here -->
+              <img
+                class="middle-image"
+                id="album-image"
+                src="https://static.wixstatic.com/media/2fa7ac_87a63527420541fdbd1633a7e34506df~mv2.jpg"
+                alt=""
+              />
+            </div>
+            <!-- <div class="controls">
+              <button id="prevBtn" onclick="prevSlide(1)"></button>
+              <button
+                id="nextBtn"
+                class="pulse"
+                onclick="nextSlide(1)"
+              ></button>
+            </div> -->
+          </div>
+          <div id="surreal-slideshow">
+            <!-- TODO: finish alt text here -->
+            <img
+              class="hidden"
+              id="surreal-image"
+              src="https://static.wixstatic.com/media/2fa7ac_f16dab221e854b26970a8abb810902a0~mv2.png"
+              alt=""
+            />
+            <!-- <div class="controls">
+              <button id="prevBtn2" onclick="prevSlide(2)"></button>
+              <button
+                id="nextBtn2"
+                class="pulse"
+                onclick="nextSlide(2)"
+              ></button>
+            </div> -->
+          </div>
+        </div>
+        <div class="album-modal" id="modal-content-03">
+          <div id="original-image-wrapper">
+            <div class="middle-image-container">
+              <img class="middle-image" id="original-image" src="" alt="" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script>
+      let fullessay = false;
+      let slideshow = 0;
+
+      // Dot nav event listeners
+      document.getElementById("dot3").addEventListener("click", () => {
+        window.parent.location.href = "https://www.rolodex.cc/pps"; // Update with your actual home page URL
+      });
+      document.getElementById("dot1").addEventListener("click", (event) => {
+        event.preventDefault();
+        // Navigate to home page
+        window.parent.location.href = "https://www.rolodex.cc/rolodex-home"; // Update with your actual home page URL
+      });
+      document.getElementById("dot2").addEventListener("click", (event) => {
+        event.preventDefault();
+        //TODO: EDIT URL HERE
+        // Navigate to about page
+        window.parent.location.href = "https://www.rolodex.cc/pps-bio"; // Update with your actual about page URL
+      });
+      // if current window, then fill in the active dot
+      if (window.location.href.includes("bio")) {
+        document.getElementById("dot2").style.backgroundColor =
+          "#f7f7ed !important";
+        document.getElementById("dot3").style.backgroundColor =
+          "transaprent !important";
+      } else {
+        document.getElementById("dot3").style.backgroundColor =
+          "#f7f7ed !important";
+        document.getElementById("dot2").style.backgroundColor =
+          "transparent !important";
+      }
+
+      // Entry overlay
+      var entryOverlay = document.getElementsByClassName("entry-overlay")[0];
+      const entryDot = document.getElementById("entry-dot");
+      entryDot.addEventListener("mouseover", () => {
+        entryDot.style.backgroundColor = "#F78BEE";
+      });
+      entryDot.addEventListener("mouseout", () => {
+        entryDot.style.backgroundColor = "transparent";
+      });
+      entryDot.addEventListener("click", () => {
+        entryOverlay.classList.add("hidden-entry-overlay");
+      });
+
+      //3-dot nav
+      var dotNav = document.getElementById("dot-nav");
+
+      // Room content
+      const poemText = document.getElementById("poem-text");
+      const archiveText = document.getElementById("archive-text");
+      const houseText = document.getElementById("house-text");
+      const bodyText = document.getElementById("body-text");
+      const column = document.getElementById("column-wrapper");
+      // Get the modal
+      var modal = document.getElementById("myModal");
+
+      // Get fragments and their corresponding modals
+      const piece01 = document.getElementById("piece-01");
+      const piece02 = document.getElementById("piece-02");
+      const piece03 = document.getElementById("piece-03");
+      const piece04 = document.getElementById("piece-04");
+      const piece05 = document.getElementById("piece-05");
+      const piece06 = document.getElementById("piece-06");
+      const piece07 = document.getElementById("piece-07");
+      const piece08 = document.getElementById("piece-08");
+      const piece09 = document.getElementById("piece-09");
+      const piece10 = document.getElementById("piece-10");
+      const piece11 = document.getElementById("piece-11");
+      const piece12 = document.getElementById("piece-12");
+      const piece13 = document.getElementById("piece-13");
+      const piece14 = document.getElementById("piece-14");
+      const piece15 = document.getElementById("piece-15");
+
+      // Get the <span> element that closes the modal
+      const span = document.getElementsByClassName("close")[0];
+
+      let pieceCounter = 1;
+      const pieceArray = Array.from(
+        document.getElementsByClassName("fragment"),
+      );
+
+      for (let i = 0; i < pieceArray.length; i++) {
+        pieceArray[i].addEventListener("mouseover", function () {
+          pieceArray[i].classList.add("glow");
+        });
+        pieceArray[i].addEventListener("mouseout", function () {
+          pieceArray[i].classList.remove("glow");
+        });
+      }
+
+      // var modalContent01 = document.getElementById("modal-content-01");
+      var modalContent02 = document.getElementById("modal-content-02");
+      const albumSlideshow = document.getElementById("album-slideshow");
+      const surrealSlideshow = document.getElementById("surreal-slideshow");
+      var modalContent03 = document.getElementById("modal-content-03");
+      const originalPhoto = document.getElementById("original-image");
+      const originalPhotoArray = [
+        {
+          src: "https://static.wixstatic.com/media/2fa7ac_ddeb3599a94a456cabd8b7fe324caaa3~mv2.png",
+          alt: "Two people hold a baby sitting in one person's laugh at a table. The edge of a blue bowl is visible, as well as the back of an empty wooden chair.",
+        },
+        {
+          src: "https://static.wixstatic.com/media/2fa7ac_87a63527420541fdbd1633a7e34506df~mv2.jpg",
+          alt: "Two people smile at a camera in front of lace curtains, one person holds up a baby.",
+        },
+        {
+          src: "https://static.wixstatic.com/media/2fa7ac_3fab7d89358d44f9b3281ba2bc88cdd7~mv2.jpg",
+          alt: "Three people lying on a couch or bed, in the middle is a toddler next to a stuffed Barney toy.",
+        },
+        {
+          src: "https://static.wixstatic.com/media/2fa7ac_728b4d578ea14f5a91d1bd88a2618468~mv2.jpg",
+          alt: "An adult sits smiling at a child sitting happily in a large plush chair, orange and purple checkered cover.",
+        },
+        {
+          src: "https://static.wixstatic.com/media/2fa7ac_1ed3e810e4d240c0983def67a49885d2~mv2.jpg",
+          alt: "A toddler smiles at the camera, sitting on a blue tricycle in front of blank box tv on a stand. Underneath the tv is a brown vase, mug, and small dish.",
+        },
+        {
+          src: "https://static.wixstatic.com/media/2fa7ac_aed4d22d176642e4bfeca8ce21c771a1~mv2.jpg",
+          alt: "A child sits on a kitchen countertop next to a sink and a fridge. A vase of flowers sits on the fridge.",
+        },
+        {
+          src: "https://static.wixstatic.com/media/2fa7ac_5b9a8a1112cb431bb28a9c41f897bf61~mv2.jpg",
+          alt: "A baby smiles and sits deep in a wicker chair surrounded by pink blue and purple pillows",
+        },
+        // index: 7, corresponds to piece-10
+        {
+          src: "https://static.wixstatic.com/media/2fa7ac_caac081dd82b4d31a4b024269b374141~mv2.jpg",
+          alt: "Two children sit at a table, an adult sitting next to them looks at the camera. A calendar with lion cubs is visible in the background.",
+        },
+        // index: 8, corresponds to piece-11
+        {
+          src: "https://static.wixstatic.com/media/2fa7ac_36b5fe61e55f49498f74d7f55928530f~mv2.jpg",
+          alt: "A child looks at the camera while sitting on a patterned orange couch, in an orange shirt. A wooden chair is in the background.",
+        },
+        // index: 9, corresponds to piece-12
+        {
+          src: "https://static.wixstatic.com/media/2fa7ac_e5c13ccd67dd4c0db8b6cec812d71894~mv2.jpg",
+          alt: "A child in a yellow sweater and headband leans on a purple pillow, a baby lies beside.",
+        },
+        // index: 10, corresponds to piece-13
+        {
+          src: "https://static.wixstatic.com/media/2fa7ac_d241471184dd46939b4dad95e669efef~mv2.jpg",
+          alt: "Three adults and one child sit around a full table, with a cake just off center to the left.",
+        },
+        // index: 11, corresponds to piece-15
+        {
+          src: "https://static.wixstatic.com/media/2fa7ac_b97c3230391a4b3b8e357cc0c2b96082~mv2.jpg",
+          alt: "A child in a navy plaid dress stands between two chairs with a plant behind.",
+        },
+        // the following original images do not have corresponding fragments
+        // index: 12,
+        {
+          src: "https://static.wixstatic.com/media/2fa7ac_174b65cf73524e658e8d249beba164a2~mv2.jpg",
+          alt: "An adult hugs a child with orange PJ's in front a big window with lace curtains.",
+        },
+        {
+          src: "https://static.wixstatic.com/media/2fa7ac_03a27c1be1db4b1ca7844b49359aa6fd~mv2.jpg",
+          alt: "A group of friends lean in to take a photo togethere in a warm room.",
+        },
+        {
+          src: "https://static.wixstatic.com/media/2fa7ac_25e02b072d6d4ab6a04c8178695e2fa3~mv2.jpg",
+          alt: "Two adults hug two children on a couch for a picture.",
+        },
+      ];
+
+      // Get toggle elements
+      const toggle = document.getElementsByClassName("toggle")[0];
+      const interactiveText = document.getElementsByClassName(
+        "toggle-label-interactive",
+      )[0];
+
+      // Get full essay view elements
+      const essayText =
+        document.getElementsByClassName("toggle-label-essay")[0];
+      const fullEssayContainer = document.getElementById("full-essay");
+      const interactiveReadWrapper = document.getElementById(
+        "interactive-read-wrapper",
+      );
+
+      //func modalTrigger(num, subcat):
+      //  num: 1 - text column // 2 - image slideshow // 3 - single image popup
+      //  subcat: 1, 1-4: 4 text options // 2, 1: album slideshow 2, 2: surreal slideshow // 3, 0-8: diff original images
+      piece01.onclick = function () {
+        modalTrigger(3, 0);
+      };
+      piece03.onclick = function () {
+        modalTrigger(3, 1);
+      };
+      piece04.onclick = function () {
+        modalTrigger(3, 2);
+      };
+      piece05.onclick = function () {
+        modalTrigger(3, 3);
+      };
+      piece06.onclick = function () {
+        modalTrigger(3, 4);
+      };
+      piece07.onclick = function () {
+        modalTrigger(3, 5);
+      };
+      piece08.onclick = function () {
+        modalTrigger(2, 2);
+      };
+      piece09.onclick = function () {
+        modalTrigger(3, 6);
+      };
+      piece10.onclick = function () {
+        modalTrigger(3, 7);
+      };
+      piece11.onclick = function () {
+        modalTrigger(3, 8);
+      };
+      piece12.onclick = function () {
+        modalTrigger(3, 9);
+      };
+      piece13.onclick = function () {
+        modalTrigger(3, 10);
+      };
+      piece14.onclick = function () {
+        modalTrigger(2, 1);
+      };
+      piece15.onclick = function () {
+        modalTrigger(3, 11);
+      };
+
+      function modalTrigger(num, subCat) {
+        column.style.display = "none";
+        modal.style.display = "flex";
+        toggle.style.display = "none";
+        dotNav.style.display = "none";
+        // if (num == 1) {
+        //   if (subCat === 1) {
+        //     poemText.style.display = "block";
+        //   } else if (subCat === 2) {
+        //     archiveText.style.display = "block";
+        //   } else if (subCat === 3) {
+        //     houseText.style.display = "block";
+        //   } else if (subCat === 4) {
+        //     bodyText.style.display = "block";
+        //   }
+        //   modalContent01.style.display = "flex";
+        // } else
+        if (num == 2 && num == 2) {
+          span.classList.add("close-closer");
+        } else {
+          span.classList.add("close-wider");
+        }
+        if (num == 2) {
+          if (subCat === 1) {
+            slideshow = 1;
+            albumSlideshow.style.display = "block";
+            autoplay(originalPhotoArray, 1);
+          } else if (subCat === 2) {
+            slideshow = 2;
+            surrealSlideshow.style.display = "block";
+            autoplay(surrealImages, 2);
+          }
+          modalContent02.style.display = "block";
+        } else if (num == 3) {
+          modalContent03.style.display = "block";
+          originalPhoto.src = originalPhotoArray[subCat].src;
+          originalPhoto.alt = originalPhotoArray[subCat].alt;
+        }
+      }
+
+      // When the user clicks on <span> (x), close the modal
+      span.onclick = function () {
+        modal.style.display = "none";
+        // modalContent01.style.display = "none";
+
+        modalContent02.style.display = "none";
+        albumSlideshow.style.display = "none";
+        surrealSlideshow.style.display = "none";
+
+        modalContent03.style.display = "none";
+        dotNav.style.display = "block";
+        toggle.style.display = "flex";
+        column.style.display = "flex";
+
+        span.classList.remove("close-closer");
+        span.classList.remove("close-wider");
+
+        surrealImg.classList.add("hidden");
+      };
+
+      // Next/prev controls
+
+      // Controls and variables for room pages
+      let currentSlide0 = 0;
+      let previousSlide0 = 0;
+      const prevBtn0 = document.getElementById("prevBtn0");
+      const nextBtn0 = document.getElementById("nextBtn0");
+      const roomPages = [
+        "poem-text",
+        "archive-text",
+        "house-text",
+        "body-text",
+      ];
+      const bgImages = [
+        "https://static.wixstatic.com/media/2fa7ac_45960dbc255348e6b291717ef3fd1172~mv2.jpg",
+        "https://static.wixstatic.com/media/2fa7ac_3227813826cd441484e3e2b1782e9d7e~mv2.jpg",
+        "https://static.wixstatic.com/media/2fa7ac_d19b2e397fcf42bf8c738842b24a9ed9~mv2.jpg",
+        "https://static.wixstatic.com/media/2fa7ac_d4474abdadb7401e97e878880e4c6023~mv2.jpg",
+        "https://static.wixstatic.com/media/2fa7ac_eceb3f9c199949f18e9da5dc68246d2b~mv2.jpg",
+      ];
+      // Controls and variables for album images (1)
+      let currentSlide = 0;
+      let previousSlide = 0;
+      const prevBtn = document.getElementById("prevBtn");
+      const nextBtn = document.getElementById("nextBtn");
+      const albumImg = document.getElementById("album-image");
+
+      // Controls and variables for album images (1)
+      let currentSlide2 = 0;
+      let previousSlide2 = 0;
+      const prevBtn2 = document.getElementById("prevBtn2");
+      const nextBtn2 = document.getElementById("nextBtn2");
+      const surrealImg = document.getElementById("surreal-image");
+      const surrealImages = [
+        //1 bed pillow gif
+        {
+          url: "https://static.wixstatic.com/media/2fa7ac_6d7bac1bb61e4774b7262a18ee76f2a5~mv2.jpg",
+          alt: "A child in a yellow sweater and headband smiles and looks away from camera, while lying next to a baby looking up. They both lay on a blue and purple pillow.",
+        },
+        {
+          url: "https://static.wixstatic.com/media/2fa7ac_6d7bac1bb61e4774b7262a18ee76f2a5~mv2.jpg",
+          alt: "A child in a yellow sweater and headband smiles and looks away from camera, while lying next to a baby looking up. They both lay on a blue and purple pillow.",
+        },
+        {
+          url: "https://static.wixstatic.com/media/2fa7ac_9aa262fb5eb241adaf4fa170edf09252~mv2.png",
+          alt: "A baby looking up, lying on a blue and purple pillow.",
+        },
+        {
+          url: "https://static.wixstatic.com/media/2fa7ac_f93db1e49695488d8d1515e25583839b~mv2.png",
+          alt: "A blue and purple pillow.",
+        },
+        //2
+        {
+          url: "https://static.wixstatic.com/media/2fa7ac_8c4b6ea3b52c4a22b4c778290afbc4d1~mv2.png",
+          alt: "A warm yellow room, with foggy blur in the middle obsucring the corners, a red couch is visible and windows on the far wall.",
+        },
+        //5
+        {
+          url: "https://static.wixstatic.com/media/2fa7ac_32fad69af66f4d23aaadbfc2ce3fc32d~mv2.png",
+          alt: "White lace curtains covering a window.",
+        },
+        //6 kitchen gif
+        {
+          url: "https://static.wixstatic.com/media/2fa7ac_8890394ba5cc4278a0868dd24b9f82ca~mv2.jpg",
+          alt: "An adult, smiling, sits next to child on the kitchen counter.",
+        },
+        {
+          url: "https://static.wixstatic.com/media/2fa7ac_eca3521b218b45a4ae55dd7f1b6d41f5~mv2.png",
+          alt: "A child sits on the kitchen counter.",
+        },
+        {
+          url: "https://static.wixstatic.com/media/2fa7ac_e1b97afbc485416a93aae0689b2e9df3~mv2.png",
+          alt: "A kitchen counter in an empty kitchen with pale yellow walls.",
+        },
+        //7
+        {
+          url: "https://static.wixstatic.com/media/2fa7ac_f16dab221e854b26970a8abb810902a0~mv2.png",
+          alt: "Gray fog surrounding a brown structure that could be a building or a wood post.",
+        },
+      ];
+
+      let slideIndex = 0;
+
+      function autoplay(slideshow, num) {
+        nextSlide(num);
+        slideIndex++;
+        if (slideIndex < slideshow.length) {
+          if (num === 2 && slideIndex === slideshow.length - 2) {
+            setTimeout(function () {
+              autoplay(slideshow, num);
+            }, 2000);
+          } else {
+            setTimeout(function () {
+              autoplay(slideshow, num);
+            }, 2000);
+          }
+        } else {
+          slideIndex = 0;
+          autoplay(slideshow, num);
+        }
+      }
+
+      function updateSlide(num) {
+        if (num === 0) {
+          if (currentSlide0 === 0 || currentSlide0 % 2 === 0) {
+            document.getElementsByClassName("bg-2")[0].style.opacity = 0;
+            document.body.style.backgroundImage = `url(${bgImages[currentSlide0]})`;
+          } else if (currentSlide0 % 2 !== 0) {
+            document.getElementsByClassName("bg-2")[0].style.backgroundImage =
+              `url(${bgImages[currentSlide0]})`;
+            document.getElementsByClassName("bg-2")[0].style.opacity = 1;
+          }
+          document.getElementById(roomPages[currentSlide0]).style.display =
+            "block";
+          if (previousSlide0 !== currentSlide0) {
+            document.getElementById(roomPages[previousSlide0]).style.display =
+              "none";
+          }
+          prevBtn0.disabled = currentSlide0 === 0;
+          nextBtn0.disabled = currentSlide0 === roomPages.length - 1;
+        } else if (num === 1) {
+          if (previousSlide !== currentSlide) {
+            if (currentSlide === 11) {
+              albumImg.classList.add("height35vw");
+            } else if (currentSlide === 12) {
+              albumImg.classList.remove("height35vw");
+            }
+            albumImg.src = originalPhotoArray[currentSlide].src;
+          }
+          // prevBtn.disabled = currentSlide === 0;
+          // nextBtn.disabled = currentSlide === originalPhotoArray.length - 1;
+        } else if (num === 2) {
+          if (previousSlide2 !== currentSlide2) {
+            surrealImg.classList.remove("hidden");
+            surrealImg.src = surrealImages[currentSlide2].url;
+            surrealImg.alt = surrealImages[currentSlide2].alt;
+          }
+          // prevBtn2.disabled = currentSlide2 === 0;
+          // nextBtn2.disabled = currentSlide2 === surrealImages.length - 1;
+        }
+      }
+
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "ArrowRight") {
+          nextSlide(slideshow);
+        } else if (e.key === "ArrowLeft") {
+          prevSlide(slideshow);
+        }
+      });
+
+      function nextSlide(num) {
+        if (num === 0) {
+          nextBtn0.classList.remove("pulse");
+          if (currentSlide0 < roomPages.length - 1) {
+            previousSlide0 = currentSlide0;
+            currentSlide0++;
+            updateSlide(0);
+          }
+        } else if (num === 1) {
+          // nextBtn.classList.remove("pulse");
+          if (currentSlide < originalPhotoArray.length - 1) {
+            previousSlide = currentSlide;
+            currentSlide++;
+            updateSlide(1);
+          } else {
+            currentSlide = 0;
+            updateSlide(1);
+          }
+        } else if (num === 2) {
+          // nextBtn2.classList.remove("pulse");
+          if (currentSlide2 < surrealImages.length - 1) {
+            previousSlide2 = currentSlide2;
+            currentSlide2++;
+            updateSlide(2);
+          } else {
+            currentSlide2 = 0;
+            updateSlide(2);
+          }
+        }
+      }
+
+      function prevSlide(num) {
+        if (num === 0) {
+          if (currentSlide0 > 0) {
+            previousSlide0 = currentSlide0;
+            currentSlide0--;
+            updateSlide(0);
+          }
+        } else if (num === 1) {
+          if (currentSlide > 0) {
+            previousSlide = currentSlide;
+            currentSlide--;
+            updateSlide(1);
+          }
+        } else if (num === 2) {
+          if (currentSlide2 > 0) {
+            previousSlide2 = currentSlide2;
+            currentSlide2--;
+            updateSlide(2);
+          }
+        }
+      }
+
+      updateSlide(slideshow);
+
+      // Attach event listeners after DOM loads
+      window.onload = function () {
+        const inputEl = document.getElementById("myInput");
+        // Trigger when input gets focus (selected)
+        inputEl.addEventListener("click", onInputSelected);
+        // Function to run when input is selected (focused)
+        function onInputSelected() {
+          fullessay = !fullessay;
+          if (fullessay) {
+            document.getElementsByClassName("bg-2")[0].classList.remove("show");
+            document.getElementsByClassName("bg-2")[0].classList.add("hidden");
+
+            essayText.classList.add("italic");
+            interactiveText.classList.remove("italic");
+            fullEssayContainer.style.display = "flex";
+            interactiveReadWrapper.style.display = "none";
+            document.body.style.backgroundImage = `url(${bgImages[4]})`;
+          } else {
+            document
+              .getElementsByClassName("bg-2")[0]
+              .classList.remove("hidden");
+            document.getElementsByClassName("bg-2")[0].classList.add("show");
+            essayText.classList.remove("italic");
+            interactiveText.classList.add("italic");
+            fullEssayContainer.style.display = "none";
+            interactiveReadWrapper.style.display = "block";
+            document.body.style.backgroundImage = `url(${bgImages[currentSlide0]})`;
+          }
+        }
+      };
+    </script>
+  </body>
+</html>
