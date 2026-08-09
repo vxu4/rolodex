@@ -390,24 +390,77 @@
       display: absolute;
     }
 
+    /* =========================================================
+   INTERACTIVE PUZZLE
+   ========================================================= */
+
     #interactive-view {
-      width: 99vw;
-      height: 98vh;
+      width: 100vw;
+      height: 100vh;
+      position: relative;
+      overflow: hidden;
+
       display: flex;
-      flex-direction: row;
       align-items: center;
       justify-content: center;
     }
 
-    #quilt-outline {
-      width: 400px;
+    /*
+ * This is the puzzle's internal coordinate system.
+ *
+ * Your existing piece coordinates were designed around
+ * approximately this size, so we keep those coordinates
+ * intact and scale the entire canvas instead.
+ */
+    #puzzle-canvas {
+      position: relative;
+
+      width: 1400px;
+      height: 850px;
+      /* Try adjusting this number */
+      margin-left: -100px;
+      flex-shrink: 0;
+
+      transform-origin: center center;
     }
 
+    /*
+ * The quilt outline lives inside the same coordinate
+ * system as the puzzle pieces.
+ */
+    #quilt-outline {
+      position: absolute;
+
+      width: 400px;
+
+      /*
+   * Centers the 400px outline inside the 1400px canvas.
+   * The 225px top position centers it inside the 850px canvas.
+   */
+      width: 400px;
+      left: 534px;
+      top: 215px;
+
+      display: block;
+    }
+
+    /*
+ * Every puzzle piece is positioned relative to
+ * #puzzle-canvas.
+ */
     .quilt-piece {
       display: block;
       position: absolute;
+
       z-index: 35;
       cursor: pointer;
+
+      /*
+   * Prevents the browser from treating the image as
+   * something it should drag as a normal image.
+   */
+      user-select: none;
+      -webkit-user-drag: none;
     }
 
     /* herb dot styling */
@@ -460,6 +513,10 @@
     #herb-dot-05-wrapper {
       right: 16vw;
       top: 58vh;
+    }
+
+    .draggable {
+      z-index: 40;
     }
 
     /* Archive view */
@@ -598,34 +655,37 @@
     </label>
     <p class="toggle-label-essay">full archive</p>
   </div>
+
   <div class="body">
     <div id="interactive-view" class="show">
-      <img id="quilt-outline" src="" alt="outline of MZYVB's quilt" />
-      <div id="dots-wrapper">
-        <div class="herb-dot-wrapper" id="herb-dot-01-wrapper">
-          <p class="herb-text invisible">Herb name loading</p>
-          <div class="herb-dot" id="herb-dot-01"></div>
-          <p class="herb-date invisible">Date loading</p>
-        </div>
-        <div class="herb-dot-wrapper" id="herb-dot-02-wrapper">
-          <p class="herb-text invisible">Herb name loading</p>
-          <div class="herb-dot" id="herb-dot-02"></div>
-          <p class="herb-date invisible">Date loading</p>
-        </div>
-        <div class="herb-dot-wrapper" id="herb-dot-03-wrapper">
-          <p class="herb-text invisible">Herb name loading</p>
-          <div class="herb-dot" id="herb-dot-03"></div>
-          <p class="herb-date invisible">Date loading</p>
-        </div>
-        <div class="herb-dot-wrapper" id="herb-dot-04-wrapper">
-          <p class="herb-text invisible">Herb name loading</p>
-          <div class="herb-dot" id="herb-dot-04"></div>
-          <p class="herb-date invisible">Date loading</p>
-        </div>
-        <div class="herb-dot-wrapper" id="herb-dot-05-wrapper">
-          <p class="herb-text invisible">Herb name loading</p>
-          <div class="herb-dot" id="herb-dot-05"></div>
-          <p class="herb-date invisible">Date loading</p>
+      <div id="puzzle-canvas">
+        <img id="quilt-outline" alt="Quilt outline" />
+        <div id="dots-wrapper">
+          <div class="herb-dot-wrapper" id="herb-dot-01-wrapper">
+            <p class="herb-text invisible">Herb name loading</p>
+            <div class="herb-dot" id="herb-dot-01"></div>
+            <p class="herb-date invisible">Date loading</p>
+          </div>
+          <div class="herb-dot-wrapper" id="herb-dot-02-wrapper">
+            <p class="herb-text invisible">Herb name loading</p>
+            <div class="herb-dot" id="herb-dot-02"></div>
+            <p class="herb-date invisible">Date loading</p>
+          </div>
+          <div class="herb-dot-wrapper" id="herb-dot-03-wrapper">
+            <p class="herb-text invisible">Herb name loading</p>
+            <div class="herb-dot" id="herb-dot-03"></div>
+            <p class="herb-date invisible">Date loading</p>
+          </div>
+          <div class="herb-dot-wrapper" id="herb-dot-04-wrapper">
+            <p class="herb-text invisible">Herb name loading</p>
+            <div class="herb-dot" id="herb-dot-04"></div>
+            <p class="herb-date invisible">Date loading</p>
+          </div>
+          <div class="herb-dot-wrapper" id="herb-dot-05-wrapper">
+            <p class="herb-text invisible">Herb name loading</p>
+            <div class="herb-dot" id="herb-dot-05"></div>
+            <p class="herb-date invisible">Date loading</p>
+          </div>
         </div>
       </div>
     </div>
@@ -722,7 +782,6 @@
     const essayText =
       document.getElementsByClassName("toggle-label-essay")[0];
 
-    const quiltOutline = document.getElementById("quilt-outline");
     const images = [
       // 0: outline
       "https://static.wixstatic.com/shapes/2fa7ac_0265862ae6154759b8f09f6c8cccb2fc.svg",
@@ -984,120 +1043,375 @@
     ];
     // const herbEssayMap = [{ ["text", 1, "image", 1,]}
     // ]
+    // =========================================================
+    // INTERACTIVE PUZZLE
+    // =========================================================
+
     const interactiveView = document.getElementById("interactive-view");
+    const puzzleCanvas = document.getElementById("puzzle-canvas");
+    const quiltOutline = document.getElementById("quilt-outline");
+
     const archiveView = document.getElementById("archive-view");
     const herbDots = document.getElementsByClassName("herb-dot");
     const herbTexts = document.getElementsByClassName("herb-text");
     const herbDates = document.getElementsByClassName("herb-date");
 
+
+    // =========================================================
+    // PUZZLE CANVAS SETTINGS
+    // =========================================================
+    //
+    // These dimensions define our internal coordinate system.
+    //
+    // IMPORTANT:
+    // Your imageStartPts and imageCoordinates arrays continue
+    // to use these coordinates. We do NOT convert them to vw/vh.
+    //
+
+    const PUZZLE_WIDTH = 1400;
+    const PUZZLE_HEIGHT = 850;
+
+
+    // =========================================================
+    // SCALE PUZZLE TO FIT SCREEN
+    // =========================================================
+
+    function scalePuzzle() {
+      const availableWidth = window.innerWidth;
+      const availableHeight = window.innerHeight;
+
+      const scaleX = availableWidth / PUZZLE_WIDTH;
+      const scaleY = availableHeight / PUZZLE_HEIGHT;
+
+      const scale = Math.min(scaleX, scaleY);
+
+      // Screen-space adjustment
+      const puzzleXOffset = 10;
+      const puzzleYOffset = 0;
+
+      puzzleCanvas.style.transform = `
+      translate(${puzzleXOffset}px, ${puzzleYOffset}px)
+      scale(${scale})
+    `;
+    }
+
+    // Scale the puzzle immediately
+    scalePuzzle();
+
+    // Recalculate whenever the browser window changes size
+    window.addEventListener("resize", scalePuzzle);
+
+    function showHerbInfo(i, show) {
+      if (show) {
+        herbDots[i].style.backgroundColor =
+          herbData[i].color;
+
+        herbTexts[i].classList.remove("invisible");
+        herbDates[i].classList.remove("invisible");
+
+        herbTexts[i].classList.add("visible");
+        herbDates[i].classList.add("visible");
+      } else {
+
+        herbDots[i].style.backgroundColor = "transparent";
+
+        herbTexts[i].classList.remove("visible");
+        herbDates[i].classList.remove("visible");
+
+        herbTexts[i].classList.add("invisible");
+        herbDates[i].classList.add("invisible");
+      }
+    }
+
+
+    // =========================================================
+    // POPULATE PUZZLE
+    // =========================================================
+
     function populateScreen() {
+
+      // Set the outline image
       quiltOutline.src = images[0];
+
+      // Create all puzzle pieces
       for (let i = 1; i < images.length; i++) {
-        console.log("hit loop");
-        const newPiece = `<img style="width: ${imgWidths[i - 1]}px; top: ${imageStartPts[i - 1].top}; left: ${imageStartPts[i - 1].left}" src=${images[i]} alt="piece of the quilt to drag" id=piece-${i} class="quilt-piece" />`;
-        interactiveView.innerHTML += newPiece;
+
+        const newPiece = `
+      <img
+        style="
+          width: ${imgWidths[i - 1]}px;
+          top: ${imageStartPts[i - 1].top};
+          left: ${imageStartPts[i - 1].left};
+        "
+        src="${images[i]}"
+        alt="piece of the quilt to drag"
+        id="piece-${i}"
+        class="quilt-piece ${i < 11 ? "draggable" : "non-draggable"}"
+      />
+    `;
+
+        puzzleCanvas.insertAdjacentHTML("beforeend", newPiece);
       }
 
-      // Make quilt pieces draggable
-      var quiltPieces = document.getElementsByClassName("quilt-piece");
+
+      // =======================================================
+      // MAKE PUZZLE PIECES DRAGGABLE
+      // =======================================================
+
+      const quiltPieces =
+        document.getElementsByClassName("quilt-piece");
+
       for (let i = 0; i < quiltPieces.length; i++) {
         dragElement(quiltPieces[i]);
       }
 
-      // Add hover function for herb dots
+
+      // =======================================================
+      // HERB DOT HOVER FUNCTIONS
+      // =======================================================
+
       for (let i = 0; i < herbDots.length; i++) {
+
         herbTexts[i].textContent = herbData[i].name;
         herbDates[i].textContent = herbData[i].date;
-        herbDots[i].addEventListener("mouseover", (event) => {
-          herbDots[i].style.backgroundColor = herbData[i].color;
-          herbTexts[i].classList.remove("invisible");
-          herbDates[i].classList.remove("invisible");
-          herbTexts[i].classList.add("visible");
-          herbDates[i].classList.add("visible");
+
+
+        herbDots[i].addEventListener("mouseover", () => {
+          showHerbInfo(i, true);
+
         });
-        herbDots[i].addEventListener("mouseout", (event) => {
-          herbDots[i].style.backgroundColor = "transparent";
-          // herbTexts[i].textContent = "";
-          // herbDates[i].textContent = "";
-          herbTexts[i].classList.remove("visible");
-          herbDates[i].classList.remove("visible");
-          herbTexts[i].classList.add("invisible");
-          herbDates[i].classList.add("invisible");
+
+
+        herbDots[i].addEventListener("mouseout", () => {
+          showHerbInfo(i, false);
         });
       }
     }
 
-    // Making quilt pieces draggable
+
+    // =========================================================
+    // MAKE PUZZLE PIECES DRAGGABLE
+    // =========================================================
+
     function dragElement(elmnt) {
-      var pos1 = 0,
-        pos2 = 0,
-        pos3 = 0,
-        pos4 = 0;
-      if (document.getElementById(elmnt.id + "header")) {
-        // if present, the header is where you move the DIV from:
-        document.getElementById(elmnt.id + "header").onmousedown =
-          dragMouseDown;
-      } else {
-        // otherwise, move the DIV from anywhere inside the DIV:
-        elmnt.onmousedown = dragMouseDown;
-      }
+
+      let pos3 = 0;
+      let pos4 = 0;
+
+
+      // -------------------------------------------------------
+      // START DRAG
+      // -------------------------------------------------------
 
       function dragMouseDown(e) {
+
+        e.preventDefault();
+
         console.log("hit drag");
         console.log(elmnt);
 
-        e = e || window.event;
-        e.preventDefault();
-        // get the mouse cursor position at startup:
+        // Record the mouse's starting position
         pos3 = e.clientX;
         pos4 = e.clientY;
+
         document.onmouseup = closeDragElement;
-        // call a function whenever the cursor moves:
         document.onmousemove = elementDrag;
       }
 
+
+      // -------------------------------------------------------
+      // DRAG
+      // -------------------------------------------------------
+
       function elementDrag(e) {
-        e = e || window.event;
+
         e.preventDefault();
-        // calculate the new cursor position:
-        pos1 = pos3 - e.clientX;
-        pos2 = pos4 - e.clientY;
+
+
+        /*
+         * The puzzle canvas may be visually scaled.
+         *
+         * For example:
+         *
+         *     1400px internal canvas
+         *     ↓
+         *     displayed at 1000px
+         *
+         * scale = 0.714
+         *
+         * Therefore a 71px mouse movement on screen actually
+         * represents a 100px movement inside our puzzle's
+         * coordinate system.
+         */
+
+
+        // Get the actual displayed size of the puzzle canvas
+        const canvasRect = puzzleCanvas.getBoundingClientRect();
+
+        // Calculate current scale from displayed size
+        // compared with our internal coordinate system.
+        const scaleX = canvasRect.width / PUZZLE_WIDTH;
+        const scaleY = canvasRect.height / PUZZLE_HEIGHT;
+
+        // They should be identical because we're using uniform
+        // scaling, so use the average just to be safe.
+        const scale = (scaleX + scaleY) / 2;
+
+
+        // Calculate how far the mouse moved on screen
+        const mouseDeltaX = e.clientX - pos3;
+        const mouseDeltaY = e.clientY - pos4;
+
+
+        // Convert screen movement into puzzle-coordinate movement
+        const puzzleDeltaX = mouseDeltaX / scale;
+        const puzzleDeltaY = mouseDeltaY / scale;
+
+
+        // Get current puzzle-coordinate position
+        const currentLeft = elmnt.offsetLeft;
+        const currentTop = elmnt.offsetTop;
+
+
+        // Calculate new puzzle-coordinate position
+        const newLeft = currentLeft + puzzleDeltaX;
+        const newTop = currentTop + puzzleDeltaY;
+
+
+        // Move the piece
+        elmnt.style.left = newLeft + "px";
+        elmnt.style.top = newTop + "px";
+
+
+        // Update mouse position for the next movement
         pos3 = e.clientX;
         pos4 = e.clientY;
-        // set the element's new position:
-        topNum = elmnt.offsetTop - pos2;
-        leftNum = elmnt.offsetLeft - pos1;
-        elmnt.style.top = topNum + "px";
-        elmnt.style.left = leftNum + "px";
-        console.log(elmnt.style.top);
-        console.log(elmnt.style.left);
-        const limits = imageCoordinates[Number(elmnt.id.split("-")[1])];
-        // console.log(
-        //   topNum > limits.topLowerlim && topNum < limits.topUpperLim,
-        // );
-        // console.log(
-        //   leftNum > limits.leftLowerlim && leftNum < limits.leftUpperlim,
-        // );
 
-        if (
-          topNum > limits.topLowerlim &&
-          topNum < limits.topUpperLim &&
-          leftNum > limits.leftLowerlim &&
-          leftNum < limits.leftUpperlim
-        ) {
-          console.log("success!");
+
+        // -----------------------------------------------------
+        // CHECK WHETHER PIECE IS IN THE CORRECT LOCATION
+        // -----------------------------------------------------
+
+        const pieceNumber =
+          Number(elmnt.id.split("-")[1]);
+        console.log(pieceNumber)
+        const limits = imageCoordinates[pieceNumber];
+        console.log("checking success")
+        console.log(newTop, newLeft, limits);
+        console.log({
+          piece: elmnt.id,
+          actualLeft: newLeft,
+          actualTop: newTop,
+          targetLeft: `${limits.leftLowerlim}-${limits.leftUpperlim}`,
+          targetTop: `${limits.topLowerlim}-${limits.topUpperLim}`,
+        });
+        const SNAP_TOLERANCE = 15;
+
+
+        const isCorrectPosition =
+          newTop >= limits.topLowerlim - SNAP_TOLERANCE &&
+          newTop <= limits.topUpperLim + SNAP_TOLERANCE &&
+          newLeft >= limits.leftLowerlim - SNAP_TOLERANCE &&
+          newLeft <= limits.leftUpperlim + SNAP_TOLERANCE;
+
+        if (isCorrectPosition) {
+          console.log("SUCCESS!", elmnt.id);
+          showHerbInfo(0, true);
+
+          // // Snap to the center of the target range
+          // const targetLeft =
+          //   (limits.leftLowerlim + limits.leftUpperlim) / 2;
+
+          // const targetTop =
+          //   (limits.topLowerlim + limits.topUpperLim) / 2;
+
+          // elmnt.style.left = `${targetLeft}px`;
+          // elmnt.style.top = `${targetTop}px`;
         }
-        // if (topNum > 205 && topNum < 215 && leftNum < 550 && leftNum > 540) {
-        //   console.log("hitting drag if");
-        // }
+
+
+        // Debugging information
+        console.log(
+          `Piece ${pieceNumber}:`,
+          `left = ${Math.round(newLeft)}`,
+          `top = ${Math.round(newTop)}`,
+          `scale = ${scale.toFixed(3)}`
+        );
       }
+
+
+      // -------------------------------------------------------
+      // END DRAG
+      // -------------------------------------------------------
+
       function closeDragElement() {
-        // stop moving when mouse button is released:
+
         document.onmouseup = null;
         document.onmousemove = null;
       }
+
+
+      // Attach mouse event
+      elmnt.onmousedown = dragMouseDown;
     }
 
+
+    // =========================================================
+    // WINDOW LOAD
+    // =========================================================
+
+    window.onload = function () {
+
+      const inputEl =
+        document.getElementById("myInput");
+
+
+      // -------------------------------------------------------
+      // TOGGLE BETWEEN INTERACTIVE / ESSAY
+      // -------------------------------------------------------
+
+      inputEl.addEventListener("click", onInputSelected);
+
+
+      function onInputSelected() {
+
+        fullessay = !fullessay;
+
+
+        if (fullessay) {
+
+          essayText.classList.add("italic");
+          interactiveText.classList.remove("italic");
+
+          interactiveView.classList.remove("show");
+          interactiveView.classList.add("hidden");
+
+          archiveView.classList.remove("hidden");
+          archiveView.classList.add("show");
+
+        } else {
+
+          essayText.classList.remove("italic");
+          interactiveText.classList.add("italic");
+
+          archiveView.classList.remove("show");
+          archiveView.classList.add("hidden");
+
+          interactiveView.classList.remove("hidden");
+          interactiveView.classList.add("show");
+
+          // Recalculate scale when returning to puzzle
+          scalePuzzle();
+        }
+      }
+
+
+      // -------------------------------------------------------
+      // START PUZZLE
+      // -------------------------------------------------------
+
+      populateScreen();
+    };
     // Attach event listeners after DOM loads
     window.onload = function () {
       const inputEl = document.getElementById("myInput");
