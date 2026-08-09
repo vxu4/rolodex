@@ -1,19 +1,83 @@
 <html>
 
 <head>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wdth,wght@0,62.5..100,100..900;1,62.5..100,100..900&display=swap"
+        rel="stylesheet" />
     <title>MeiZYVB</title>
     <link rel="stylesheet" href="MeiZYVB.css">
     <script src="MeiZYVB.js" defer></script>
     <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: start;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .subtitle {
+            font-family: 'Noto Sans', sans-serif;
+            font-optical-sizing: auto;
+            font-weight: 300;
+            font-style: normal;
+            font-variation-settings: "wdth" 87.5;
+            font-size: 15px;
+            /* font-style: italic; */
+        }
+
+        .label-text {
+            font-family: 'Noto Sans', sans-serif;
+            font-optical-sizing: auto;
+            font-weight: 100;
+            font-style: normal;
+            font-variation-settings: "wdth" 300;
+            font-size: 10px;
+            font-style: italic;
+            align-self: flex-start;
+        }
+
+        .body-text {
+            font-family: 'Noto Sans', sans-serif;
+            font-optical-sizing: auto;
+            font-weight: 100;
+            font-style: normal;
+            font-variation-settings: "wdth" 200;
+            font-size: 14px;
+        }
+
+        #essay-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 42vw;
+        }
+
+        #title-img {
+            width: 24vw
+        }
     </style>
 </head>
 
 <body>
-    <p>Dandelion</p>
-    <img src="images/dandelion.png" alt="Dandelion" class="herb-image" id="herb-image-1" />
-    <p><i>Gemini:</i> May 20 - June 19.</p>
-    <p>First published June 12th, 2024</p>
-    <p> </p>
+    <div id="essay-wrapper">
+        <p class="subtitle">Dandelion</p>
+        <img id="title-img" src="https://static.wixstatic.com/media/2fa7ac_9baa94d56e01443095fb63f4e4a2235e~mv2.jpg"
+            alt="Dandelion" class="herb-image" id="herb-image-1" />
+        <p class="subtitle"><i>Gemini:</i> May 20 - June 19.</p>
+        <br />
+        <br />
+        <p class="label-text">First published June 12th, 2024</p>
+        <p class="body-text"> I'm writing you from Vermont, where I have been museum sitting for Clare at the <a
+                href="https://museumofeverydaylife.org/">Museum of Everyday Life </a>. I hope this letter can be a
+            pleasant inbox surprise. It is the first in a series of monthly dispatches in a new yearlong project. Please
+            see how you like the idea by reading on, and consider subscribing to be with me for the journey. Feedback,
+            questions, fact checks, and collaboration are all more than welcome.
+        </p>
+    </div>
 </body>
 
 </html>

@@ -7,1099 +7,1127 @@
 -->
 <!doctype html>
 <html lang="en">
-  <head>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wdth,wght@0,62.5..100,100..900;1,62.5..100,100..900&display=swap"
-      rel="stylesheet"
-    />
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>MZYVB Project</title>
-    <style>
-      p {
-        font-family: "Noto Sans", sans-serif;
-        font-optical-sizing: auto;
-        font-weight: 200;
-        font-size: 14px;
-        font-style: normal;
-        font-variation-settings: "wdth" 100;
-        color: black;
-      }
 
-      /* Entry overlay: w/ prompt and dot to click in */
-      .entry-overlay {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        position: fixed;
-        z-index: 888;
-        left: 0;
-        top: 0;
-        width: 100vw;
-        height: 100vh;
-        overflow: auto;
-        background-color: rgba(247, 247, 237, 0.95);
-        opacity: 1;
-        /* Fully visible */
-        transition: opacity 1.5s ease;
-        /* Smooth fade-out effect */
-      }
+<head>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wdth,wght@0,62.5..100,100..900;1,62.5..100,100..900&display=swap"
+    rel="stylesheet" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MZYVB Project</title>
+  <style>
+    p {
+      font-family: "Noto Sans", sans-serif;
+      font-optical-sizing: auto;
+      font-weight: 200;
+      font-size: 14px;
+      font-style: normal;
+      font-variation-settings: "wdth" 100;
+      color: black;
+    }
 
-      .hidden-entry-overlay {
-        opacity: 0;
-        pointer-events: none;
-        /* Prevent interaction */
-      }
+    /* Entry overlay: w/ prompt and dot to click in */
+    .entry-overlay {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      position: fixed;
+      z-index: 888;
+      left: 0;
+      top: 0;
+      width: 100vw;
+      height: 100vh;
+      overflow: auto;
+      background-color: rgba(247, 247, 237, 0.95);
+      opacity: 1;
+      /* Fully visible */
+      transition: opacity 1.5s ease;
+      /* Smooth fade-out effect */
+    }
 
-      #entry-dot {
-        width: 15px;
-        height: 15px;
-        background-color: transparent;
-        border: 1px solid black;
-        border-radius: 50%;
-        cursor: pointer;
-        transition: background-color 0.5s ease;
-        /* Smooth fade-out effect */
-      }
+    .hidden-entry-overlay {
+      opacity: 0;
+      pointer-events: none;
+      /* Prevent interaction */
+    }
 
-      .prompt-text {
-        font-family: "Noto Sans", sans-serif;
-        font-optical-sizing: auto;
-        font-weight: 300;
-        font-size: 14px;
-        font-style: normal;
-        font-variation-settings: "wdth" 87.5;
-        color: black;
-      }
+    #entry-dot {
+      width: 15px;
+      height: 15px;
+      background-color: transparent;
+      border: 1px solid black;
+      border-radius: 50%;
+      cursor: pointer;
+      transition: background-color 0.5s ease;
+      /* Smooth fade-out effect */
+    }
 
-      .dot-nav {
-        height: 100px;
-        overflow: hidden;
-        display: flex;
-        justify-content: center;
-        position: relative;
-        padding: 20px;
-      }
+    .prompt-text {
+      font-family: "Noto Sans", sans-serif;
+      font-optical-sizing: auto;
+      font-weight: 300;
+      font-size: 14px;
+      font-style: normal;
+      font-variation-settings: "wdth" 87.5;
+      color: black;
+    }
 
-      .dot {
-        position: absolute;
-        height: 15px;
-        width: 15px;
-        background-color: transparent;
-        border: 1px solid black;
-        border-radius: 50%;
-        cursor: pointer;
-        z-index: 10;
-      }
+    .dot-nav {
+      height: 100px;
+      overflow: hidden;
+      display: flex;
+      justify-content: center;
+      position: relative;
+      padding: 20px;
+    }
 
-      /* Positioning the dots in a triangle formation */
-      #dot1 {
-        top: 20px;
-        left: 50%;
-        transform: translateX(-50%);
-      }
+    .dot {
+      position: absolute;
+      height: 15px;
+      width: 15px;
+      background-color: transparent;
+      border: 1px solid black;
+      border-radius: 50%;
+      cursor: pointer;
+      z-index: 10;
+    }
 
-      #dot1::after {
-        content: "Rolodex Homepage";
-        font-family: "Noto Sans", sans-serif;
-        font-optical-sizing: auto;
-        font-weight: 300;
-        font-size: 10px;
-        font-style: normal;
-        font-variation-settings: "wdth" 100;
-        position: absolute;
-        top: -20px;
-        left: 50%;
-        transform: translateX(10%);
-        background-color: black;
-        color: white;
-        padding: 5px 10px;
-        border-radius: 5px;
-        white-space: nowrap;
-        opacity: 0;
-        transition: opacity 0.3s ease-in-out;
-        pointer-events: none;
-        z-index: 15;
-      }
+    /* Positioning the dots in a triangle formation */
+    #dot1 {
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+    }
 
-      #dot1:hover::after {
-        opacity: 1;
-      }
+    #dot1::after {
+      content: "Rolodex Homepage";
+      font-family: "Noto Sans", sans-serif;
+      font-optical-sizing: auto;
+      font-weight: 300;
+      font-size: 10px;
+      font-style: normal;
+      font-variation-settings: "wdth" 100;
+      position: absolute;
+      top: -20px;
+      left: 50%;
+      transform: translateX(10%);
+      background-color: black;
+      color: white;
+      padding: 5px 10px;
+      border-radius: 5px;
+      white-space: nowrap;
+      opacity: 0;
+      transition: opacity 0.3s ease-in-out;
+      pointer-events: none;
+      z-index: 15;
+    }
 
-      #dot2 {
-        top: 60px;
-        left: calc(50% - 30px);
-      }
+    #dot1:hover::after {
+      opacity: 1;
+    }
 
-      #dot2::after {
-        content: "Rolobeing Bio";
-        font-family: "Noto Sans", sans-serif;
-        font-optical-sizing: auto;
-        font-weight: 300;
-        font-size: 10px;
-        font-style: normal;
-        font-variation-settings: "wdth" 100;
-        position: absolute;
-        top: -20px;
-        left: 50%;
-        transform: translateX(-110%);
-        background-color: black;
-        color: white;
-        padding: 5px 10px;
-        border-radius: 5px;
-        white-space: nowrap;
-        opacity: 0;
-        transition: opacity 0.3s ease-in-out;
-        pointer-events: none;
-        z-index: 15;
-      }
+    #dot2 {
+      top: 60px;
+      left: calc(50% - 30px);
+    }
 
-      #dot2:hover::after {
-        opacity: 1;
-      }
+    #dot2::after {
+      content: "Rolobeing Bio";
+      font-family: "Noto Sans", sans-serif;
+      font-optical-sizing: auto;
+      font-weight: 300;
+      font-size: 10px;
+      font-style: normal;
+      font-variation-settings: "wdth" 100;
+      position: absolute;
+      top: -20px;
+      left: 50%;
+      transform: translateX(-110%);
+      background-color: black;
+      color: white;
+      padding: 5px 10px;
+      border-radius: 5px;
+      white-space: nowrap;
+      opacity: 0;
+      transition: opacity 0.3s ease-in-out;
+      pointer-events: none;
+      z-index: 15;
+    }
 
-      #dot3 {
-        top: 60px;
-        left: calc(50% + 15px);
-        background-color: black;
-      }
+    #dot2:hover::after {
+      opacity: 1;
+    }
 
-      #dot3::after {
-        content: "Refresh Content";
-        font-family: "Noto Sans", sans-serif;
-        font-optical-sizing: auto;
-        font-weight: 300;
-        font-size: 10px;
-        font-style: normal;
-        font-variation-settings: "wdth" 100;
-        position: absolute;
-        top: -20px;
-        left: 50%;
-        transform: translateX(10%);
-        background-color: black;
-        color: white;
-        padding: 5px 10px;
-        border-radius: 5px;
-        white-space: nowrap;
-        opacity: 0;
-        transition: opacity 0.3s ease-in-out;
-        pointer-events: none;
-        z-index: 15;
-      }
+    #dot3 {
+      top: 60px;
+      left: calc(50% + 15px);
+      background-color: black;
+    }
 
-      #dot3:hover::after {
-        opacity: 1;
-      }
+    #dot3::after {
+      content: "Refresh Content";
+      font-family: "Noto Sans", sans-serif;
+      font-optical-sizing: auto;
+      font-weight: 300;
+      font-size: 10px;
+      font-style: normal;
+      font-variation-settings: "wdth" 100;
+      position: absolute;
+      top: -20px;
+      left: 50%;
+      transform: translateX(10%);
+      background-color: black;
+      color: white;
+      padding: 5px 10px;
+      border-radius: 5px;
+      white-space: nowrap;
+      opacity: 0;
+      transition: opacity 0.3s ease-in-out;
+      pointer-events: none;
+      z-index: 15;
+    }
 
-      /* Mobile view only on screens up to 768px wide */
+    #dot3:hover::after {
+      opacity: 1;
+    }
+
+    /* Mobile view only on screens up to 768px wide */
+    .mobile-only {
+      display: flex;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      z-index: 999;
+      position: absolute;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      color: #595959;
+    }
+
+    .redirect-message {
+      color: #595959;
+      text-align: center;
+      font-family: "Noto Sans", sans-serif;
+      font-optical-sizing: auto;
+      font-weight: 200;
+      font-size: 14px;
+      font-style: normal;
+      font-variation-settings: "wdth" 100;
+    }
+
+    .rolodex {
+      font-family: "Marzo", serif;
+      font-size: 2.5rem;
+      position: relative;
+      cursor: pointer;
+      text-align: center;
+      margin-bottom: 1rem;
+    }
+
+    .solid-circle {
+      position: relative;
+      display: inline-block;
+      width: 1.375rem;
+      height: 1.375rem;
+      border-radius: 50%;
+      background-color: #595959;
+    }
+
+    .o1 {
+      top: 0;
+      left: 1.668rem;
+      transform: translateX(-1.65rem);
+    }
+
+    .o2 {
+      bottom: 0;
+      left: -1.66rem;
+      transform: translateX(1.65rem);
+    }
+
+    .footer {
+      position: absolute;
+      bottom: 1.5rem;
+      right: 0rem;
+      display: flex;
+      justify-content: right;
+      align-items: end;
+      flex-direction: column;
+      width: 100%;
+    }
+
+    #copyright {
+      font-family: "didot", serif;
+      font-style: italic;
+      text-decoration: none;
+      font-size: 14px;
+      color: #595959;
+      padding: 0rem 2rem;
+    }
+
+    @media (min-width: 769px) {
       .mobile-only {
-        display: flex;
-        width: 100%;
-        height: 100%;
-        overflow: hidden;
-        z-index: 999;
-        position: absolute;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        color: #595959;
+        display: none;
+      }
+    }
+
+    @media (max-width: 769px) {
+      .entry-overlay {
+        display: none;
       }
 
-      .redirect-message {
-        color: #595959;
-        text-align: center;
-        font-family: "Noto Sans", sans-serif;
-        font-optical-sizing: auto;
-        font-weight: 200;
-        font-size: 14px;
-        font-style: normal;
-        font-variation-settings: "wdth" 100;
+      .header {
+        display: none;
       }
 
-      .rolodex {
-        font-family: "Marzo", serif;
-        font-size: 2.5rem;
-        position: relative;
-        cursor: pointer;
-        text-align: center;
-        margin-bottom: 1rem;
+      .body {
+        display: none;
       }
+    }
 
-      .solid-circle {
-        position: relative;
-        display: inline-block;
-        width: 1.375rem;
-        height: 1.375rem;
-        border-radius: 50%;
-        background-color: #595959;
-      }
+    /* Toggle styling */
+    .toggle {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      position: absolute;
+      z-index: 99;
+      right: 1rem;
+      top: 1rem;
+      font-family: "Noto Sans", sans-serif;
+      font-optical-sizing: auto;
+      font-weight: 300;
+      font-size: 13px;
+      font-style: normal;
+      font-variation-settings: "wdth" 87.5;
+    }
 
-      .o1 {
-        top: 0;
-        left: 1.668rem;
-        transform: translateX(-1.65rem);
-      }
+    /* The box around the toggle */
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 2rem;
+      height: 0.9rem;
+      margin: 0rem 0.4rem;
+    }
 
-      .o2 {
-        bottom: 0;
-        left: -1.66rem;
-        transform: translateX(1.65rem);
-      }
+    /* Hide default HTML checkbox */
+    .switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
 
-      .footer {
-        position: absolute;
-        bottom: 1.5rem;
-        right: 0rem;
-        display: flex;
-        justify-content: right;
-        align-items: end;
-        flex-direction: column;
-        width: 100%;
-      }
+    /* The slider */
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: #9e9e9e;
+      -webkit-transition: 0.4s;
+      transition: 0.4s;
+    }
 
-      #copyright {
-        font-family: "didot", serif;
-        font-style: italic;
-        text-decoration: none;
-        font-size: 14px;
-        color: #595959;
-        padding: 0rem 2rem;
-      }
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 0.7rem;
+      width: 0.7rem;
+      left: 0.1rem;
+      bottom: 0.1rem;
+      background-color: white;
+      -webkit-transition: 0.4s;
+      transition: 0.4s;
+    }
 
-      @media (min-width: 769px) {
-        .mobile-only {
-          display: none;
-        }
-      }
+    input:checked+.slider {
+      background-color: #9e9e9e;
+    }
 
-      @media (max-width: 769px) {
-        .entry-overlay {
-          display: none;
-        }
+    input:focus+.slider {
+      box-shadow: 0 0 1px #9e9e9e;
+    }
 
-        .header {
-          display: none;
-        }
+    input:checked+.slider:before {
+      -webkit-transform: translateX(1.1rem);
+      -ms-transform: translateX(1.1rem);
+      transform: translateX(1.1rem);
+    }
 
-        .body {
-          display: none;
-        }
-      }
+    /* Rounded sliders */
+    .slider.round {
+      border-radius: 34px;
+    }
 
-      /* Toggle styling */
-      .toggle {
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        position: absolute;
-        z-index: 99;
-        right: 1rem;
-        top: 1rem;
-        font-family: "Noto Sans", sans-serif;
-        font-optical-sizing: auto;
-        font-weight: 300;
-        font-size: 13px;
-        font-style: normal;
-        font-variation-settings: "wdth" 87.5;
-      }
+    .slider.round:before {
+      border-radius: 50%;
+    }
 
-      /* The box around the toggle */
-      .switch {
-        position: relative;
-        display: inline-block;
-        width: 2rem;
-        height: 0.9rem;
-        margin: 0rem 0.4rem;
-      }
+    .italic {
+      font-style: italic;
+    }
 
-      /* Hide default HTML checkbox */
-      .switch input {
-        opacity: 0;
-        width: 0;
-        height: 0;
-      }
+    .hidden {
+      display: none !important;
+    }
 
-      /* The slider */
-      .slider {
-        position: absolute;
-        cursor: pointer;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background-color: #9e9e9e;
-        -webkit-transition: 0.4s;
-        transition: 0.4s;
-      }
+    .invisible {
+      opacity: 0;
+    }
 
-      .slider:before {
-        position: absolute;
-        content: "";
-        height: 0.7rem;
-        width: 0.7rem;
-        left: 0.1rem;
-        bottom: 0.1rem;
-        background-color: white;
-        -webkit-transition: 0.4s;
-        transition: 0.4s;
-      }
+    .visible {
+      opacity: 1;
+    }
 
-      input:checked + .slider {
-        background-color: #9e9e9e;
-      }
+    .show {
+      display: absolute;
+    }
 
-      input:focus + .slider {
-        box-shadow: 0 0 1px #9e9e9e;
-      }
+    #interactive-view {
+      width: 99vw;
+      height: 98vh;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: center;
+    }
 
-      input:checked + .slider:before {
-        -webkit-transform: translateX(1.1rem);
-        -ms-transform: translateX(1.1rem);
-        transform: translateX(1.1rem);
-      }
+    #quilt-outline {
+      width: 400px;
+    }
 
-      /* Rounded sliders */
-      .slider.round {
-        border-radius: 34px;
-      }
+    .quilt-piece {
+      display: block;
+      position: absolute;
+      z-index: 35;
+      cursor: pointer;
+    }
 
-      .slider.round:before {
-        border-radius: 50%;
-      }
+    /* herb dot styling */
+    .herb-dot {
+      width: 15px;
+      height: 15px;
+      background-color: transparent;
+      border: 1px solid black;
+      border-radius: 50%;
+      cursor: pointer;
+      transition: background-color 0.5s ease;
+    }
 
-      .italic {
-        font-style: italic;
-      }
+    .herb-dot-wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      position: absolute;
+    }
 
-      .hidden {
-        display: none !important;
-      }
+    .herb-text {
+      transition: opacity 0.5s ease;
+    }
 
-      .invisible {
-        opacity: 0;
-      }
+    .herb-date {
+      transition: opacity 0.5s ease;
+    }
 
-      .visible {
-        opacity: 1;
-      }
+    #herb-dot-01-wrapper {
+      left: 12vw;
+      top: 12vh;
+    }
 
-      .show {
-        display: absolute;
-      }
+    #herb-dot-02-wrapper {
+      left: 19vw;
+      top: 38vh;
+    }
 
-      #interactive-view {
-        width: 99vw;
-        height: 98vh;
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        justify-content: center;
-      }
+    #herb-dot-03-wrapper {
+      left: 14vw;
+      top: 63vh;
+    }
 
-      #quilt-outline {
-        width: 400px;
-      }
+    #herb-dot-04-wrapper {
+      right: 7vw;
+      top: 29vh;
+    }
 
-      .quilt-piece {
-        display: block;
-        position: absolute;
-        z-index: 35;
-        cursor: pointer;
-      }
+    #herb-dot-05-wrapper {
+      right: 16vw;
+      top: 58vh;
+    }
 
-      /* herb dot styling */
-      .herb-dot {
-        width: 15px;
-        height: 15px;
-        background-color: transparent;
-        border: 1px solid black;
-        border-radius: 50%;
-        cursor: pointer;
-        transition: background-color 0.5s ease;
-      }
+    /* Archive view */
+    .archive-view {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-top: 14vh;
+    }
 
-      .herb-dot-wrapper {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        position: absolute;
-      }
+    .subtitle {
+      font-family: 'Noto Sans', sans-serif;
+      font-optical-sizing: auto;
+      font-weight: 300;
+      font-style: normal;
+      font-variation-settings: "wdth" 87.5;
+      font-size: 15px;
+      /* font-style: italic; */
+    }
 
-      .herb-text {
-        transition: opacity 0.5s ease;
-      }
+    .label-text {
+      font-family: 'Noto Sans', sans-serif;
+      font-optical-sizing: auto;
+      font-weight: 100;
+      font-style: normal;
+      font-variation-settings: "wdth" 300;
+      font-size: 10px;
+      font-style: italic;
+      align-self: flex-start;
+    }
 
-      .herb-date {
-        transition: opacity 0.5s ease;
-      }
+    .body-text {
+      font-family: 'Noto Sans', sans-serif;
+      font-optical-sizing: auto;
+      font-weight: 100;
+      font-style: normal;
+      font-variation-settings: "wdth" 200;
+      font-size: 14px;
+    }
 
-      #herb-dot-01-wrapper {
-        left: 12vw;
-        top: 12vh;
-      }
+    #essay-wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      width: 42vw;
+    }
 
-      #herb-dot-02-wrapper {
-        left: 19vw;
-        top: 38vh;
-      }
+    #title-img {
+      width: 24vw
+    }
+  </style>
+</head>
 
-      #herb-dot-03-wrapper {
-        left: 14vw;
-        top: 63vh;
-      }
-
-      #herb-dot-04-wrapper {
-        right: 7vw;
-        top: 29vh;
-      }
-
-      #herb-dot-05-wrapper {
-        right: 16vw;
-        top: 58vh;
-      }
-    </style>
-  </head>
-
-  <body>
-    <div class="mobile-only">
-      <div class="rolodex" id="alldots">
-        <span class="letter r"
-          ><svg
-            width="15"
-            height="22"
-            viewBox="0 0 15 22"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M-0.000195228 21.1499V1.0799C-0.000195228 0.779902 0.0998048 0.529902 0.299805 0.329902C0.519805 0.109901 0.769805 -9.89437e-05 1.0498 -9.89437e-05H7.82981C8.72981 -9.89437e-05 9.56981 0.169901 10.3498 0.509902C11.1298 0.849902 11.8098 1.3199 12.3898 1.9199C12.9698 2.4999 13.4298 3.1799 13.7698 3.9599C14.1098 4.7399 14.2798 5.5799 14.2798 6.4799C14.2798 7.3799 14.1098 8.2199 13.7698 8.9999C13.4298 9.7799 12.9698 10.4699 12.3898 11.0699C11.8098 11.6499 11.1298 12.1099 10.3498 12.4499C9.56981 12.7899 8.72981 12.9599 7.82981 12.9599H1.8898C1.7898 12.9599 1.7398 13.0099 1.7398 13.1099C1.7398 13.1699 1.7898 13.2299 1.8898 13.2899L13.9498 20.6699L13.6498 21.1499L1.5898 13.7699C1.4898 13.6899 1.3998 13.5999 1.3198 13.4999C1.2398 13.3999 1.1998 13.2699 1.1998 13.1099C1.1998 12.9099 1.2598 12.7499 1.3798 12.6299C1.5198 12.4899 1.6898 12.4199 1.8898 12.4199H7.82981C8.64981 12.4199 9.41981 12.2699 10.1398 11.9699C10.8598 11.6499 11.4798 11.2199 11.9998 10.6799C12.5398 10.1399 12.9598 9.5099 13.2598 8.7899C13.5798 8.0699 13.7398 7.2999 13.7398 6.4799C13.7398 5.6599 13.5798 4.8899 13.2598 4.1699C12.9598 3.4499 12.5398 2.8199 11.9998 2.2799C11.4798 1.7399 10.8598 1.3199 10.1398 1.0199C9.41981 0.699902 8.64981 0.539901 7.82981 0.539901H1.0498C0.909805 0.539901 0.789805 0.589901 0.689805 0.689901C0.589805 0.789901 0.539805 0.919901 0.539805 1.0799V21.1499H-0.000195228Z"
-              fill="#595959"
-            />
-          </svg>
-        </span>
-        <span class="letter o solid-circle o1 dot-container">
-          <div class="finaldots" id="firstDotHide"></div>
-        </span>
-        <span class="letter l"
-          ><svg
-            width="16"
-            height="22"
-            viewBox="0 0 16 22"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M0.539805 -9.89437e-05V20.0699C0.539805 20.2299 0.589805 20.3599 0.689805 20.4599C0.789805 20.5599 0.919805 20.6099 1.0798 20.6099H15.8098V21.1499H1.0798C0.779805 21.1499 0.519805 21.0499 0.299805 20.8499C0.0998048 20.6299 -0.000195228 20.3699 -0.000195228 20.0699V-9.89437e-05H0.539805Z"
-              fill="#595959"
-            />
-          </svg>
-        </span>
-        <span class="letter o solid-circle o2 dot-container">
-          <div class="finaldots"></div>
-        </span>
-        <span class="letter d"
-          ><svg
-            width="17"
-            height="22"
-            viewBox="0 0 17 22"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M0.539805 20.5799H6.44981C7.8298 20.5799 9.1298 20.3199 10.3498 19.7999C11.5698 19.2599 12.6298 18.5399 13.5298 17.6399C14.4298 16.7399 15.1398 15.6799 15.6598 14.4599C16.1998 13.2399 16.4698 11.9399 16.4698 10.5599C16.4698 9.1799 16.1998 7.8799 15.6598 6.6599C15.1398 5.4399 14.4298 4.3799 13.5298 3.4799C12.6298 2.5599 11.5698 1.8399 10.3498 1.3199C9.1298 0.799901 7.8298 0.539901 6.44981 0.539901H1.0798C0.919805 0.539901 0.789805 0.589901 0.689805 0.689901C0.589805 0.789901 0.539805 0.919901 0.539805 1.0799V20.5799ZM-0.000195228 1.0799C-0.000195228 0.779902 0.0998048 0.529902 0.299805 0.329902C0.519805 0.109901 0.779805 -9.89437e-05 1.0798 -9.89437e-05H6.44981C7.90981 -9.89437e-05 9.27981 0.279901 10.5598 0.839901C11.8398 1.3799 12.9598 2.1299 13.9198 3.0899C14.8798 4.0499 15.6298 5.1699 16.1698 6.4499C16.7298 7.7299 17.0098 9.0999 17.0098 10.5599C17.0098 12.0199 16.7298 13.3899 16.1698 14.6699C15.6298 15.9499 14.8798 17.0699 13.9198 18.0299C12.9598 18.9899 11.8398 19.7499 10.5598 20.3099C9.27981 20.8499 7.90981 21.1199 6.44981 21.1199H-0.000195228V1.0799Z"
-              fill="#595959"
-            />
-          </svg>
-        </span>
-        <span class="letter e"
-          ><svg
-            width="16"
-            height="22"
-            viewBox="0 0 16 22"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M15.9898 21.1499H-0.000195228V1.0799C-0.000195228 0.779902 0.0998048 0.529902 0.299805 0.329902C0.499805 0.109901 0.749805 -9.89437e-05 1.0498 -9.89437e-05H15.7798V0.539901H1.0498C0.889805 0.539901 0.759805 0.589901 0.659805 0.689901C0.579805 0.789901 0.539805 0.919901 0.539805 1.0799V10.3499H15.9898V10.8899H0.539805V20.6099H15.9898V21.1499Z"
-              fill="#595959"
-            />
-          </svg>
-        </span>
-        <span class="letter x"
-          ><svg
-            width="19"
-            height="22"
-            viewBox="0 0 19 22"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M9 10.1399L17.31 -9.89437e-05H18.03L9.36 10.5899L18.03 21.1499H17.31L9 11.0099L0.69 21.1499H0L8.64 10.5899L0 -9.89437e-05H0.69L9 10.1399Z"
-              fill="#595959"
-            />
-          </svg>
-        </span>
-      </div>
-
-      <p class="redirect-message">
-        the time is now
-        <span class="clock" id="utcClock"> ... </span>
-        <br />
-        <br />
-        we welcome you <br />
-        to canon our truths <br />
-        <br />
-
-        with rite clear <br />
-        <br />
-
-        please visit rolodex.cc <br />
-        curated for desktop platform <br />
-        at this time <br />
-      </p>
-      <div class="footer">
-        <a id="copyright" href="https://www.aft.studio/"
-          >© a.f.t. Cooperative</a
-        >
-      </div>
+<body>
+  <div class="mobile-only">
+    <div class="rolodex" id="alldots">
+      <span class="letter r"><svg width="15" height="22" viewBox="0 0 15 22" fill="none"
+          xmlns="http://www.w3.org/2000/svg">
+          <path
+            d="M-0.000195228 21.1499V1.0799C-0.000195228 0.779902 0.0998048 0.529902 0.299805 0.329902C0.519805 0.109901 0.769805 -9.89437e-05 1.0498 -9.89437e-05H7.82981C8.72981 -9.89437e-05 9.56981 0.169901 10.3498 0.509902C11.1298 0.849902 11.8098 1.3199 12.3898 1.9199C12.9698 2.4999 13.4298 3.1799 13.7698 3.9599C14.1098 4.7399 14.2798 5.5799 14.2798 6.4799C14.2798 7.3799 14.1098 8.2199 13.7698 8.9999C13.4298 9.7799 12.9698 10.4699 12.3898 11.0699C11.8098 11.6499 11.1298 12.1099 10.3498 12.4499C9.56981 12.7899 8.72981 12.9599 7.82981 12.9599H1.8898C1.7898 12.9599 1.7398 13.0099 1.7398 13.1099C1.7398 13.1699 1.7898 13.2299 1.8898 13.2899L13.9498 20.6699L13.6498 21.1499L1.5898 13.7699C1.4898 13.6899 1.3998 13.5999 1.3198 13.4999C1.2398 13.3999 1.1998 13.2699 1.1998 13.1099C1.1998 12.9099 1.2598 12.7499 1.3798 12.6299C1.5198 12.4899 1.6898 12.4199 1.8898 12.4199H7.82981C8.64981 12.4199 9.41981 12.2699 10.1398 11.9699C10.8598 11.6499 11.4798 11.2199 11.9998 10.6799C12.5398 10.1399 12.9598 9.5099 13.2598 8.7899C13.5798 8.0699 13.7398 7.2999 13.7398 6.4799C13.7398 5.6599 13.5798 4.8899 13.2598 4.1699C12.9598 3.4499 12.5398 2.8199 11.9998 2.2799C11.4798 1.7399 10.8598 1.3199 10.1398 1.0199C9.41981 0.699902 8.64981 0.539901 7.82981 0.539901H1.0498C0.909805 0.539901 0.789805 0.589901 0.689805 0.689901C0.589805 0.789901 0.539805 0.919901 0.539805 1.0799V21.1499H-0.000195228Z"
+            fill="#595959" />
+        </svg>
+      </span>
+      <span class="letter o solid-circle o1 dot-container">
+        <div class="finaldots" id="firstDotHide"></div>
+      </span>
+      <span class="letter l"><svg width="16" height="22" viewBox="0 0 16 22" fill="none"
+          xmlns="http://www.w3.org/2000/svg">
+          <path
+            d="M0.539805 -9.89437e-05V20.0699C0.539805 20.2299 0.589805 20.3599 0.689805 20.4599C0.789805 20.5599 0.919805 20.6099 1.0798 20.6099H15.8098V21.1499H1.0798C0.779805 21.1499 0.519805 21.0499 0.299805 20.8499C0.0998048 20.6299 -0.000195228 20.3699 -0.000195228 20.0699V-9.89437e-05H0.539805Z"
+            fill="#595959" />
+        </svg>
+      </span>
+      <span class="letter o solid-circle o2 dot-container">
+        <div class="finaldots"></div>
+      </span>
+      <span class="letter d"><svg width="17" height="22" viewBox="0 0 17 22" fill="none"
+          xmlns="http://www.w3.org/2000/svg">
+          <path
+            d="M0.539805 20.5799H6.44981C7.8298 20.5799 9.1298 20.3199 10.3498 19.7999C11.5698 19.2599 12.6298 18.5399 13.5298 17.6399C14.4298 16.7399 15.1398 15.6799 15.6598 14.4599C16.1998 13.2399 16.4698 11.9399 16.4698 10.5599C16.4698 9.1799 16.1998 7.8799 15.6598 6.6599C15.1398 5.4399 14.4298 4.3799 13.5298 3.4799C12.6298 2.5599 11.5698 1.8399 10.3498 1.3199C9.1298 0.799901 7.8298 0.539901 6.44981 0.539901H1.0798C0.919805 0.539901 0.789805 0.589901 0.689805 0.689901C0.589805 0.789901 0.539805 0.919901 0.539805 1.0799V20.5799ZM-0.000195228 1.0799C-0.000195228 0.779902 0.0998048 0.529902 0.299805 0.329902C0.519805 0.109901 0.779805 -9.89437e-05 1.0798 -9.89437e-05H6.44981C7.90981 -9.89437e-05 9.27981 0.279901 10.5598 0.839901C11.8398 1.3799 12.9598 2.1299 13.9198 3.0899C14.8798 4.0499 15.6298 5.1699 16.1698 6.4499C16.7298 7.7299 17.0098 9.0999 17.0098 10.5599C17.0098 12.0199 16.7298 13.3899 16.1698 14.6699C15.6298 15.9499 14.8798 17.0699 13.9198 18.0299C12.9598 18.9899 11.8398 19.7499 10.5598 20.3099C9.27981 20.8499 7.90981 21.1199 6.44981 21.1199H-0.000195228V1.0799Z"
+            fill="#595959" />
+        </svg>
+      </span>
+      <span class="letter e"><svg width="16" height="22" viewBox="0 0 16 22" fill="none"
+          xmlns="http://www.w3.org/2000/svg">
+          <path
+            d="M15.9898 21.1499H-0.000195228V1.0799C-0.000195228 0.779902 0.0998048 0.529902 0.299805 0.329902C0.499805 0.109901 0.749805 -9.89437e-05 1.0498 -9.89437e-05H15.7798V0.539901H1.0498C0.889805 0.539901 0.759805 0.589901 0.659805 0.689901C0.579805 0.789901 0.539805 0.919901 0.539805 1.0799V10.3499H15.9898V10.8899H0.539805V20.6099H15.9898V21.1499Z"
+            fill="#595959" />
+        </svg>
+      </span>
+      <span class="letter x"><svg width="19" height="22" viewBox="0 0 19 22" fill="none"
+          xmlns="http://www.w3.org/2000/svg">
+          <path
+            d="M9 10.1399L17.31 -9.89437e-05H18.03L9.36 10.5899L18.03 21.1499H17.31L9 11.0099L0.69 21.1499H0L8.64 10.5899L0 -9.89437e-05H0.69L9 10.1399Z"
+            fill="#595959" />
+        </svg>
+      </span>
     </div>
-    <div class="entry-overlay">
-      <!-- TODO: update prompt -->
-      <p class="prompt-text">PROMPTS</p>
-      <div id="entry-dot"></div>
+
+    <p class="redirect-message">
+      the time is now
+      <span class="clock" id="utcClock"> ... </span>
+      <br />
+      <br />
+      we welcome you <br />
+      to canon our truths <br />
+      <br />
+
+      with rite clear <br />
+      <br />
+
+      please visit rolodex.cc <br />
+      curated for desktop platform <br />
+      at this time <br />
+    </p>
+    <div class="footer">
+      <a id="copyright" href="https://www.aft.studio/">© a.f.t. Cooperative</a>
     </div>
-    <div class="header">
-      <div class="dot" id="dot1" role="button"></div>
-      <div class="dot" id="dot2" role="button"></div>
-      <div class="dot" id="dot3" role="button"></div>
-    </div>
-    <div class="toggle">
-      <p class="toggle-label-interactive italic">interactive read</p>
-      <label class="switch">
-        <input id="myInput" type="checkbox" />
-        <span class="slider round"></span>
-      </label>
-      <p class="toggle-label-essay">full archive</p>
-    </div>
-    <div class="body">
-      <div id="interactive-view" class="show">
-        <img id="quilt-outline" src="" alt="outline of MZYVB's quilt" />
-        <div id="dots-wrapper">
-          <div class="herb-dot-wrapper" id="herb-dot-01-wrapper">
-            <p class="herb-text invisible">Herb name loading</p>
-            <div class="herb-dot" id="herb-dot-01"></div>
-            <p class="herb-date invisible">Date loading</p>
-          </div>
-          <div class="herb-dot-wrapper" id="herb-dot-02-wrapper">
-            <p class="herb-text invisible">Herb name loading</p>
-            <div class="herb-dot" id="herb-dot-02"></div>
-            <p class="herb-date invisible">Date loading</p>
-          </div>
-          <div class="herb-dot-wrapper" id="herb-dot-03-wrapper">
-            <p class="herb-text invisible">Herb name loading</p>
-            <div class="herb-dot" id="herb-dot-03"></div>
-            <p class="herb-date invisible">Date loading</p>
-          </div>
-          <div class="herb-dot-wrapper" id="herb-dot-04-wrapper">
-            <p class="herb-text invisible">Herb name loading</p>
-            <div class="herb-dot" id="herb-dot-04"></div>
-            <p class="herb-date invisible">Date loading</p>
-          </div>
-          <div class="herb-dot-wrapper" id="herb-dot-05-wrapper">
-            <p class="herb-text invisible">Herb name loading</p>
-            <div class="herb-dot" id="herb-dot-05"></div>
-            <p class="herb-date invisible">Date loading</p>
-          </div>
+  </div>
+  <div class="entry-overlay">
+    <!-- TODO: update prompt -->
+    <p class="prompt-text">PROMPTS</p>
+    <div id="entry-dot"></div>
+  </div>
+  <div class="header">
+    <div class="dot" id="dot1" role="button"></div>
+    <div class="dot" id="dot2" role="button"></div>
+    <div class="dot" id="dot3" role="button"></div>
+  </div>
+  <div class="toggle">
+    <p class="toggle-label-interactive italic">interactive read</p>
+    <label class="switch">
+      <input id="myInput" type="checkbox" />
+      <span class="slider round"></span>
+    </label>
+    <p class="toggle-label-essay">full archive</p>
+  </div>
+  <div class="body">
+    <div id="interactive-view" class="show">
+      <img id="quilt-outline" src="" alt="outline of MZYVB's quilt" />
+      <div id="dots-wrapper">
+        <div class="herb-dot-wrapper" id="herb-dot-01-wrapper">
+          <p class="herb-text invisible">Herb name loading</p>
+          <div class="herb-dot" id="herb-dot-01"></div>
+          <p class="herb-date invisible">Date loading</p>
+        </div>
+        <div class="herb-dot-wrapper" id="herb-dot-02-wrapper">
+          <p class="herb-text invisible">Herb name loading</p>
+          <div class="herb-dot" id="herb-dot-02"></div>
+          <p class="herb-date invisible">Date loading</p>
+        </div>
+        <div class="herb-dot-wrapper" id="herb-dot-03-wrapper">
+          <p class="herb-text invisible">Herb name loading</p>
+          <div class="herb-dot" id="herb-dot-03"></div>
+          <p class="herb-date invisible">Date loading</p>
+        </div>
+        <div class="herb-dot-wrapper" id="herb-dot-04-wrapper">
+          <p class="herb-text invisible">Herb name loading</p>
+          <div class="herb-dot" id="herb-dot-04"></div>
+          <p class="herb-date invisible">Date loading</p>
+        </div>
+        <div class="herb-dot-wrapper" id="herb-dot-05-wrapper">
+          <p class="herb-text invisible">Herb name loading</p>
+          <div class="herb-dot" id="herb-dot-05"></div>
+          <p class="herb-date invisible">Date loading</p>
         </div>
       </div>
-      <div id="archive-view" class="hidden">
-        <p>archive view</p>
+    </div>
+    <div id="archive-view" class="hidden">
+      <div id="essay-wrapper">
+        <p class="subtitle">Dandelion</p>
+        <img id="title-img" src="https://static.wixstatic.com/media/2fa7ac_9baa94d56e01443095fb63f4e4a2235e~mv2.jpg"
+          alt="Dandelion" class="herb-image" id="herb-image-1" />
+        <p class="subtitle"><i>Gemini:</i> May 20 - June 19.</p>
+        <br />
+        <br />
+        <p class="label-text">First published June 12th, 2024</p>
+        <p class="body-text"> I'm writing you from Vermont, where I have been museum sitting for Clare at the <a
+            href="https://museumofeverydaylife.org/">Museum of Everyday Life </a>. I hope this letter can be a
+          pleasant inbox surprise. It is the first in a series of monthly dispatches in a new yearlong project. Please
+          see how you like the idea by reading on, and consider subscribing to be with me for the journey. Feedback,
+          questions, fact checks, and collaboration are all more than welcome.
+        </p>
       </div>
     </div>
-    <script>
-      // Entry overlay
-      var entryOverlay = document.getElementsByClassName("entry-overlay")[0];
-      const entryDot = document.getElementById("entry-dot");
-      entryDot.addEventListener("mouseover", () => {
-        entryDot.style.backgroundColor = "#9DDC93";
-      });
-      entryDot.addEventListener("mouseout", () => {
-        entryDot.style.backgroundColor = "transparent";
-      });
-      entryDot.addEventListener("click", () => {
-        entryOverlay.classList.add("hidden-entry-overlay");
-      });
+  </div>
+  <script>
+    // Entry overlay
+    var entryOverlay = document.getElementsByClassName("entry-overlay")[0];
+    const entryDot = document.getElementById("entry-dot");
+    entryDot.addEventListener("mouseover", () => {
+      entryDot.style.backgroundColor = "#9DDC93";
+    });
+    entryDot.addEventListener("mouseout", () => {
+      entryDot.style.backgroundColor = "transparent";
+    });
+    entryDot.addEventListener("click", () => {
+      entryOverlay.classList.add("hidden-entry-overlay");
+    });
 
-      // Dot nav event listeners
-      document.getElementById("dot3").addEventListener("click", () => {
-        window.parent.location.href = "https://www.rolodex.cc/mzyvb"; // Update with your actual home page URL
-      });
-      document.getElementById("dot1").addEventListener("click", (event) => {
-        event.preventDefault();
-        // Navigate to home page
-        window.parent.location.href = "https://www.rolodex.cc/rolodex-home"; // Update with your actual home page URL
-      });
-      document.getElementById("dot2").addEventListener("click", (event) => {
-        event.preventDefault();
-        // Navigate to about page
-        window.parent.location.href = "https://www.rolodex.cc/mzyvb-bio"; // Update with your actual about page URL
-      });
-      // if current window, then fill in the active dot
-      if (window.location.href.includes("bio")) {
-        document.getElementById("dot2").style.backgroundColor = "black";
-        document.getElementById("dot3").style.backgroundColor = "transparent";
+    // Dot nav event listeners
+    document.getElementById("dot3").addEventListener("click", () => {
+      window.parent.location.href = "https://www.rolodex.cc/mzyvb"; // Update with your actual home page URL
+    });
+    document.getElementById("dot1").addEventListener("click", (event) => {
+      event.preventDefault();
+      // Navigate to home page
+      window.parent.location.href = "https://www.rolodex.cc/rolodex-home"; // Update with your actual home page URL
+    });
+    document.getElementById("dot2").addEventListener("click", (event) => {
+      event.preventDefault();
+      // Navigate to about page
+      window.parent.location.href = "https://www.rolodex.cc/mzyvb-bio"; // Update with your actual about page URL
+    });
+    // if current window, then fill in the active dot
+    if (window.location.href.includes("bio")) {
+      document.getElementById("dot2").style.backgroundColor = "black";
+      document.getElementById("dot3").style.backgroundColor = "transparent";
+    } else {
+      document.getElementById("dot2").style.backgroundColor = "transparent";
+      document.getElementById("dot3").style.backgroundColor = "black";
+    }
+
+    /**
+     * Formats a number to always have two digits (e.g., 5 -> "05")
+     */
+    function padZero(num) {
+      return num.toString().padStart(2, "0");
+    }
+
+    /**
+     * Updates the UTC clock every second
+     */
+    function updateUTCClock() {
+      try {
+        const now = new Date();
+        const hours = padZero(now.getUTCHours());
+        const minutes = padZero(now.getUTCMinutes());
+        const seconds = padZero(now.getUTCSeconds());
+        document.getElementById("utcClock").textContent =
+          `${hours}:${minutes}:${seconds} UTC`;
+      } catch (error) {
+        console.error("Error updating UTC clock:", error);
+        document.getElementById("utcClock").textContent = "Error";
+      }
+    }
+
+    // Initial call and set interval for updates
+    updateUTCClock();
+    setInterval(updateUTCClock, 1000);
+
+    //PAGE SPECIFIC CODE BEGINS HERE:
+
+    let fullessay = false;
+
+    const interactiveText = document.getElementsByClassName(
+      "toggle-label-interactive",
+    )[0];
+    const essayText =
+      document.getElementsByClassName("toggle-label-essay")[0];
+
+    const quiltOutline = document.getElementById("quilt-outline");
+    const images = [
+      // 0: outline
+      "https://static.wixstatic.com/shapes/2fa7ac_0265862ae6154759b8f09f6c8cccb2fc.svg",
+      // 1: R
+      "https://static.wixstatic.com/media/2fa7ac_f27c41642ab94c4f991a84f6c9679377~mv2.png",
+      // 2: R
+      "https://static.wixstatic.com/media/2fa7ac_1df7c04aeacf4009b4240b117f255ae4~mv2.png",
+      // 3: G
+      "https://static.wixstatic.com/media/2fa7ac_f9e8402bf61141839bc03178c935fb5e~mv2.png",
+      // 4: G
+      "https://static.wixstatic.com/media/2fa7ac_fb16390b4685469490c77ad1aad4692f~mv2.png",
+      // 5: BfT
+      "https://static.wixstatic.com/media/2fa7ac_5d8e71876668424db2125bce6278effe~mv2.png",
+      // 6: LfT
+      "https://static.wixstatic.com/media/2fa7ac_1f4757a87b9f4112b6f27766165a171f~mv2.png",
+      // 7: G
+      "https://static.wixstatic.com/media/2fa7ac_209491050f594d50937e81f50e3c255a~mv2.png",
+      // 8: LfT
+      "https://static.wixstatic.com/media/2fa7ac_d9159556ab7f42b2a85d04172d1687ad~mv2.png",
+      // 9: S
+      "https://static.wixstatic.com/media/2fa7ac_434d427efd78452ea6170e631d3173e2~mv2.png",
+      // 10: LfT
+      "https://static.wixstatic.com/media/2fa7ac_f9f7695d21454bf78599ed7f47c06ccc~mv2.png",
+      // non-draggable pieces below
+      // 11: R
+      "https://static.wixstatic.com/media/2fa7ac_63eb60d272ec40c7b708df04ce1ba207~mv2.png",
+      // 12: R
+      "https://static.wixstatic.com/media/2fa7ac_1d37801ee75546d69c28a221c6964340~mv2.png",
+      // 13: S
+      "https://static.wixstatic.com/media/2fa7ac_0fa59a93e6484b17bd62c37c5dcf66fb~mv2.png",
+      //14: S
+      "https://static.wixstatic.com/media/2fa7ac_0473fd34e6d94d3c9d1d9fb2f0c8a72d~mv2.png",
+      //15: S
+      "https://static.wixstatic.com/media/2fa7ac_4ca1ba92240249cfa575072b6517f180~mv2.png",
+      //16: BfT
+      "https://static.wixstatic.com/media/2fa7ac_b535c9d817f64f3b9805fedf3adb999b~mv2.png",
+      //17: BfT
+      "https://static.wixstatic.com/media/2fa7ac_32b6d3224392419aa68bfd3210c95c37~mv2.png",
+      //18: G
+      "https://static.wixstatic.com/media/2fa7ac_5ea109af31e14e8ebdf6baa617ca33d2~mv2.png",
+      //19: G
+      "https://static.wixstatic.com/media/2fa7ac_49fce93411f94aa5afde867afdf53e86~mv2.png",
+      //20: G
+      "https://static.wixstatic.com/media/2fa7ac_1d32b3dc4e984b699117432df36396b2~mv2.png",
+      //21: G
+      "https://static.wixstatic.com/media/2fa7ac_5a8ce0dd44994b9c832acc0f6377e781~mv2.png",
+      //22: G
+      "https://static.wixstatic.com/media/2fa7ac_b58336b5cd924f85b3147e23e3e8cb16~mv2.png",
+      //23: G
+      "https://static.wixstatic.com/media/2fa7ac_cc52a694c40e44e8bfa55f1b461362a0~mv2.png",
+      //24: G
+      "https://static.wixstatic.com/media/2fa7ac_415a2210729747ef909a5c15ca6c6df5~mv2.png",
+      //25: G
+      "https://static.wixstatic.com/media/2fa7ac_db091c25f13f4749abe24614364d3ee4~mv2.png",
+      //26: LfT
+      "https://static.wixstatic.com/media/2fa7ac_b7d6302dd5ad421ca139349c6533264e~mv2.png",
+      //27: LfT
+      "https://static.wixstatic.com/media/2fa7ac_5edd6d0c83794d2b914a98d11461361a~mv2.png",
+      //28: G
+      "https://static.wixstatic.com/media/2fa7ac_6c30eedb6508422581239152820e05ae~mv2.png",
+    ];
+    const imageStartPts = [
+      { top: "380px", left: "50px" },
+      { top: "731px", left: "109px" },
+      { top: "634px", left: "119px" },
+      { top: "623px", left: "218px" },
+      { top: "673px", left: "408px" },
+      { top: "695px", left: "794px" },
+      { top: "712px", left: "1162px" },
+      { top: "659px", left: "1253px" },
+      { top: "702px", left: "1375px" },
+      { top: "138px", left: "1019px" },
+      { top: "213px", left: "873px" },
+      { top: "215px", left: "584px" },
+      { top: "259px", left: "582px" },
+      { top: "258px", left: "808px" },
+      { top: "490px", left: "571px" },
+      { top: "334px", left: "580px" },
+      { top: "259px", left: "650px" },
+      { top: "259px", left: "639px" },
+      { top: "333px", left: "801px" },
+      { top: "421px", left: "803px" },
+      { top: "490px", left: "633px" },
+      { top: "413px", left: "725px" },
+      { top: "407px", left: "650px" },
+      { top: "335px", left: "652px" },
+      { top: "333px", left: "727px" },
+      { top: "332px", left: "650px" },
+      { top: "334px", left: "728px" },
+      { top: "494px", left: "725px" },
+    ];
+    const imageCoordinates = [
+      {
+        topLowerlim: 205,
+        topUpperLim: 215,
+        leftLowerlim: 540,
+        leftUpperlim: 550,
+      },
+      {
+        topLowerlim: 205,
+        topUpperLim: 215,
+        leftLowerlim: 540,
+        leftUpperlim: 550,
+      },
+      {
+        topLowerlim: 555,
+        topUpperLim: 565,
+        leftLowerlim: 575,
+        leftUpperlim: 585,
+      },
+      {
+        topLowerlim: 325,
+        topUpperLim: 335,
+        leftLowerlim: 585,
+        leftUpperlim: 595,
+      },
+      {
+        topLowerlim: 400,
+        topUpperLim: 410,
+        leftLowerlim: 585,
+        leftUpperlim: 595,
+      },
+      {
+        topLowerlim: 465,
+        topUpperLim: 475,
+        leftLowerlim: 640,
+        leftUpperlim: 650,
+      },
+      {
+        topLowerlim: 405,
+        topUpperLim: 415,
+        leftLowerlim: 655,
+        leftUpperlim: 665,
+      },
+      {
+        topLowerlim: 245,
+        topUpperLim: 255,
+        leftLowerlim: 730,
+        leftUpperlim: 740,
+      },
+      {
+        topLowerlim: 395,
+        topUpperLim: 405,
+        leftLowerlim: 730,
+        leftUpperlim: 740,
+      },
+      {
+        topLowerlim: 480,
+        topUpperLim: 490,
+        leftLowerlim: 805,
+        leftUpperlim: 815,
+      },
+      {
+        topLowerlim: 335,
+        topUpperLim: 345,
+        leftLowerlim: 805,
+        leftUpperlim: 815,
+      },
+    ];
+
+    const imgWidths = [
+      68, 323, 85, 85, 183, 95, 101, 94, 91, 93, 61, 314, 77, 86, 79, 92, 165,
+      94, 90, 88, 96, 93, 94, 93, 90, 95, 88, 95,
+    ];
+    const herbData = [
+      {
+        name: "Dandelion",
+        date: "June 12th, 2024",
+        color: "#BB73A1",
+        textFragments: [],
+        text: [
+          `I'm writing you from Vermont, where I have been museum sitting for Clare at the <a href="https://museumofeverydaylife.org/">Museum of Everyday Life </a>. I hope this letter can be a pleasant inbox surprise. It is the first in a series of monthly dispatches in a new yearlong project. Please see how you like the idea by reading on, and consider subscribing to be with me for the journey. Feedback, questions, fact checks, and collaboration are all more than welcome.`,
+          "Last year was a slow crawl out of an old shell, followed by a burst of golden, nomadic energy. As Tara noted over our overdue beer, it's interesting how we go through phases of feeling old and then young, and then old once again, necessitating the constant cycle of leaving– people, places, versions of ourselves...",
+          `I've been feeling old lately when it comes to living arrangements, specifically what home looks like. Home has always been a fraught topic for me. Especially after the last few years of dormitory style living, innkeeping, tenting, puppet touring, work exchanges, and constant repotting, what I desire right now is the feeling of my own home. Not in the private property sense, just in the license to completely rest and nest sense. Most of all, in this home <a href="https://www.youtube.com/watch?v=W41tsEjFkOQ">I Need to Start a Garden.</a>`,
+          "While museum sitting, I have begun studying Western Herbalism. I've also been reading the diary that the artist Derek Jarman kept during his last two years of life, which he chose to spend growing a garden. Jarman was diagnosed with HIV in 1986, but somehow made his garden, Dungeness, flourish despite his ailing health, and proximity to a nuclear power station. I cannot overstate the influence this book, 'Modern Nature', has had on me. Not only is it an excruciatingly beautiful read, but it made me reconsider mowing the lawn before doing something about all the Dandelions.",
+          `A combination of life events + Derek Jarman's diary + my old fascination with durational projects + my new fascination with herbalism + the Dandelions has prompted me to begin the project of growing a medicinal herb garden on my "balcony" in Bushwick. Currently nothing more than a concrete slab that shelters our stoop, it is the perfect south facing home for some new friends. To document this process I will be writing a monthly newsletter. A blend of letter and herbal monograph, each astrological season I will share findings from the balcony and the constellation of my life. For example, this Gemini period I have chosen to focus on Dandelion. Upcoming Cancer season will be devoted to...I can't tell you. It is a surprise. My hope is to do this for one year, during which I do not leave New York City.`,
+          `Now that you've been briefed, let's get to talking about Dandelions, <i>Taraxacum officinale</i>. It's basic manners to call people by their name, and for this reason I am trying to become better about plant identification (while also navigating the ethics of plant ID apps and their role in location sharing and poaching). The name "Dandelion" comes from <i>dent de lion</i>, French for <i>lion's tooth</i>, perhaps in reference to its spiked leaves or mane-like yellow petals. This etymology also makes me think of Dandelion as possessing the lion-like spirit qualities of loyalty and courage. Kí* clearly wants to be around us human beings, despite our best efforts to rid our lawns of the ubiquitous weed.`,
+          `It seems there are thousands of recipes for preparing Dandelion. From its roots (coffee) to its stems (noodles) to its leaves (honey) to its petals (wine!) to its seeds (milk), every part of this plant is edible. I am not yet at the point where I feel equipped to do what I think of as "hardcore wildcrafting," like making tinctures or infused oils... but I did want to at least try eating all the different parts of Dandelion as food, if not medicine. Food of course is medicine, but let's say I am consuming for pleasure and curiosity, rather than in the hopes of treating an ailment.`,
+          `I am now about a week into the many month process of making Dandelion Wine– my first fermentation project. Using <a href=”https://commonsensehome.com/dandelion-wine-recipe/”>this recipe</a> as my guide, I harvested all the Dandelion my whiny lower back would allow. Sitting on the front porch, removing flower head after flower head, was an experience of extraordinary bliss. Every morning I tell myself I really am becoming a witch as I stir a bubbly crock of flower water, sugar, and yeast...in the hopes that it will resemble something like wine in six months time. Soon, all I will have to do is wait.`,
+          `I am just starting to learn about <a href=”https://wildmontana.org/2023/06/15/community/a-farmers-introduction-to-the-honorable-harvest/”>The Honorable Harvest</a> method. I am not yet accustomed to speaking to plants, let alone asking for their permission to be picked. But one must begin somewhere. Known for its bitterness and as a digestion aid, I decided to say a prayer and harvest some Dandelion for a stir fry with its leaves, and "coffee" from its roots. Even though I knew I would be mowing the lawn anyways, there is an intensity and a finality to harvesting a plant from the root.`,
+          `I prepared a simple sautée of chopped Dandelion leaves with butter, garlic, red pepper, and salt. The end result reminded me of 空心菜, stir fried water spinach. Earlier in the day, Ocea and I had baked cinnamon buns, and I took great pleasure in my bittersweet dinner of cinnamon buns and Dandelion greens. Questionable nutritional balance but unquestionable poetry.`,
+          `I will keep the adventure of Dandelion coffee to myself for the sake of not sounding like a food blog. Eventually, I had to stop spending so much time pretending I was a mad scientist and actually mow the goddamn lawn– part of my groundskeeping duties for visitor safety around tick prevention. While doing this, I couldn't help but feel like an utterly destructive human. The bees were not having it (understandable), and joined ranks with the deer flies, who together attacked the exposed skin of my hands, causing me to yelp and stop frequently. I felt like a phony plant lover as I bulldozed through the potential for a whole habitat. Is this really gardening?`,
+          `As I ploughed my way through the property, I couldn't help but recall the horrifying euphemism by the Israeli Occupation Force of "mowing the grass" to refer to its routine bombardments of Gaza. Of our reputation as humankind to wipe others out to sink our own roots deeper into soil that never belonged to us in the first place.`,
+          `Something I have come to learn since the time I first started writing this piece is that despite the rightful romanticism we have for gardening, there is inherent violence in it, too. Xander articulated this well in one of her infamous <a href=”https://docs.google.com/forms/d/e/1FAIpQLSdajYzfdib2c63-Hdw62xjnavIHAJ5cDBy5vQrPHQkRrHibaA/formResponse”>forms</a:`,
+          `"<i>Horticulture and eugenics have a long history of living side by side. There is beauty in gardening, but also a violence in deciding what is a weed and what is a flower and what stays and what goes. Ripping things out, pruning, expelling plant matter to the compost heap, which if tended well can rage with all of the heat of hell. And then there is the conversation about what is invasive and what is native, which is fraught on so many levels. And yet who isn’t charmed by native milkweed and all of the butterflies swarming around it? The last of the fall flowers have been taken by the frost. Now there is only winter aconite to look forward to.</i>"`,
+          "Why is it that everywhere we turn, we leave violence in our wake? Even in an activity like gardening, there is manipulation and life taking involved. I hope to make progress with these questions, and to find as many respectful ways of learning from plants as I can. In the meantime, I take solace from the Mary Oliver poem on the fridge here, <i>When I am Among the</i>",
+          `<i>Trees:</i>`,
+          `<i>When I am among the trees,<br/>especially the willows and the honey locust,<br/>equally the beech, the oaks and the pines,<br/>they give off such hints of gladness.<br/>I would almost say that they save me, and daily.<br/></i>`,
+          `<i>I am so distant from the hope of myself,<br/>in which I have goodness, and discernment,<br/>and never hurry through the world<br/>but walk slowly, and bow often.</i>`,
+          `<i>Around me the trees stir in their leaves<br/>and call out, “Stay awhile.”<br/>The light flows from their branches.</i>`,
+          `<i>And they call again, “It's simple,” they say,<br/>“and you too have come<br/>into the world to do this, to go easy, to be filled<br/>with light, and to shine."</i>`,
+          `May we walk slowly and bow often!`,
+          `*I was fascinated to learn about Robin Wall Kimmerer's <a href=”https://www.youtube.com/watch?v=8NUcMshWFb4”>proposal</a> (39:49) to reclaim the animacy of the world in English with the new pronoun "kí" for non human living beings. She says:`,
+          `<i>"In the English language you are either a human, or you are a thing, an it. Think of the repercussions of itting the world. This small piece of linguistic imperialism and the objectification of nature that "it" holds...the consequences of this objectification of the living world creates a kind of moral exclusion."</i>`,
+        ],
+        image: [
+          "Wix dandelion 01",
+          "Wix dandelion 02",
+          "Wix dandelion 03",
+          "Wix dandelion 04",
+          "Wix dandelion 05",
+        ],
+        caption: [
+          "The garden, Dungeness, at Prospect Cottage, photographed by Howard Sooley 1990.",
+        ],
+        mapping: [
+          "text",
+          1,
+          "image",
+          1,
+          "text",
+          2,
+          "image",
+          1,
+          "caption",
+          1,
+          "image",
+          1,
+          "text",
+          7,
+          "image",
+          1,
+          "text",
+          11,
+          "image",
+          1,
+          "text",
+          2,
+        ],
+      },
+      {
+        name: "St. John's Wort",
+        date: "July 5th, 2024",
+        color: "#FBF3AB",
+        textFragments: [],
+        fullEssay: "",
+      },
+      {
+        name: "Yarrow",
+        date: "August 19th, 2024",
+        color: "#000509",
+        textFragments: [],
+        fullEssay: "",
+      },
+      {
+        name: "Elder",
+        date: "September 23rd, 2024",
+        color: "#D62551",
+        textFragments: [],
+        fullEssay: "",
+      },
+      {
+        name: "Ginkgo",
+        date: "September 23rd, 2024",
+        color: "#EBE2D3",
+        textFragments: [],
+        fullEssay: "",
+      },
+    ];
+    // const herbEssayMap = [{ ["text", 1, "image", 1,]}
+    // ]
+    const interactiveView = document.getElementById("interactive-view");
+    const archiveView = document.getElementById("archive-view");
+    const herbDots = document.getElementsByClassName("herb-dot");
+    const herbTexts = document.getElementsByClassName("herb-text");
+    const herbDates = document.getElementsByClassName("herb-date");
+
+    function populateScreen() {
+      quiltOutline.src = images[0];
+      for (let i = 1; i < images.length; i++) {
+        console.log("hit loop");
+        const newPiece = `<img style="width: ${imgWidths[i - 1]}px; top: ${imageStartPts[i - 1].top}; left: ${imageStartPts[i - 1].left}" src=${images[i]} alt="piece of the quilt to drag" id=piece-${i} class="quilt-piece" />`;
+        interactiveView.innerHTML += newPiece;
+      }
+
+      // Make quilt pieces draggable
+      var quiltPieces = document.getElementsByClassName("quilt-piece");
+      for (let i = 0; i < quiltPieces.length; i++) {
+        dragElement(quiltPieces[i]);
+      }
+
+      // Add hover function for herb dots
+      for (let i = 0; i < herbDots.length; i++) {
+        herbTexts[i].textContent = herbData[i].name;
+        herbDates[i].textContent = herbData[i].date;
+        herbDots[i].addEventListener("mouseover", (event) => {
+          herbDots[i].style.backgroundColor = herbData[i].color;
+          herbTexts[i].classList.remove("invisible");
+          herbDates[i].classList.remove("invisible");
+          herbTexts[i].classList.add("visible");
+          herbDates[i].classList.add("visible");
+        });
+        herbDots[i].addEventListener("mouseout", (event) => {
+          herbDots[i].style.backgroundColor = "transparent";
+          // herbTexts[i].textContent = "";
+          // herbDates[i].textContent = "";
+          herbTexts[i].classList.remove("visible");
+          herbDates[i].classList.remove("visible");
+          herbTexts[i].classList.add("invisible");
+          herbDates[i].classList.add("invisible");
+        });
+      }
+    }
+
+    // Making quilt pieces draggable
+    function dragElement(elmnt) {
+      var pos1 = 0,
+        pos2 = 0,
+        pos3 = 0,
+        pos4 = 0;
+      if (document.getElementById(elmnt.id + "header")) {
+        // if present, the header is where you move the DIV from:
+        document.getElementById(elmnt.id + "header").onmousedown =
+          dragMouseDown;
       } else {
-        document.getElementById("dot2").style.backgroundColor = "transparent";
-        document.getElementById("dot3").style.backgroundColor = "black";
+        // otherwise, move the DIV from anywhere inside the DIV:
+        elmnt.onmousedown = dragMouseDown;
       }
 
-      /**
-       * Formats a number to always have two digits (e.g., 5 -> "05")
-       */
-      function padZero(num) {
-        return num.toString().padStart(2, "0");
+      function dragMouseDown(e) {
+        console.log("hit drag");
+        console.log(elmnt);
+
+        e = e || window.event;
+        e.preventDefault();
+        // get the mouse cursor position at startup:
+        pos3 = e.clientX;
+        pos4 = e.clientY;
+        document.onmouseup = closeDragElement;
+        // call a function whenever the cursor moves:
+        document.onmousemove = elementDrag;
       }
 
-      /**
-       * Updates the UTC clock every second
-       */
-      function updateUTCClock() {
-        try {
-          const now = new Date();
-          const hours = padZero(now.getUTCHours());
-          const minutes = padZero(now.getUTCMinutes());
-          const seconds = padZero(now.getUTCSeconds());
-          document.getElementById("utcClock").textContent =
-            `${hours}:${minutes}:${seconds} UTC`;
-        } catch (error) {
-          console.error("Error updating UTC clock:", error);
-          document.getElementById("utcClock").textContent = "Error";
+      function elementDrag(e) {
+        e = e || window.event;
+        e.preventDefault();
+        // calculate the new cursor position:
+        pos1 = pos3 - e.clientX;
+        pos2 = pos4 - e.clientY;
+        pos3 = e.clientX;
+        pos4 = e.clientY;
+        // set the element's new position:
+        topNum = elmnt.offsetTop - pos2;
+        leftNum = elmnt.offsetLeft - pos1;
+        elmnt.style.top = topNum + "px";
+        elmnt.style.left = leftNum + "px";
+        console.log(elmnt.style.top);
+        console.log(elmnt.style.left);
+        const limits = imageCoordinates[Number(elmnt.id.split("-")[1])];
+        // console.log(
+        //   topNum > limits.topLowerlim && topNum < limits.topUpperLim,
+        // );
+        // console.log(
+        //   leftNum > limits.leftLowerlim && leftNum < limits.leftUpperlim,
+        // );
+
+        if (
+          topNum > limits.topLowerlim &&
+          topNum < limits.topUpperLim &&
+          leftNum > limits.leftLowerlim &&
+          leftNum < limits.leftUpperlim
+        ) {
+          console.log("success!");
         }
+        // if (topNum > 205 && topNum < 215 && leftNum < 550 && leftNum > 540) {
+        //   console.log("hitting drag if");
+        // }
       }
-
-      // Initial call and set interval for updates
-      updateUTCClock();
-      setInterval(updateUTCClock, 1000);
-
-      //PAGE SPECIFIC CODE BEGINS HERE:
-
-      let fullessay = false;
-
-      const interactiveText = document.getElementsByClassName(
-        "toggle-label-interactive",
-      )[0];
-      const essayText =
-        document.getElementsByClassName("toggle-label-essay")[0];
-
-      const quiltOutline = document.getElementById("quilt-outline");
-      const images = [
-        // 0: outline
-        "https://static.wixstatic.com/shapes/2fa7ac_0265862ae6154759b8f09f6c8cccb2fc.svg",
-        // 1: R
-        "https://static.wixstatic.com/media/2fa7ac_f27c41642ab94c4f991a84f6c9679377~mv2.png",
-        // 2: R
-        "https://static.wixstatic.com/media/2fa7ac_1df7c04aeacf4009b4240b117f255ae4~mv2.png",
-        // 3: G
-        "https://static.wixstatic.com/media/2fa7ac_f9e8402bf61141839bc03178c935fb5e~mv2.png",
-        // 4: G
-        "https://static.wixstatic.com/media/2fa7ac_fb16390b4685469490c77ad1aad4692f~mv2.png",
-        // 5: BfT
-        "https://static.wixstatic.com/media/2fa7ac_5d8e71876668424db2125bce6278effe~mv2.png",
-        // 6: LfT
-        "https://static.wixstatic.com/media/2fa7ac_1f4757a87b9f4112b6f27766165a171f~mv2.png",
-        // 7: G
-        "https://static.wixstatic.com/media/2fa7ac_209491050f594d50937e81f50e3c255a~mv2.png",
-        // 8: LfT
-        "https://static.wixstatic.com/media/2fa7ac_d9159556ab7f42b2a85d04172d1687ad~mv2.png",
-        // 9: S
-        "https://static.wixstatic.com/media/2fa7ac_434d427efd78452ea6170e631d3173e2~mv2.png",
-        // 10: LfT
-        "https://static.wixstatic.com/media/2fa7ac_f9f7695d21454bf78599ed7f47c06ccc~mv2.png",
-        // non-draggable pieces below
-        // 11: R
-        "https://static.wixstatic.com/media/2fa7ac_63eb60d272ec40c7b708df04ce1ba207~mv2.png",
-        // 12: R
-        "https://static.wixstatic.com/media/2fa7ac_1d37801ee75546d69c28a221c6964340~mv2.png",
-        // 13: S
-        "https://static.wixstatic.com/media/2fa7ac_0fa59a93e6484b17bd62c37c5dcf66fb~mv2.png",
-        //14: S
-        "https://static.wixstatic.com/media/2fa7ac_0473fd34e6d94d3c9d1d9fb2f0c8a72d~mv2.png",
-        //15: S
-        "https://static.wixstatic.com/media/2fa7ac_4ca1ba92240249cfa575072b6517f180~mv2.png",
-        //16: BfT
-        "https://static.wixstatic.com/media/2fa7ac_b535c9d817f64f3b9805fedf3adb999b~mv2.png",
-        //17: BfT
-        "https://static.wixstatic.com/media/2fa7ac_32b6d3224392419aa68bfd3210c95c37~mv2.png",
-        //18: G
-        "https://static.wixstatic.com/media/2fa7ac_5ea109af31e14e8ebdf6baa617ca33d2~mv2.png",
-        //19: G
-        "https://static.wixstatic.com/media/2fa7ac_49fce93411f94aa5afde867afdf53e86~mv2.png",
-        //20: G
-        "https://static.wixstatic.com/media/2fa7ac_1d32b3dc4e984b699117432df36396b2~mv2.png",
-        //21: G
-        "https://static.wixstatic.com/media/2fa7ac_5a8ce0dd44994b9c832acc0f6377e781~mv2.png",
-        //22: G
-        "https://static.wixstatic.com/media/2fa7ac_b58336b5cd924f85b3147e23e3e8cb16~mv2.png",
-        //23: G
-        "https://static.wixstatic.com/media/2fa7ac_cc52a694c40e44e8bfa55f1b461362a0~mv2.png",
-        //24: G
-        "https://static.wixstatic.com/media/2fa7ac_415a2210729747ef909a5c15ca6c6df5~mv2.png",
-        //25: G
-        "https://static.wixstatic.com/media/2fa7ac_db091c25f13f4749abe24614364d3ee4~mv2.png",
-        //26: LfT
-        "https://static.wixstatic.com/media/2fa7ac_b7d6302dd5ad421ca139349c6533264e~mv2.png",
-        //27: LfT
-        "https://static.wixstatic.com/media/2fa7ac_5edd6d0c83794d2b914a98d11461361a~mv2.png",
-        //28: G
-        "https://static.wixstatic.com/media/2fa7ac_6c30eedb6508422581239152820e05ae~mv2.png",
-      ];
-      const imageStartPts = [
-        { top: "380px", left: "50px" },
-        { top: "731px", left: "109px" },
-        { top: "634px", left: "119px" },
-        { top: "623px", left: "218px" },
-        { top: "673px", left: "408px" },
-        { top: "695px", left: "794px" },
-        { top: "712px", left: "1162px" },
-        { top: "659px", left: "1253px" },
-        { top: "702px", left: "1375px" },
-        { top: "138px", left: "1019px" },
-        { top: "213px", left: "873px" },
-        { top: "215px", left: "584px" },
-        { top: "259px", left: "582px" },
-        { top: "258px", left: "808px" },
-        { top: "490px", left: "571px" },
-        { top: "334px", left: "580px" },
-        { top: "259px", left: "650px" },
-        { top: "259px", left: "639px" },
-        { top: "333px", left: "801px" },
-        { top: "421px", left: "803px" },
-        { top: "490px", left: "633px" },
-        { top: "413px", left: "725px" },
-        { top: "407px", left: "650px" },
-        { top: "335px", left: "652px" },
-        { top: "333px", left: "727px" },
-        { top: "332px", left: "650px" },
-        { top: "334px", left: "728px" },
-        { top: "494px", left: "725px" },
-      ];
-      const imageCoordinates = [
-        {
-          topLowerlim: 205,
-          topUpperLim: 215,
-          leftLowerlim: 540,
-          leftUpperlim: 550,
-        },
-        {
-          topLowerlim: 205,
-          topUpperLim: 215,
-          leftLowerlim: 540,
-          leftUpperlim: 550,
-        },
-        {
-          topLowerlim: 555,
-          topUpperLim: 565,
-          leftLowerlim: 575,
-          leftUpperlim: 585,
-        },
-        {
-          topLowerlim: 325,
-          topUpperLim: 335,
-          leftLowerlim: 585,
-          leftUpperlim: 595,
-        },
-        {
-          topLowerlim: 400,
-          topUpperLim: 410,
-          leftLowerlim: 585,
-          leftUpperlim: 595,
-        },
-        {
-          topLowerlim: 465,
-          topUpperLim: 475,
-          leftLowerlim: 640,
-          leftUpperlim: 650,
-        },
-        {
-          topLowerlim: 405,
-          topUpperLim: 415,
-          leftLowerlim: 655,
-          leftUpperlim: 665,
-        },
-        {
-          topLowerlim: 245,
-          topUpperLim: 255,
-          leftLowerlim: 730,
-          leftUpperlim: 740,
-        },
-        {
-          topLowerlim: 395,
-          topUpperLim: 405,
-          leftLowerlim: 730,
-          leftUpperlim: 740,
-        },
-        {
-          topLowerlim: 480,
-          topUpperLim: 490,
-          leftLowerlim: 805,
-          leftUpperlim: 815,
-        },
-        {
-          topLowerlim: 335,
-          topUpperLim: 345,
-          leftLowerlim: 805,
-          leftUpperlim: 815,
-        },
-      ];
-
-      const imgWidths = [
-        68, 323, 85, 85, 183, 95, 101, 94, 91, 93, 61, 314, 77, 86, 79, 92, 165,
-        94, 90, 88, 96, 93, 94, 93, 90, 95, 88, 95,
-      ];
-      const herbData = [
-        {
-          name: "Dandelion",
-          date: "June 12th, 2024",
-          color: "#BB73A1",
-          textFragments: [],
-          text: [
-            `I'm writing you from Vermont, where I have been museum sitting for Clare at the <a href="https://museumofeverydaylife.org/">Museum of Everyday Life </a>. I hope this letter can be a pleasant inbox surprise. It is the first in a series of monthly dispatches in a new yearlong project. Please see how you like the idea by reading on, and consider subscribing to be with me for the journey. Feedback, questions, fact checks, and collaboration are all more than welcome.`,
-            "Last year was a slow crawl out of an old shell, followed by a burst of golden, nomadic energy. As Tara noted over our overdue beer, it's interesting how we go through phases of feeling old and then young, and then old once again, necessitating the constant cycle of leaving– people, places, versions of ourselves...",
-            `I've been feeling old lately when it comes to living arrangements, specifically what home looks like. Home has always been a fraught topic for me. Especially after the last few years of dormitory style living, innkeeping, tenting, puppet touring, work exchanges, and constant repotting, what I desire right now is the feeling of my own home. Not in the private property sense, just in the license to completely rest and nest sense. Most of all, in this home <a href="https://www.youtube.com/watch?v=W41tsEjFkOQ">I Need to Start a Garden.</a>`,
-            "While museum sitting, I have begun studying Western Herbalism. I've also been reading the diary that the artist Derek Jarman kept during his last two years of life, which he chose to spend growing a garden. Jarman was diagnosed with HIV in 1986, but somehow made his garden, Dungeness, flourish despite his ailing health, and proximity to a nuclear power station. I cannot overstate the influence this book, 'Modern Nature', has had on me. Not only is it an excruciatingly beautiful read, but it made me reconsider mowing the lawn before doing something about all the Dandelions.",
-            `A combination of life events + Derek Jarman's diary + my old fascination with durational projects + my new fascination with herbalism + the Dandelions has prompted me to begin the project of growing a medicinal herb garden on my "balcony" in Bushwick. Currently nothing more than a concrete slab that shelters our stoop, it is the perfect south facing home for some new friends. To document this process I will be writing a monthly newsletter. A blend of letter and herbal monograph, each astrological season I will share findings from the balcony and the constellation of my life. For example, this Gemini period I have chosen to focus on Dandelion. Upcoming Cancer season will be devoted to...I can't tell you. It is a surprise. My hope is to do this for one year, during which I do not leave New York City.`,
-            `Now that you've been briefed, let's get to talking about Dandelions, <i>Taraxacum officinale</i>. It's basic manners to call people by their name, and for this reason I am trying to become better about plant identification (while also navigating the ethics of plant ID apps and their role in location sharing and poaching). The name "Dandelion" comes from <i>dent de lion</i>, French for <i>lion's tooth</i>, perhaps in reference to its spiked leaves or mane-like yellow petals. This etymology also makes me think of Dandelion as possessing the lion-like spirit qualities of loyalty and courage. Kí* clearly wants to be around us human beings, despite our best efforts to rid our lawns of the ubiquitous weed.`,
-            `It seems there are thousands of recipes for preparing Dandelion. From its roots (coffee) to its stems (noodles) to its leaves (honey) to its petals (wine!) to its seeds (milk), every part of this plant is edible. I am not yet at the point where I feel equipped to do what I think of as "hardcore wildcrafting," like making tinctures or infused oils... but I did want to at least try eating all the different parts of Dandelion as food, if not medicine. Food of course is medicine, but let's say I am consuming for pleasure and curiosity, rather than in the hopes of treating an ailment.`,
-            `I am now about a week into the many month process of making Dandelion Wine– my first fermentation project. Using <a href=”https://commonsensehome.com/dandelion-wine-recipe/”>this recipe</a> as my guide, I harvested all the Dandelion my whiny lower back would allow. Sitting on the front porch, removing flower head after flower head, was an experience of extraordinary bliss. Every morning I tell myself I really am becoming a witch as I stir a bubbly crock of flower water, sugar, and yeast...in the hopes that it will resemble something like wine in six months time. Soon, all I will have to do is wait.`,
-            `I am just starting to learn about <a href=”https://wildmontana.org/2023/06/15/community/a-farmers-introduction-to-the-honorable-harvest/”>The Honorable Harvest</a> method. I am not yet accustomed to speaking to plants, let alone asking for their permission to be picked. But one must begin somewhere. Known for its bitterness and as a digestion aid, I decided to say a prayer and harvest some Dandelion for a stir fry with its leaves, and "coffee" from its roots. Even though I knew I would be mowing the lawn anyways, there is an intensity and a finality to harvesting a plant from the root.`,
-            `I prepared a simple sautée of chopped Dandelion leaves with butter, garlic, red pepper, and salt. The end result reminded me of 空心菜, stir fried water spinach. Earlier in the day, Ocea and I had baked cinnamon buns, and I took great pleasure in my bittersweet dinner of cinnamon buns and Dandelion greens. Questionable nutritional balance but unquestionable poetry.`,
-            `I will keep the adventure of Dandelion coffee to myself for the sake of not sounding like a food blog. Eventually, I had to stop spending so much time pretending I was a mad scientist and actually mow the goddamn lawn– part of my groundskeeping duties for visitor safety around tick prevention. While doing this, I couldn't help but feel like an utterly destructive human. The bees were not having it (understandable), and joined ranks with the deer flies, who together attacked the exposed skin of my hands, causing me to yelp and stop frequently. I felt like a phony plant lover as I bulldozed through the potential for a whole habitat. Is this really gardening?`,
-            `As I ploughed my way through the property, I couldn't help but recall the horrifying euphemism by the Israeli Occupation Force of "mowing the grass" to refer to its routine bombardments of Gaza. Of our reputation as humankind to wipe others out to sink our own roots deeper into soil that never belonged to us in the first place.`,
-            `Something I have come to learn since the time I first started writing this piece is that despite the rightful romanticism we have for gardening, there is inherent violence in it, too. Xander articulated this well in one of her infamous <a href=”https://docs.google.com/forms/d/e/1FAIpQLSdajYzfdib2c63-Hdw62xjnavIHAJ5cDBy5vQrPHQkRrHibaA/formResponse”>forms</a:`,
-            `"<i>Horticulture and eugenics have a long history of living side by side. There is beauty in gardening, but also a violence in deciding what is a weed and what is a flower and what stays and what goes. Ripping things out, pruning, expelling plant matter to the compost heap, which if tended well can rage with all of the heat of hell. And then there is the conversation about what is invasive and what is native, which is fraught on so many levels. And yet who isn’t charmed by native milkweed and all of the butterflies swarming around it? The last of the fall flowers have been taken by the frost. Now there is only winter aconite to look forward to.</i>"`,
-            "Why is it that everywhere we turn, we leave violence in our wake? Even in an activity like gardening, there is manipulation and life taking involved. I hope to make progress with these questions, and to find as many respectful ways of learning from plants as I can. In the meantime, I take solace from the Mary Oliver poem on the fridge here, <i>When I am Among the</i>",
-            `<i>Trees:</i>`,
-            `<i>When I am among the trees,<br/>especially the willows and the honey locust,<br/>equally the beech, the oaks and the pines,<br/>they give off such hints of gladness.<br/>I would almost say that they save me, and daily.<br/></i>`,
-            `<i>I am so distant from the hope of myself,<br/>in which I have goodness, and discernment,<br/>and never hurry through the world<br/>but walk slowly, and bow often.</i>`,
-            `<i>Around me the trees stir in their leaves<br/>and call out, “Stay awhile.”<br/>The light flows from their branches.</i>`,
-            `<i>And they call again, “It's simple,” they say,<br/>“and you too have come<br/>into the world to do this, to go easy, to be filled<br/>with light, and to shine."</i>`,
-            `May we walk slowly and bow often!`,
-            `*I was fascinated to learn about Robin Wall Kimmerer's <a href=”https://www.youtube.com/watch?v=8NUcMshWFb4”>proposal</a> (39:49) to reclaim the animacy of the world in English with the new pronoun "kí" for non human living beings. She says:`,
-            `<i>"In the English language you are either a human, or you are a thing, an it. Think of the repercussions of itting the world. This small piece of linguistic imperialism and the objectification of nature that "it" holds...the consequences of this objectification of the living world creates a kind of moral exclusion."</i>`,
-          ],
-          image: [
-            "Wix dandelion 01",
-            "Wix dandelion 02",
-            "Wix dandelion 03",
-            "Wix dandelion 04",
-            "Wix dandelion 05",
-          ],
-          caption: [
-            "The garden, Dungeness, at Prospect Cottage, photographed by Howard Sooley 1990.",
-          ],
-          mapping: [
-            "text",
-            1,
-            "image",
-            1,
-            "text",
-            2,
-            "image",
-            1,
-            "caption",
-            1,
-            "image",
-            1,
-            "text",
-            7,
-            "image",
-            1,
-            "text",
-            11,
-            "image",
-            1,
-            "text",
-            2,
-          ],
-        },
-        {
-          name: "St. John's Wort",
-          date: "July 5th, 2024",
-          color: "#FBF3AB",
-          textFragments: [],
-          fullEssay: "",
-        },
-        {
-          name: "Yarrow",
-          date: "August 19th, 2024",
-          color: "#000509",
-          textFragments: [],
-          fullEssay: "",
-        },
-        {
-          name: "Elder",
-          date: "September 23rd, 2024",
-          color: "#D62551",
-          textFragments: [],
-          fullEssay: "",
-        },
-        {
-          name: "Ginkgo",
-          date: "September 23rd, 2024",
-          color: "#EBE2D3",
-          textFragments: [],
-          fullEssay: "",
-        },
-      ];
-      // const herbEssayMap = [{ ["text", 1, "image", 1,]}
-      // ]
-      const interactiveView = document.getElementById("interactive-view");
-      const archiveView = document.getElementById("archive-view");
-      const herbDots = document.getElementsByClassName("herb-dot");
-      const herbTexts = document.getElementsByClassName("herb-text");
-      const herbDates = document.getElementsByClassName("herb-date");
-
-      function populateScreen() {
-        quiltOutline.src = images[0];
-        for (let i = 1; i < images.length; i++) {
-          console.log("hit loop");
-          const newPiece = `<img style="width: ${imgWidths[i - 1]}px; top: ${imageStartPts[i - 1].top}; left: ${imageStartPts[i - 1].left}" src=${images[i]} alt="piece of the quilt to drag" id=piece-${i} class="quilt-piece" />`;
-          interactiveView.innerHTML += newPiece;
-        }
-
-        // Make quilt pieces draggable
-        var quiltPieces = document.getElementsByClassName("quilt-piece");
-        for (let i = 0; i < quiltPieces.length; i++) {
-          dragElement(quiltPieces[i]);
-        }
-
-        // Add hover function for herb dots
-        for (let i = 0; i < herbDots.length; i++) {
-          herbTexts[i].textContent = herbData[i].name;
-          herbDates[i].textContent = herbData[i].date;
-          herbDots[i].addEventListener("mouseover", (event) => {
-            herbDots[i].style.backgroundColor = herbData[i].color;
-            herbTexts[i].classList.remove("invisible");
-            herbDates[i].classList.remove("invisible");
-            herbTexts[i].classList.add("visible");
-            herbDates[i].classList.add("visible");
-          });
-          herbDots[i].addEventListener("mouseout", (event) => {
-            herbDots[i].style.backgroundColor = "transparent";
-            // herbTexts[i].textContent = "";
-            // herbDates[i].textContent = "";
-            herbTexts[i].classList.remove("visible");
-            herbDates[i].classList.remove("visible");
-            herbTexts[i].classList.add("invisible");
-            herbDates[i].classList.add("invisible");
-          });
-        }
+      function closeDragElement() {
+        // stop moving when mouse button is released:
+        document.onmouseup = null;
+        document.onmousemove = null;
       }
+    }
 
-      // Making quilt pieces draggable
-      function dragElement(elmnt) {
-        var pos1 = 0,
-          pos2 = 0,
-          pos3 = 0,
-          pos4 = 0;
-        if (document.getElementById(elmnt.id + "header")) {
-          // if present, the header is where you move the DIV from:
-          document.getElementById(elmnt.id + "header").onmousedown =
-            dragMouseDown;
+    // Attach event listeners after DOM loads
+    window.onload = function () {
+      const inputEl = document.getElementById("myInput");
+
+      // Trigger when input gets focus (selected)
+      inputEl.addEventListener("click", onInputSelected);
+
+      // Function to run when input is selected (focused)
+      function onInputSelected() {
+        fullessay = !fullessay;
+        if (fullessay) {
+          essayText.classList.add("italic");
+          interactiveText.classList.remove("italic");
+          interactiveView.classList.remove("show");
+          interactiveView.classList.add("hidden");
+          archiveView.classList.remove("hidden");
+          archiveView.classList.add("show");
         } else {
-          // otherwise, move the DIV from anywhere inside the DIV:
-          elmnt.onmousedown = dragMouseDown;
-        }
-
-        function dragMouseDown(e) {
-          console.log("hit drag");
-          console.log(elmnt);
-
-          e = e || window.event;
-          e.preventDefault();
-          // get the mouse cursor position at startup:
-          pos3 = e.clientX;
-          pos4 = e.clientY;
-          document.onmouseup = closeDragElement;
-          // call a function whenever the cursor moves:
-          document.onmousemove = elementDrag;
-        }
-
-        function elementDrag(e) {
-          e = e || window.event;
-          e.preventDefault();
-          // calculate the new cursor position:
-          pos1 = pos3 - e.clientX;
-          pos2 = pos4 - e.clientY;
-          pos3 = e.clientX;
-          pos4 = e.clientY;
-          // set the element's new position:
-          topNum = elmnt.offsetTop - pos2;
-          leftNum = elmnt.offsetLeft - pos1;
-          elmnt.style.top = topNum + "px";
-          elmnt.style.left = leftNum + "px";
-          console.log(elmnt.style.top);
-          console.log(elmnt.style.left);
-          const limits = imageCoordinates[Number(elmnt.id.split("-")[1])];
-          // console.log(
-          //   topNum > limits.topLowerlim && topNum < limits.topUpperLim,
-          // );
-          // console.log(
-          //   leftNum > limits.leftLowerlim && leftNum < limits.leftUpperlim,
-          // );
-
-          if (
-            topNum > limits.topLowerlim &&
-            topNum < limits.topUpperLim &&
-            leftNum > limits.leftLowerlim &&
-            leftNum < limits.leftUpperlim
-          ) {
-            console.log("success!");
-          }
-          // if (topNum > 205 && topNum < 215 && leftNum < 550 && leftNum > 540) {
-          //   console.log("hitting drag if");
-          // }
-        }
-        function closeDragElement() {
-          // stop moving when mouse button is released:
-          document.onmouseup = null;
-          document.onmousemove = null;
+          essayText.classList.remove("italic");
+          interactiveText.classList.add("italic");
+          archiveView.classList.remove("show");
+          archiveView.classList.add("hidden");
+          interactiveView.classList.remove("hidden");
+          interactiveView.classList.add("show");
         }
       }
 
-      // Attach event listeners after DOM loads
-      window.onload = function () {
-        const inputEl = document.getElementById("myInput");
+      populateScreen();
+    };
+  </script>
+</body>
 
-        // Trigger when input gets focus (selected)
-        inputEl.addEventListener("click", onInputSelected);
-
-        // Function to run when input is selected (focused)
-        function onInputSelected() {
-          fullessay = !fullessay;
-          if (fullessay) {
-            essayText.classList.add("italic");
-            interactiveText.classList.remove("italic");
-            interactiveView.classList.remove("show");
-            interactiveView.classList.add("hidden");
-            archiveView.classList.remove("hidden");
-            archiveView.classList.add("show");
-          } else {
-            essayText.classList.remove("italic");
-            interactiveText.classList.add("italic");
-            archiveView.classList.remove("show");
-            archiveView.classList.add("hidden");
-            interactiveView.classList.remove("hidden");
-            interactiveView.classList.add("show");
-          }
-        }
-
-        populateScreen();
-      };
-    </script>
-  </body>
 </html>
