@@ -515,6 +515,44 @@
       top: 58vh;
     }
 
+    .herb-quote-wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: left;
+      width: 5vw;
+      position: absolute;
+    }
+
+    #herb-quote-wrapper-01 {
+      left: 12vw;
+      top: 12vh;
+    }
+
+    #herb-quote-wrapper-02 {
+      left: 12vw;
+      top: 38vh;
+    }
+
+    #herb-quote-wrapper-03 {
+      left: 12vw;
+      top: 63vh;
+    }
+
+    #herb-quote-wrapper-04 {
+      right: 7vw;
+      top: 29vh;
+    }
+
+    #herb-quote-wrapper-05 {
+      right: 7vw;
+      top: 58vh;
+    }
+
+    .herb-quote {
+      text-align: left;
+    }
+
     .draggable {
       z-index: 40;
     }
@@ -666,25 +704,44 @@
             <div class="herb-dot" id="herb-dot-01"></div>
             <p class="herb-date invisible">Date loading</p>
           </div>
+          <div class="herb-quote-wrapper" id="herb-quote-01-wrapper">
+            <p class="herb-quote" id="herb-quote-01"></p>
+          </div>
+
           <div class="herb-dot-wrapper" id="herb-dot-02-wrapper">
             <p class="herb-text invisible">Herb name loading</p>
             <div class="herb-dot" id="herb-dot-02"></div>
             <p class="herb-date invisible">Date loading</p>
           </div>
+          <div class="herb-quote-wrapper" id="herb-quote-02-wrapper">
+            <p class="herb-quote" id="herb-quote-02"></p>
+          </div>
+
           <div class="herb-dot-wrapper" id="herb-dot-03-wrapper">
             <p class="herb-text invisible">Herb name loading</p>
             <div class="herb-dot" id="herb-dot-03"></div>
             <p class="herb-date invisible">Date loading</p>
           </div>
+          <div class="herb-quote-wrapper" id="herb-quote-03-wrapper">
+            <p class="herb-quote" id="herb-quote-03"></p>
+          </div>
+
           <div class="herb-dot-wrapper" id="herb-dot-04-wrapper">
             <p class="herb-text invisible">Herb name loading</p>
             <div class="herb-dot" id="herb-dot-04"></div>
             <p class="herb-date invisible">Date loading</p>
           </div>
+          <div class="herb-quote-wrapper" id="herb-quote-04-wrapper">
+            <p class="herb-quote" id="herb-quote-04"></p>
+          </div>
+
           <div class="herb-dot-wrapper" id="herb-dot-05-wrapper">
             <p class="herb-text invisible">Herb name loading</p>
             <div class="herb-dot" id="herb-dot-05"></div>
             <p class="herb-date invisible">Date loading</p>
+          </div>
+          <div class="herb-quote-wrapper" id="herb-quote-05-wrapper">
+            <p class="herb-quote" id="herb-quote-05"></p>
           </div>
         </div>
       </div>
@@ -844,34 +901,34 @@
       "https://static.wixstatic.com/media/2fa7ac_6c30eedb6508422581239152820e05ae~mv2.png",
     ];
     const imageStartPts = [
-      { top: "380px", left: "50px" },
-      { top: "731px", left: "109px" },
-      { top: "634px", left: "119px" },
-      { top: "623px", left: "218px" },
-      { top: "673px", left: "408px" },
-      { top: "695px", left: "794px" },
-      { top: "712px", left: "1162px" },
-      { top: "659px", left: "1253px" },
-      { top: "702px", left: "1375px" },
-      { top: "138px", left: "1019px" },
-      { top: "213px", left: "873px" },
-      { top: "215px", left: "584px" },
-      { top: "259px", left: "582px" },
-      { top: "258px", left: "808px" },
-      { top: "490px", left: "571px" },
-      { top: "334px", left: "580px" },
-      { top: "259px", left: "650px" },
-      { top: "259px", left: "639px" },
-      { top: "333px", left: "801px" },
-      { top: "421px", left: "803px" },
-      { top: "490px", left: "633px" },
-      { top: "413px", left: "725px" },
-      { top: "407px", left: "650px" },
-      { top: "335px", left: "652px" },
-      { top: "333px", left: "727px" },
-      { top: "332px", left: "650px" },
-      { top: "334px", left: "728px" },
-      { top: "494px", left: "725px" },
+      {top: "380px", left: "50px"},
+      {top: "731px", left: "109px"},
+      {top: "634px", left: "119px"},
+      {top: "623px", left: "218px"},
+      {top: "673px", left: "408px"},
+      {top: "695px", left: "794px"},
+      {top: "712px", left: "1162px"},
+      {top: "659px", left: "1253px"},
+      {top: "702px", left: "1375px"},
+      {top: "138px", left: "1019px"},
+      {top: "213px", left: "873px"},
+      {top: "215px", left: "584px"},
+      {top: "259px", left: "582px"},
+      {top: "258px", left: "808px"},
+      {top: "490px", left: "571px"},
+      {top: "334px", left: "580px"},
+      {top: "259px", left: "650px"},
+      {top: "259px", left: "639px"},
+      {top: "333px", left: "801px"},
+      {top: "421px", left: "803px"},
+      {top: "490px", left: "633px"},
+      {top: "413px", left: "725px"},
+      {top: "407px", left: "650px"},
+      {top: "335px", left: "652px"},
+      {top: "333px", left: "727px"},
+      {top: "332px", left: "650px"},
+      {top: "334px", left: "728px"},
+      {top: "494px", left: "725px"},
     ];
     const imageCoordinates = [
       {
@@ -946,12 +1003,14 @@
       68, 323, 85, 85, 183, 95, 101, 94, 91, 93, 61, 314, 77, 86, 79, 92, 165,
       94, 90, 88, 96, 93, 94, 93, 90, 95, 88, 95,
     ];
+
+
+
     const herbData = [
       {
         name: "Dandelion",
         date: "June 12th, 2024",
         color: "#BB73A1",
-        textFragments: [],
         text: [
           `I'm writing you from Vermont, where I have been museum sitting for Clare at the <a href="https://museumofeverydaylife.org/">Museum of Everyday Life </a>. I hope this letter can be a pleasant inbox surprise. It is the first in a series of monthly dispatches in a new yearlong project. Please see how you like the idea by reading on, and consider subscribing to be with me for the journey. Feedback, questions, fact checks, and collaboration are all more than welcome.`,
           "Last year was a slow crawl out of an old shell, followed by a burst of golden, nomadic energy. As Tara noted over our overdue beer, it's interesting how we go through phases of feeling old and then young, and then old once again, necessitating the constant cycle of leaving– people, places, versions of ourselves...",
@@ -1011,34 +1070,439 @@
           "text",
           2,
         ],
+        Rquotes: [
+          `It's basic manners to call people by their name, and for this reason I am trying to become better about plant identification (while also navigating the ethics of plant ID apps and their role in location sharing and poaching).`,
+          `Even though I knew I would be mowing the lawn anyways, there is an intensity and a finality to harvesting a plant from the root.`
+        ],
+        BfTQuotes: [],
+        LfTQuotes: [`I've also been reading the diary that the artist Derek Jarman kept during his last two years of life, which he chose to spend growing a garden. Jarman was diagnosed with HIV in 1986, but somehow made his garden, Dungeness, flourish despite his ailing health, and proximity to a nuclear power station.`],
+        GQuotes: [`despite the rightful romanticism we have for gardening, there is inherent violence in it, too.`],
+        SQuotes: [`Most of all, in this home <a href="https://www.youtube.com/watch?v=W41tsEjFkOQ">I Need to Start a Garden.</a>`]
       },
       {
         name: "St. John's Wort",
         date: "July 5th, 2024",
         color: "#FBF3AB",
-        textFragments: [],
-        fullEssay: "",
+        text: [
+          // text: 4
+          "Where did you find yourself on the solstice? What is growing around you right now, in your garden or on the roadsides? What is fading, in flora or otherwise? What have you been dreaming about?",
+          "On June 22nd, we entered Cancer season quite dramatically with both the summer solstice and a full moon, the first time the two coincide in 40 years. Because of its relationship to the solstice, I have chosen St. John's Wort, Hypericum Perforatum, as the herb du jour.",
+          `Worked with since medieval times as an antidepressant, St. John's Wort has its bloom time and is believed to be at its most potent on the solstice, the longest and lightest day of the year. In French, St. John's Wort is known as "chasse diable" (devil chaser). Its botanical genus name, Hypericum, is made up of the Greek words "Hyper" (above) and "eikon" (image), in reference to the practice of hanging SJW flowers over icons to ward off evil spirits. Research studies have found SJW to be as effective as standardly prescribed SSRIs (serotonin reuptake inhibitors), and with fewer side effects. That this sunshine filled herb can help to remedy our inner darkness is a logic that I just can't get over.`,
+          `In mid June, I had a special visit from my parents, all the way from Hong Kong. My father, who is NYC born, wanted to visit his family's gravesite in Woodstock - a trip I sneakily turned into an "herbventure." After paying our respects, I dragged my parents from one Upstate garden center to another. It took about four stops before we finally found an SJW plant in Kingston. It was somewhat too large and expensive for the 32 square foot concrete slab I am trying to turn into a garden... but it was late and we were exhausted, so we bit the bullet and brought the plant home.`,
+          // text: 3
+          `That night, I sat, thrilled, with the first plant of my garden. I decided to name him Ezra, and went to bed content. The next day was the first of a weeklong heatwave that has only just begun to abate here in New York City. My excitement quickly turned into despair as Ezra moved towards death despite my best efforts to keep him well watered and shaded.`,
+          `I moved Ezra to the north facing back of the house, where the sunlight is more subdued. I removed his dead leaves, and transferred him to a larger planter with a 1:1 mixture of soil and peat moss and thin layer of mulch on top. During the repotting process, I found Ezra's root ball to be highly constricted: impossibly knotted tendrils in a bone-dry mould of the old planter. Cutting open Ezra's planter felt like undoing a Victorian lady's rib crushing corset. I worked my hands through the mass, trying to awaken something.`,
+          `Every morning, I rush to the window hoping for signs of life. Ezra continues to look like a bush in winter, bare and unchanging. I suppose this is the reality of container gardening in times of ecological crisis. My friend and greatest plant consultant, Lake, helped me understand how in container gardening, plants don't have the ability to tap into deep underground water sources. According to Lake, container gardens are essentially "domesticated." As well, like with an adopted pet, when you purchase a plant, you never know its full history - specifically what kind of trauma it might be carrying.`,
+          // text: 2
+          `Perhaps I am just trying to make myself feel like less of an incompetent gardener, but judging from how much of an ill fitting squeeze Ezra's old planter was, and how badly he struggled in the heatwave, I'm making the assumption that Ezra had a rough past. I decided to just let him be, and redirected my energies instead to the great outdoors (or rather, urban foraging) - I had a newsletter to write!`,
+          `Stumbling upon an article on <a href=”https://ny.eater.com/2024/6/12/24171650/nyc-foraging-edible-plants-walking-tour?fbclid=IwZXh0bgNhZW0CMTEAAR0uKq_A-pj_58CzqJ6kyVcOqcsW22WLErRX4AiXbAUoqoMx_QpmanakXNw_aem_SOrHFzV40955Y8m-1SoJkA&ref=oneyeargarden.com”>Marie Viljoen</a>'s foraging and culinary work in the city gave me some ideas for where to go. Viljoen actually had an early project similar in many ways to mine called 66 Square Feet, which she kept a beautiful <a href=”https://66squarefeet.blogspot.com/p/about-this-blog.html?ref=oneyeargarden.com”>blog</a> about. Viljoen's writing contains plant cultivation tips, recommendations for herbventure destinations, and tiny garden inspiration. Early Sunday morning on Pride weekend, I took myself to Highland Park, in search of St. John's Wort.`,
+          // text: 2
+          `The night before, I dreamt that I came across St. John's Wort while walking in the darkness. I wonder if the dream space is a channel of communication between us and plants. I remember waking up with such resolve to go - I already had everything I needed for a <a href=”https://theherbalacademy.com/blog/how-to-make-a-tincture/?ref=oneyeargarden.com”>tincture</a>: 80 proof vodka, a 1 quart mason jar, gas in my car. It was as if I was still dreaming as I pulled into the park and set off on the trail.`,
+          `A slow meander through Butterfly Milkweed, River Sage, and Wild Carrot, searching for yellow...only to be fooled by False Sunflower. But then, there he was - Hypericum Perforatum, Common St. John's Wort. I gasped, unused to this instant gratification after my experience with Ezra back home. Its dainty blossoms were open despite the grey day, colors extra saturated from morning dew. The Hypericum here was not particularly in abundance, so I harvested just a few flowers. They stained my fingers a surprising purple, and when dropped into the vodka, turned the liquid an even more surprising red.`,
+          // text: 2
+          `I didn't want to take more from the little bush in Highland Park, so I decided to check out another spot that Marie Viljoen put on my radar: Greenwood Cemetery, in Sunset Park. I swung by home on the way and picked up my beloved roommate Paula, who was by chance also interested in spending Pride on an herbventure.`,
+          `We trekked through the humid cemetery, which I quickly learned is an herbalist's paradise. The grass is well mowed but somehow large swathes of herbs grow undisturbed in many areas. Somewhere between the chapel and the pond, my eyes fell upon a burst of yellow. It was indeed St. John's Wort, but the flowers were mammoth compared to the ones I had found earlier that morning. It turned out it was another species of Hypericum. These larger flowers were of Hypericum Prolificum, or Shrubby St. John's Wort. I have not yet been able to confirm whether Shrubby St. John's Wort also possesses the antidepressant properties of its famous relative, Common St. John's Wort. Is it enough that they share the Hypericin compound, which is known to so profoundly affect our brain chemistry?`,
+          // text: 6
+          `I decided to separately tincture and trial both species. Why not experiment? Together we harvested one compressed quart of the Hypericum Prolificum. We were careful to leave plenty for the bees. In fact, there was so much of the Prolificum, the bush didn't look at all different once we had finished. Unlike the Perforatum, the Prolificum turned the vodka a golden yellow.`,
+          `If you're wondering about pesticides and doggy doodoo in the context of urban foraging, so am I. I'm <a href=”https://scienceline.org/2018/07/foragers-are-eating-wild-in-americas-concrete-jungles/?ref=oneyeargarden.com”>in the process of learning</a> which parks spray and which do not, as well as how comparable levels of toxins in city park herbs are to, say, what you find in the grocery store. Apparently, some plants take up more toxins from soil than others. As well, in many plants toxins are more likely to concentrate in roots than in fruits. There are also methods for determining whether a plant has been sprayed in the first place...but it all still feels like too much of a risk.`,
+          `For this reason, I am not planning to distribute any of the tinctures made from Highland Park and Greenwood Cemetery. However, I am delighted to report little green buds of revival on Ezra (he lives!). I fear publicizing this news will make him shy, but I am too proud not to share. If this trend continues, and Ezra indeed flowers, I would love to share tincture with you (unless you are on pharmaceutical SSRIs, which in combination with St. John's Wort can lead to dangerously high levels of serotonin), stay tuned. This tincture is made with grief in mind, and is a response to the debilitating but also profound experience of waking up to the harsher realities of our world. As Fariha Róisín says in this <a href=”https://forthewild.world/listen/fariha-roisin-on-the-courage-of-listening-to-our-bodies-354?ref=oneyeargarden.com”>podcast episode</a>:`,
+          `"what our bodies are telling us and what our bodies are showing us through illness, primarily, and through everything from grief to depression are lighthouses back to ourselves."`,
+          `My interest in engaging grief comes out of a year marked by loss on many levels, but also intense growth and learning. Not to romanticize strife, but the high contrasts of late resulted in a thriving amid the heaviness, thanks in large part to my relationship to plants. Turning to them has unlocked a wilderness of awareness and an awareness of wilderness within me.`,
+          //TODO: links for the subscription/instagram?
+          `Thank you so much for being here. Just your readership is enough, but if you feel compelled, please consider becoming a paid subscriber, or making a donation. Funds at the moment are going toward good soil, wood for planters, as well as concrete and tiles for flooring. I've also started an instagram incase anyone is interested in live, regular going ons from the garden.`,
+        ],
+        image: [
+          "https://static.wixstatic.com/media/2fa7ac_36a9ccc256a34369904a42449b3ef81a~mv2.jpg",
+          "https://static.wixstatic.com/media/2fa7ac_88acf2119b614cbba2b16829c5ded428~mv2.jpg",
+          "https://static.wixstatic.com/media/2fa7ac_2bae4c70832a40e6acfaacd833ae6770~mv2.jpg",
+          "https://static.wixstatic.com/media/2fa7ac_f2fe49d2a0c34cc0906d8b4c9366600d~mv2.jpg",
+          "https://static.wixstatic.com/media/2fa7ac_b8da9a61ff3b41e5a39402147af486c6~mv2.jpg",
+          "https://static.wixstatic.com/media/2fa7ac_c9d28c1520f34ec4b70c53e6dd84b652~mv2.jpg",
+          "https://static.wixstatic.com/media/2fa7ac_338a77e84d6d4842acb12d7bb4dff1a1~mv2.jpg"
+        ],
+        caption: [
+          `Last week, the heatwave finally broke as the edges of three wild storms swept across the city overnight. Each rained down briefly, returning the air to what it should feel like.`,
+          `Hypericum Perforatum (Common St. John's Wort).`,
+          `Hypericum Prolificum for days. Note how much larger these blossoms are compared to the Perforatum.`,
+          `Parceling to place : root strap, boot sap, lighting shadow to whole earth futures. From Reflexes for a.f.t. Co-operative. Image by MZYVB, text by Ali Van.`
+        ],
+        mapping: [
+          "text",
+          4,
+          "image",
+          1,
+          "text",
+          3,
+          "image",
+          1,
+          "caption",
+          1,
+          "text",
+          2,
+          "image",
+          1,
+          "text",
+          2,
+          "image",
+          1,
+          "caption",
+          1,
+          "text",
+          2,
+          "image",
+          1,
+          "caption",
+          1,
+          "text",
+          6,
+          "image",
+          1,
+          "caption",
+          1,
+        ],
+        Rquotes: [
+          `Every morning, I rush to the window hoping for signs of life`,
+          `I suppose this is the reality of container gardening in times of ecological crisis.`,
+          `I already had everything I needed for a <a href="https://theherbalacademy.com/blog/how-to-make-a-tincture/?ref=oneyeargarden.com">tincture</a>: 80 proof vodka, a 1 quart mason jar, gas in my car.`,
+          `the high contrasts of late resulted in a thriving amid the heaviness, thanks in large part to my relationship to plants.`
+        ],
+        BfTQuotes: [
+          `St. John's Wort has its bloom time and is believed to be at its most potent on the solstice, the longest and lightest day of the year.`,
+          `Research studies have found SJW to be as effective as standardly prescribed SSRIs (serotonin reuptake inhibitors), and with fewer side effects. That this sunshine filled herb can help to remedy our inner darkness is a logic that I just can't get over.`,
+        ],
+        LfTQuotes: [`The Hypericum here was not particularly in abundance, so I harvested just a few flowers. They stained my fingers a surprising purple, and when dropped into the vodka, turned the liquid an even more surprising red.`],
+        GQuotes: [
+          `On June 22nd, we entered Cancer season quite dramatically with both the summer solstice and a full moon, the first time the two coincide in 40 years. Because of its relationship to the solstice, I have chosen St. John's Wort, Hypericum Perforatum, as the herb du jour.`,
+          `container gardens are essentially "domesticated."`,
+          `A slow meander through Butterfly Milkweed, River Sage, and Wild Carrot, searching for yellow...`,
+          `We were careful to leave plenty for the bees`
+        ],
+        SQuotes: []
       },
       {
         name: "Yarrow",
         date: "August 19th, 2024",
         color: "#000509",
-        textFragments: [],
-        fullEssay: "",
+        text: [
+          // text: 3
+          "Time has felt slippery lately. Already mid August, and I have the nerve to just be getting started. In the blink of an eye, frost will arrive to kill the Clockvines I have been coaxing up the iron rail. But still I can't resist trying to build this little universe, the prospect of Yarrow making it through the winter, and sense of hope that each rain brings.",
+          `Currently in bloom all over the Northeast, the herb that has my attention lately is Yarrow. When getting to know this delightful weed in the context of Leo season, I first turned to my dear friend, Lake. Lake is a plant and astrology wizard based in Providence, Rhode Island.`,
+          `<i>Yarrow and Leo season oh my! It’s a little tough to connect the two - the bitterness of Yarrow seems so different than the sweetness and light of the Leos I know. I think of Leos as a salve for humanity, generous and willing to entertain, all they expect is a little applause. Yarrow, too, is an excellent salve, one of the first herbs I learned about because of its nifty ability to coagulate blood. Whenever I hike I bring a small tin of yarrow and jewel weed salve for bumps and bruises, run ins with poison ivy, etc.</i>`,
+          // text: 3
+          `The connection of Yarrow and Leo through the metaphor of a salve is a clever one. Though we are comparing herbology with astrology, Yarrow and Leo certainly share an intelligence when it comes to restoring balance. While Leos may be skilled in easing and diffusing social situations, Yarrow can intuit what a particular body needs in ways that continue to escape Western scientific explanation.`,
+          `As a Leo Moon, I think of myself as someone on fundamentally friendly terms with the world. The biggest privilege of my life, I think, has been the consistent presence of nurturing relationships, and this astro moment has me feeling particularly reflective about community. In this spirit, One Year a Garden's <a href=”https://open.spotify.com/playlist/6QRjyKZdxppVH9KSrHAhjg?si=5a2916ad33984909&ref=oneyeargarden.com”>Yarrow in Leo</a> edition is a weaving of many voices.`,
+          `I first became interested in Yarrow when searching for an herb that might help a friend with their mysterious daily nosebleeds. Yarrow has centuries of evidence when it comes to treating nosebleeds – its leaves can be crushed into nose plugs, taken orally as a tincture, or applied as a poultice to the neck and temples. One of its historical names is literally "Nosebleed", along with "Woundwort," "Staunchbleed," and "Herba Militaris."`,
+          // text: 3
+          `Although I am learning not to reduce herbs to one single phytochemical constituent, it must be said that Yarrow is a "master of the blood." Its botanical name, <i>Achillea millefolium</i>, translates to <i>Achilles' thousand leaved plant</i>, and has a place of honor in Greek mythology. Yarrow was believed to bestow immortality to whomever bathed in its waters, and so when Achilles was born, his mother held him by his "Achilles heel" and dipped him in the Yarrow-laced waters of the River Styx. Yarrow later became Achilles' greatest plant ally on the battlefield, where he used it for its powerful styptic (blood staunching) properties to treat his soldiers' wounds. Achilles eventually died from an arrow shot to the heel, where according to lore, the Yarrow did not touch.`,
+          `As an amphoteric herb, Yarrow has opposing actions when it comes to regulating blood flow. On one hand, Yarrow's astringent quality encourages wounds to knit back together, even halting internal bleeding and hemorrhaging. On the other, Yarrow promotes blood flow outwards to the capillaries, soothing the vasculature with its flavanoids. I like Katja Swift of Commonwealth Herbs' explanation of this seemingly paradoxical effect:`,
+          `<i>Yarrow helps restore homeostasis to the circulatory system. If you’re bleeding from a wound, the pressure in your blood vessels has changed – much like when a spaceship’s hull is punctured and oxygen is leaking out into space. Yarrow helps to stop bleeding by re-normalizing the pressure throughout the body.</i>`,
+          // text: 2
+          `I admit to first harvesting a stalk of Yarrow at Prospect Park. Upon listening to <a href=”https://commonwealthherbs.com/podcast-109-sustainability-for-herbalists/?ref=oneyeargarden.com”>this podcast episode</a>, however, I later regretted my decision. The podcast hosts warn how "some harvesting practices and wildcrafting guidelines that have been widely adopted in American herbalism are no longer sufficient. We need to change our habits, as our world is changing." They elaborate on this through the 200BCE story of Giant Fennel. Desired for its purported contraceptive properties, Giant Fennel is humanity's first documented case of a medicinal plant harvested to extinction.`,
+          `I take the cautionary tale of Giant Fennel to heart. Though Yarrow is classified as a weed and has not (yet) been heavily commercialized, it was greedy of me to uproot any of it from the little patch in Prospect Park. Certainly, if enough people begin helping themselves to herbs growing in this city's parks, there will soon be nothing left. How might the herbal community be having a detrimental impact on the plants we love, and how do we ensure that this does not continue? What should the new guidelines be? I still feel lost about how to ethically source herbs - it is all so context dependent - but decided purchasing a small Yarrow from a local nursery was at least an improvement to poaching from the park.`,
+          // text: 1
+          `Beyond blood, Yarrow is a foundational herb in Western Materia Medica due to its extreme versatility. A poster in my room cross references various herbs and ailments, and Yarrow stands out because it has so many healing applications. Below are just a few things Yarrow can help with. Yarrow:<br>
+            1. can be used as a douche for leucorrhea and other vaginal problems <br>
+            2. leaves can be chewed for toothaches <br>
+            3. can prevent baldness if applied to the head as a decoction <br>
+            4. is said to dispel melancholy<br>
+            5. can produce free flow of perspiration (for fever management)<br>
+            6. is commonly massaged into the neck to treat headaches<br>
+            7. can be used as a fumigant to ward off disease germs<br>
+            8. in combination with Cayenne will open pores and purify the blood in all eruptive diseases (measles, smallpox, chickenpox, etc.) <br>
+            `,
+          // text: 1
+          `One of the most fascinating qualities to me about Yarrow is its ability to provide psychological and emotional armor. Logically, Yarrow's equalizing effect on blood pressure physiologically also translates to the emotional realm. Yarrow is known as an excellent herb in psychological first aid, and is commonly prescribed to aid workers, as well as those experiencing panic attacks, trauma triggers, or upsurges of grief. I have been drinking it all month in tea form, and feel an undeniably stabilizing effect with every cup.`,
+          // text: 1
+          `Since last writing, construction and puppy care have competed with the garden for my attention. As with gardening, construction requires a degree of looking ahead. A puppy, too, demands an expanded consideration of the future. I recall the idea of time orientation - that the average person is primarily revisiting the past, secondarily looking forward, and only a small percentage of the time naturally thinking in the present. As Louise Glück writes in The Wild Iris, "like an old woman wearing sweaters in summer," I am controlled by a time orientation favouring future.`,
+          // text: 1
+          `This month I owe many thanks to Diamy and Alhassane, who helped level the garden floor with concrete. Thank you to Luz, who then empowered me to believe that we could do the tiling ourselves. Thank you Lake, for taking me to Tooth and Nail years ago, and all the growing lessons since. Thank you Tobias, for introducing me to my new favorite poetry collection, The Wild Iris by Louise Glück. And thank you Paula, for introducing a new favorite song, La Jardinera by Violeta Parra. My gratitude to Ali, for teaching me so much about how to embody time. And thank you Uncle Martin, for providing a solution for winter gardening! Lastly, thank you, dear reader, for being here.`
+        ],
+        image: [
+          "https://static.wixstatic.com/media/2fa7ac_cd163018ddc04bccbe887f08c17c8fdf~mv2.jpg",
+          "https://static.wixstatic.com/media/2fa7ac_59873debbfc14e9ca0c9467e12ede867~mv2.jpg",
+          "https://static.wixstatic.com/media/2fa7ac_589231faf04a4462a9aea65272877108~mv2.jpg",
+          "https://static.wixstatic.com/media/2fa7ac_9efdbd79e6e84a68b7b30693faa28e04~mv2.jpg",
+          "https://static.wixstatic.com/media/2fa7ac_05aa8b8dd1e14aea8a77316943e69f78~mv2.jpg",
+          "https://static.wixstatic.com/media/2fa7ac_6ae01f0897b740f995b72edb764bcbbc~mv2.jpg",
+          "https://static.wixstatic.com/media/2fa7ac_f4ddcf0c2d05445abe91791deca8f558~mv2.jpg",
+          "https://static.wixstatic.com/media/2fa7ac_09f640615e8b48a790e98e902795c698~mv2.jpg"
+
+        ],
+        caption: [
+          `Sconosciuto (Unknown Artist), Roma, 1738. Image credit: 'Reflexes,' a collaboration with Ali Van.`,
+          `'Achilles and Achillea' by Marie Foulquié, 2024.`,
+          `Image credit: 'Reflexes,' a collaboration with Ali Van.`,
+          `Yarrow can be identified by its compound corymb flower structure and tripinnate leaves. It is tolerant of many soil types, and grows happily in zones 3-9 (most of the United States).`,
+          `Stained glass planter among Mandevilla, Rosemary and Yarrow, made by Ryan Wong.`,
+          `Portrait with Mushu in the garden by Julia C Liu.`,
+        ],
+        mapping: [
+          "text",
+          3,
+          "image",
+          1,
+          "caption",
+          1,
+          "text",
+          3,
+          "image",
+          1,
+          "caption",
+          1,
+          "text",
+          3,
+          "image",
+          1,
+          "caption",
+          1,
+          "text",
+          2,
+          "image",
+          1,
+          "caption",
+          1,
+          "text",
+          1,
+          "image",
+          1,
+          "caption",
+          1,
+          "text",
+          1,
+          "image",
+          1,
+          "caption",
+          1,
+          "text",
+          1,
+          "image",
+          1,
+          "text",
+          1,
+        ],
+        Rquotes: [
+          `Already mid August, and I have the nerve to just be getting started. In the blink of an eye, frost will arrive to kill the Clockvines I have been coaxing up the iron rail. But still I can't resist trying to build this little universe, the prospect of Yarrow making it through the winter, and sense of hope that each rain brings.`,
+          `Although I am learning not to reduce herbs to one single phytochemical constituent, it must be said that Yarrow is a "master of the blood." Its botanical name, Achillea millefolium, translates to Achilles' thousand leaved plant, and has a place of honor in Greek mythology. Yarrow was believed to bestow immortality to whomever bathed in its waters, and so when Achilles was born, his mother held him by his "Achilles heel" and dipped him in the Yarrow-laced waters of the River Styx. Yarrow later became Achilles' greatest plant ally on the battlefield, where he used it for its powerful styptic (blood staunching) properties to treat his soldiers' wounds. Achilles eventually died from an arrow shot to the heel, where according to lore, the Yarrow did not touch.`
+        ],
+        BfTQuotes: [
+          `As an amphoteric herb, Yarrow has opposing actions when it comes to regulating blood flow. On one hand, Yarrow's astringent quality encourages wounds to knit back together, even halting internal bleeding and hemorrhaging. On the other, Yarrow promotes blood flow outwards to the capillaries, soothing the vasculature with its flavanoids.`,
+          `Yarrow is known as an excellent herb in psychological first aid, and is commonly prescribed to aid workers, as well as those experiencing panic attacks, trauma triggers, or upsurges of grief.`,
+        ],
+        LfTQuotes: [
+          `They elaborate on this through the 200BCE story of Giant Fennel. Desired for its purported contraceptive properties, Giant Fennel is humanity's first documented case of a medicinal plant harvested to extinction.`
+        ],
+        GQuotes: [],
+        SQuotes: []
       },
       {
         name: "Elder",
         date: "September 23rd, 2024",
         color: "#D62551",
-        textFragments: [],
-        fullEssay: "",
+        text: [
+          //text: 4
+          `"Planting, for me, is a form of resistance" - Medo Halimy (2005-2024)`,
+          `Lately, I have been questioning if we are even capable of a world where peace is possible. The concept feels more like an ideal than a realistic option, a weighing scale that refuses to find stillness no matter how you try to fenagle it.`,
+          `On August 29th, Medo Halimy was killed by an Israeli missile in Khan Younis. I only learned of the 19 year old TikTok star's existence after his passing. He was playing on the beach with his friends when shrapnel from a nearby bomb hit him in the head, sending him into a coma.`,
+          `Before this, Medo was making viral videos about everyday life at his camp in Gaza, including a series for a daily planting challenge. In the sandy earth outside his tent, Medo cultivated mint, lentils, mulukhiyah, and watermelon. Each video begins with the announcement: "Day X Of Planting Every Day Until This Genocide Is Over." It did something to me when Medo introduced us to "Mentita", a tiny sprout of Mint he was nurturing in an old chickpea can.`,
+          // text: 2
+          `Sajah Popham, author of <i>Evolutionary Herbalism</i>, says that the only medicine that can heal the spiritual sickness pervading humanity is one that comes from something greater than our own inventions (namely, medicinal plants). He goes on to write that the power of medicinal plants is "not simply a removal of bodily symptoms, not just a replacement for a pill; it is a deeper level of doctoring within the territory of the human spirit and soul." To Popham, plants offer something beyond healing: they can facilitate the evolution of consciousness.`,
+          `Physical and spiritual health must be two sides of the same leaf, I think. Normally the type of person who rarely gets sick, my defenses this month have been down. It reminded me of turning to an elder in a moment of crisis, when this Virgo season I chose to ask the herb Elder, Sambuca Nigra, for help.`,
+          // text: 3
+          `Another foundational herb in Western Herbalism, before literacy was the norm herbalists grew Elder trees outside their doors so that people could identify them. Of all the herbs traditionally used to support immune health, Elder is perhaps most famous for helping to manage cold and flu, as well as to regulate fluids in the body. All studies about Elder have pretty much the same conclusion: taking it both reduces symptoms and shortens the duration of illness.`,
+          `<u>Elderberry</u>: Elderberry has been used for centuries in the art of fever management. It directly attacks viruses through its neuraminidase inhibiting compounds (neuraminidase being the enzyme that helps viruses to replicate). Elderberry also boosts immune surveillance by stimulating the lymphatic system to call B and T cells into action. In cool tea form, it acts as a diuretic, while in hot tea form, can be taken as a diaphoretic, allowing heat to release during a fever. This month I made Elderberry syrup, a delicious, molasses-like concoction that I have been adding to my tea.`,
+          `<u>Elderflower</u>: Elderflower is a profound emotional diaphoretic. Categorized as an "exhilarant" along with herbs like Tulsi, Linden, and Dandelion, when taken as a liqueur, Elderflower can help lift one out of downtrodden mental and emotional states, specifically through the release of anxiety and anger. I can report from personal experience that there is a distinct sense of well-being that comes with taking just 1/4 shot of St. Germaine's. Though it may feel strange to source an herbal remedy from your neighborhood liquor store, one must remember that alcohol was first intended as a medicine.`,
+          // text: 1
+          `There seem to be very few Elder trees in NYC, but last week I was lucky to behold one in Greenpoint. Modest in stature, and with a somewhat untidy appearance, it's easy to walk past Elder when it's not in bloom with white corymb flowers or sagging under the weight of dark purple berries. I made a record of the Greenpoint Elder tree on the <a href=”https://tree-map.nycgovparks.org/tree-map?ref=oneyeargarden.com”>NYC Tree Map</a>, the most comprehensive and up-to-date living tree map in the world.`,
+          // text: 4
+          `Although a devoted member of the Stop Shopping Choir, I was unable to resist when I saw a baby Elder tree for sale online. Inspired by the Ocean Vuong poem "<a href=”https://www.reddit.com/r/Poetry/comments/103wl4e/ocean_vuong_amazon_history_of_a_former_nail_salon/?ref=oneyeargarden.com”>Amazon History of a Former Nail Salon Worker</a>," I made a small catalogue of my expenses of late:<br>
+            1. Elder sapling, fastgrowingtrees.com<br>
+            2. Two grow lights, Amazon gift card (no cash value) <br>
+            3. Elderberry & Juniper flavored kombucha, Synergy<br>
+            4. 1 Rue and 1 Mint plant, Bushwick Farmer's Market <br>
+            5. Elderberry tonic, Goldthread<br>
+            6. 12 quart bag potting soil, Happy Frog<br>
+            7. Elderberry gummies, Trader Joe's<br>
+            8. 1 pound dried Elderberry, Mountain Rose Herbs*<br>
+            9. Bottle of St. Germaine's, Benely Wine & Spirits
+          `,
+          `*Widely considered a reputable bulk herb seller, I learned only after making my purchase that Mountain Rose Herbs is in fact on the Boycott Divest & Sanction list. Starwest Botanicals, Frontier Co-op, and Gaia Herbs are other herbal companies currently under pressure to divest from Israeli agriculture. For archives of deeper research, check out Shabina Lafleur-Gangji's compiled resources on the topic <a href=”https://drive.google.com/drive/u/2/folders/1_WecALs73P6V7b1wmc51Ap9PtN4czZTX?ref=oneyeargarden.com”>here</a>.`,
+          `Just as Medo Halimy said "planting is a form of resistance", I think of gardening and herbalism as tangible forms of hope. Carrying water across the apartment every evening as an offering to the garden has become my way of praying.`,
+          `These days, watering the garden is the only intervention I make. Now four months into this project, I see myself leaning towards methods like Masanobu Fukuoka's 'Do Nothing Farming', and Ruth Stout's '<a href=”https://www.instagram.com/p/C_am0NVu0Zd/?ref=oneyeargarden.com”>no work</a>' garden philosophy. Not out of laziness, but because to relinquish control and allow what grows and what withers to be a joint decision feels less extractive, less self righteous.`,
+          `It is written that Elder's hollow stem, with the soft pith removed, was used to blow into the centre of a fire to generate heat. On the first day of autumn, I stare out toward the future. I wonder when fire season will arrive, sparing no one besides a few seeds buried deep underground. In the meantime, I look to all plants – but especially to Elder – for guidance on how to navigate this current and coming hostile world.`
+        ],
+        image: [
+          "https://static.wixstatic.com/media/2fa7ac_55749026fae94ec28c23948a0469b7fe~mv2.jpg",
+          "https://static.wixstatic.com/media/2fa7ac_65ac49bef6cb42519a6dcf99a2f5c9bd~mv2.png",
+          "https://static.wixstatic.com/media/2fa7ac_128d4014f0c9460481f6b3d68c5a8f38~mv2.jpg",
+          "https://static.wixstatic.com/media/2fa7ac_48256b7b91324e82b2ef966959146d09~mv2.jpg",
+          "https://static.wixstatic.com/media/2fa7ac_88862c08f1a842bab76ec0c724384838~mv2.jpg",
+          "https://static.wixstatic.com/media/2fa7ac_04db790bd0be4e3e840833a72fb019b4~mv2.jpg",
+
+        ],
+        caption: [
+          `Video still from Medo Halimy's daily planting challenge on Tiktok`,
+          `Image credit: 'Reflexes', a collaboration with Ali Van`,
+          `Image credit: Wills's Cigarette Card "Flowering Trees & Shrubs", 1924`,
+          `Preparing to pot my Sambuca Nigra`,
+          `Image content: Video still from 'Mud Song Dream Sequence' by Iris Yirei Hu. Image credit: Amanda Yates Garcia's 'Mystery Cult'`
+        ],
+        mapping: [
+          "text",
+          4,
+          "image",
+          1,
+          "caption",
+          1,
+          "text",
+          2,
+          "image",
+          1,
+          "caption",
+          1,
+          "text",
+          3,
+          "image",
+          1,
+          "caption",
+          1,
+          "text",
+          1,
+          "image",
+          1,
+          "caption",
+          1,
+          "text",
+          4,
+          "image",
+          1,
+          "caption",
+          1,
+          "text",
+          1,
+        ],
+        Rquotes: [
+          `Carrying water across the apartment every evening as an offering to the garden has become my way of praying.`,
+          `I see myself leaning towards methods like Masanobu Fukuoka's 'Do Nothing Farming', and Ruth Stout's 'no work' garden philosophy.`
+        ],
+        BfTQuotes: [
+          `Sajah Popham, author of Evolutionary Herbalism, says that the only medicine that can heal the spiritual sickness pervading humanity is one that comes from something greater than our own inventions (namely, medicinal plants). He goes on to write that the power of medicinal plants is "not simply a removal of bodily symptoms, not just a replacement for a pill; it is a deeper level of doctoring within the territory of the human spirit and soul." To Popham, plants offer something beyond healing: they can facilitate the evolution of consciousness.`,
+          `Elderflower is a profound emotional diaphoretic. Categorized as an "exhilarant" along with herbs like Tulsi, Linden, and Dandelion, when taken as a liqueur, Elderflower can help lift one out of downtrodden mental and emotional states,`,
+          `It is written that Elder's hollow stem, with the soft pith removed, was used to blow into the centre of a fire to generate heat. On the first day of autumn, I stare out toward the future. I wonder when fire season will arrive, sparing no one besides a few seeds buried deep underground.`
+        ],
+        //TODO: link NYC tree map
+        LfTQuotes: [
+          `Before this, Medo was making viral videos about everyday life at his camp in Gaza, including a series for a daily planting challenge. In the sandy earth outside his tent, Medo cultivated mint, lentils, mulukhiyah, and watermelon. Each video begins with the announcement: "Day X Of Planting Every Day Until This Genocide Is Over."`,
+          `It reminded me of turning to an elder in a moment of crisis, when this Virgo season I chose to ask the herb Elder, Sambuca Nigra, for help.`,
+          `before literacy was the norm herbalists grew Elder trees outside their doors so that people could identify them.`,
+          `I made a record of the Greenpoint Elder tree on the NYC Tree Map, the most comprehensive and up-to-date living tree map in the world.`
+        ],
+        GQuotes: [
+          `Elderberry has been used for centuries in the art of fever management.`,
+          `In cool tea form, it acts as a diuretic, while in hot tea form, can be taken as a diaphoretic, allowing heat to release during a fever.`,
+          `I learned only after making my purchase that Mountain Rose Herbs is in fact on the Boycott Divest & Sanction list. Starwest Botanicals, Frontier Co-op, and Gaia Herbs are other herbal companies currently under pressure to divest from Israeli agriculture. For archives of deeper research, check out Shabina Lafleur-Gangji's compiled resources on the topic here.`
+        ],
+        SQuotes: []
       },
       {
         name: "Ginkgo",
         date: "September 23rd, 2024",
         color: "#EBE2D3",
-        textFragments: [],
-        fullEssay: "",
+        text: [
+          // text: 1
+          `Hibakusha (被爆者) is a Japanese term for the people who survived the 1945 atomic bombings of Hiroshima and Nagasaki. Hibakujumoku (被爆樹木) is a related term that refers specifically to the trees that survived the same event. Hibakujumoku are also known as "witness trees." By some coincidence, I had already started reading about hibakujumoku when the Nobel Peace Prize was awarded to Nihon Hidankyo, a group of hibakusha, this past October 11th. Nihon Hidankyo has been lobbying the Japanese government and the world for the abolition of nuclear weapons since 1956.`,
+          // text: 3
+          `Ginkgo is one of a handful of hibakujumoku species. Standing as close as 1,120 meters from the hypocenter of the blast, these Ginkgos were exposed to massive amounts of radiation and traumatic soil conditions. No one thought they would survive the event, but eyewitness reports relate that within two years of the bombing, the trees were growing new leaf again.`,
+          `From the Poplars used as gallows in the South, to the 5,000 year old al-Badawi Olive, to the Hiroshima Ginkgos, I have been thinking about what memory is like for a tree. In 2017, Ariel Dorfman wrote a piece for the now loathsome New York Times called 'The Whispering Leaves of the Hiroshima Ginkgo Trees.' In it he writes:`,
+          `<i>"The Hiroshima Ginkgos were able to resist the most devastating outcome of science and technology, the splitting of the atom, a destructive power that could turn the whole planet into rubble. Those trees’ survival was a message of hope in the midst of the black rain of despair: that we could nurture life and conserve it, that we must be wary of the forces we unleash...How paradoxical, how sad, how stupid, it would be if, more than seven decades after Hiroshima opened the door to the possible suicide of humanity, we did not understand that warning from the past, that call to the future, what the gentle leaves of the Ginkgo trees are still trying to tell us."</i>`,
+          // text: 2
+          `Predating the asteroid that killed the dinosaurs, Ginkgo Biloba is one of the oldest living tree species in the world. Along with horseshoe crabs and royal ferns, Ginkgo is considered a living fossil, meaning it has remained essentially unchanged from earlier geological times. Many Daoist temples feature Ginkgos older even than the temple structure itself, marking the locale of early shamanic worship.`,
+          `We may never know how these ancient trees mark time beyond the formation of a ring, but it is interesting to note that in Western Herbalism, Ginkgo is worked with as an herb for memory support. Good neurological health depends on the proper circulation of blood to the brain, and Ginkgo helps facilitate this action by stimulating circulation and reducing inflammation throughout the central nervous system. Many studies point to concentrated extracts of Ginkgo as a promising agent against cognitive disorders like <a href=”https://pmc.ncbi.nlm.nih.gov/articles/PMC3599149/?ref=oneyeargarden.com”>Alzheimers</a>. I have been drinking Ginkgo, Rosemary and Sage tea to improve focus and maintain cognitive agility, as well as taking dropperfuls in tincture form at mealtimes.`,
+          // text: 3
+          `Trees that might live for hundreds of years in the forest may only make it for a few in the urban landscape. Unphased by stressful city conditions, however, Ginkgo is an exception. When Ginkgo was brought by Western botanists from China to England in the early 19th century, the Industrial Revolution was posing a serious threat to both human and tree health. But Ginkgo was found to thrive despite heavy air pollution and soil compaction, making it an ideal urban tree. The only complaint people seem to have about Ginkgo is its smell at a particular time of year...`,
+          `<i>"There's not much spooning in the moonlight around the Ginkgos after the first part of October, unless a lass and a swain happen to be employees of a tannery, or some other highly scented place."</i><br>
+          – The Washington Post Express, December 27th, 1914`,
+          `Only female Ginkgos produce the apricot like fruits – technically seeds – that carpet our streets every fall. These seeds contain butyric acid (the signature smell of human vomit), earning them the reputation of being profoundly <a href=”https://outsideinradio.org/shows/ginkgolove?ref=oneyeargarden.com”>stinky</a>. Called by some a public nuisance, nurseries have tried to graft exclusively male Ginkgos to avoid this problem. But Ginkgos outsmart us once again, this time by spontaneously changing their sex – male trees suddenly growing female branches. If I have one takeaway from this fact, it is that trees are truly above gender.`,
+          // text: 2
+          `Although Western research emphasizes the circulatory and neuroprotective effect of Ginkgo, usage of the herb in the Chinese medical tradition has mostly centered around the lungs. It is possible that Ginkgo has remained little known as a circulatory herb in this modality because there were other more accessible, effective, and cheaper herbs in the blood moving category of the Chinese Materia Medica.`,
+          `Instead, in Chinese Herbalism, Ginkgo seeds are known to constrain Lung Qi, and are commonly prescribed as a lung tonic to calm wheezing and coughing. Ginkgo seeds are often stewed with chicken, or as a key part of herbal formulas to address asthma, bronchitis, and leukorrhea. Following a Zoey Xinyi Gong recipe, I made Lotus Leaf Steamed Sticky Rice with Chicken and Ginkgo – a 13 hour preparation that tasted like a pocket of earth. The recipe called for lotus, coix, and ginkgo seeds, as well as adzuki beans and fox nuts. I was able to source everything from Chinatown, including fresh Ginkgo seeds harvested from city trees.`,
+          // text: 1  
+          `Though Ginkgo has different applications in Western and Chinese herbalism, it is becoming apparent to me that across medical herbal traditions (Ayurveda, Chinese, Greek, Unani-Tibb, etc.), there are actually more similarities than differences. According to Sajah Popham, these organizational systems are all united by the concept of vitalism. Vitalism is the belief that the living body is animated by a vital force possessing an innate intelligence. This vital force is to be worked with - not suppressed - to restore an organism to health. Increasingly, I am seeing it as my work to shift my perceptual approach to seeing this vital force in everything living (plants, organs, tissues, even patterns of disease). The late fall early winter time that we are in, when the veil between the world and the Earth is at its thinnest, is helping.`,
+          // text: 1
+          `Thank you for your patience with this issue of One Year a Garden. It has been quite the time, the cherry on top being the sale of our building, which precipitated an unexpected move on December 1st. Saying goodbye to the garden was something I never imagined would have to be done so soon. But this change might be the best thing that's happened for the project. My new home has a backyard, neglected but full of potential. So far, I have identified a Mulberry and a Maple tree – the rest is buried in leaves. It's only been a few days but I already feel a mending deep within.`
+        ],
+        image: [
+          "https://static.wixstatic.com/media/2fa7ac_559f1298e5d94120bad04e091382aa97~mv2.jpg",
+          "https://static.wixstatic.com/media/2fa7ac_9f0f9efbfffa4e86a9fcfb77f194919a~mv2.jpg",
+          "https://static.wixstatic.com/media/2fa7ac_5df549e25c174b49a4b7f0c8de03c9e3~mv2.jpg",
+          "https://static.wixstatic.com/media/2fa7ac_74494599685c4640aae314d0c9c550cd~mv2.jpg",
+          "https://static.wixstatic.com/media/2fa7ac_0a9d9163a6c94921be50d6b16dad6bd1~mv2.jpg",
+          //TODO: check if gif works ok as is or if needs to be another media type
+          "https://static.wixstatic.com/media/2fa7ac_183805118c9340009f2ae221e8351b73~mv2.gif"
+        ],
+        caption: [
+          `Image content: Ginkgo hibakujumoku. Image credit: Shukkein Garden Ginkgo, Hiroshima, c. 1948 (Photographer Unknown). Calligraphy by Margaret May Fung Van. Collage by MZYVB, October 2024.`,
+          `Image content: Photographs from the installation 'Within the Pore of a Ginkgo Leaf.' Image credit: Lina Berón Echavarria, 2019.`,
+          `Image content: 1,400 year old Ginkgo shedding its leaves for the 1,400th time in the courtyard of Gu Guanyin Temple, Xian. Image credit: Moss and Fog, 2023.`,
+          `Image content: Ginkgo Lung. Image credit: Drawing via Fatima Ashry. Photograph and collage by MZYVB, November 2024.`,
+          `Image content: Lotus Leaf Steamed Sticky Rice with Chicken and Ginkgo. Image credit: MZYVB, 2024.`,
+          `Image content: 'Autumn of Gingko' Woodblock print. Image credit: Kazuyuki Ohtsu, 2020. `,
+
+        ],
+        mapping: [
+          "text",
+          1,
+          "image",
+          1,
+          "caption",
+          1,
+          "text",
+          3,
+          "image",
+          1,
+          "caption",
+          1,
+          "text",
+          2,
+          "image",
+          1,
+          "caption",
+          1,
+          "text",
+          3,
+          "image",
+          1,
+          "caption",
+          1,
+          "text",
+          2,
+          "image",
+          1,
+          "caption",
+          1,
+          "text",
+          1,
+          "image",
+          1,
+          "caption",
+          1,
+          "text",
+          1
+        ],
+        Rquotes: [
+          `Hibakusha (被爆者) is a Japanese term for the people who survived the 1945 atomic bombings of Hiroshima and Nagasaki. Hibakujumoku (被爆樹木) is a related term that refers specifically to the trees that survived the same event. Hibakujumoku are also known as "witness trees."`,
+          `It has been quite the time, the cherry on top being the sale of our building, which precipitated an unexpected move on December 1st. Saying goodbye to the garden was something I never imagined would have to be done so soon.`,
+        ],
+        BfTQuotes: [
+          `Ginkgo is one of a handful of hibakujumoku species. Standing as close as 1,120 meters from the hypocenter of the blast, these Ginkgos were exposed to massive amounts of radiation and traumatic soil conditions. No one thought they would survive the event, but eyewitness reports relate that within two years of the bombing, the trees were growing new leaf again.`,
+          `Ginkgo Biloba is one of the oldest living tree species in the world. Along with horseshoe crabs and royal ferns, Ginkgo is considered a living fossil, meaning it has remained essentially unchanged from earlier geological times. Many Daoist temples feature Ginkgos older even than the temple structure itself`,
+          `When Ginkgo was brought by Western botanists from China to England in the early 19th century, the Industrial Revolution was posing a serious threat to both human and tree health. But Ginkgo was found to thrive despite heavy air pollution and soil compaction, making it an ideal urban tree.`
+        ],
+        LfTQuotes: [
+          `Only female Ginkgos produce the apricot like fruits – technically seeds – that carpet our streets every fall. These seeds contain butyric acid (the signature smell of human vomit), earning them the reputation of being profoundly stinky. Called by some a public nuisance, nurseries have tried to graft exclusively male Ginkgos to avoid this problem. But Ginkgos outsmart us once again, this time by spontaneously changing their sex – male trees suddenly growing female branches. If I have one takeaway from this fact, it is that trees are truly above gender.`,
+          `Following a Zoey Xinyi Gong recipe, I made Lotus Leaf Steamed Sticky Rice with Chicken and Ginkgo – a 13 hour preparation that tasted like a pocket of earth. The recipe called for lotus, coix, and ginkgo seeds, as well as adzuki beans and fox nuts. I was able to source everything from Chinatown, including fresh Ginkgo seeds harvested from city trees.`
+        ],
+        GQuotes: [`Good neurological health depends on the proper circulation of blood to the brain, and Ginkgo helps facilitate this action by stimulating circulation and reducing inflammation throughout the central nervous system.`],
+        SQuotes: []
       },
     ];
     // const herbEssayMap = [{ ["text", 1, "image", 1,]}
@@ -1120,6 +1584,43 @@
 
         herbTexts[i].classList.add("invisible");
         herbDates[i].classList.add("invisible");
+      }
+    }
+
+    function showQuotes(type) {
+
+      const herbDot01 = document.getElementById("herb-dot-01-wrapper");
+      const herbDot02 = document.getElementById("herb-dot-02-wrapper");
+      const herbDot03 = document.getElementById("herb-dot-03-wrapper");
+      const herbDot04 = document.getElementById("herb-dot-04-wrapper");
+      const herbDot05 = document.getElementById("herb-dot-05-wrapper");
+
+
+      let quotesForDisplay = [];
+      for (let i = 0; i < herbData.length; i++) {
+        if (type == "R") {
+          //TODO: check if this is the right way to add onto an array, also if you even need to add to array (this would be for randomization)
+          quotesForDisplay.push(herbData[i].Rquotes);
+          // hides herb dot if have not already
+          if (!document.getElementById(`herb-dot-0${i}-wrapper`).classList.contains("invisible")) {
+            document.getElementById(`herb-dot-0${i}-wrapper`).classList.add("invisible");
+          }
+          //TODO: think about that 0 - how to increment or randomize? 
+          document.getElementById(`herb-quote-0${i}`).innerHTML = herbData[i].Rquotes[0];
+          document.getElementById(`herb-quote-0${i}-wrapper`).classList.remove("invisible");
+        }
+        if (type == "BfT") {
+          //TODO: check that there is a quote for this type
+        }
+        if (type == "LfT") {
+
+        }
+        if (type == "G") {
+
+        }
+        if (type == "S") {
+
+        }
       }
     }
 
@@ -1207,9 +1708,6 @@
 
         e.preventDefault();
 
-        console.log("hit drag");
-        console.log(elmnt);
-
         // Record the mouse's starting position
         pos3 = e.clientX;
         pos4 = e.clientY;
@@ -1294,17 +1792,7 @@
 
         const pieceNumber =
           Number(elmnt.id.split("-")[1]);
-        console.log(pieceNumber)
         const limits = imageCoordinates[pieceNumber];
-        console.log("checking success")
-        console.log(newTop, newLeft, limits);
-        console.log({
-          piece: elmnt.id,
-          actualLeft: newLeft,
-          actualTop: newTop,
-          targetLeft: `${limits.leftLowerlim}-${limits.leftUpperlim}`,
-          targetTop: `${limits.topLowerlim}-${limits.topUpperLim}`,
-        });
         const SNAP_TOLERANCE = 15;
 
 
@@ -1316,7 +1804,22 @@
 
         if (isCorrectPosition) {
           console.log("SUCCESS!", elmnt.id);
+
           showHerbInfo(0, true);
+
+          const pieceNum = Number(elmnt.id.split("-")[1]);
+          console.log(pieceNum);
+          if (pieceNum == 1 || pieceNum == 2) {
+            showQuotes("R");
+          } else if (pieceNum == 3 || pieceNum == 4 || pieceNum == 7) {
+            showQuotes("G");
+          } else if (pieceNum == 5) {
+            showQuotes("BfT");
+          } else if (pieceNum == 6 || pieceNum == 8 || pieceNum == 10) {
+            showQuotes("BfT");
+          } else if (pieceNum == 9) {
+            showQuotes("S");
+          }
 
           // // Snap to the center of the target range
           // const targetLeft =
@@ -1329,14 +1832,6 @@
           // elmnt.style.top = `${targetTop}px`;
         }
 
-
-        // Debugging information
-        console.log(
-          `Piece ${pieceNumber}:`,
-          `left = ${Math.round(newLeft)}`,
-          `top = ${Math.round(newTop)}`,
-          `scale = ${scale.toFixed(3)}`
-        );
       }
 
 
@@ -1412,35 +1907,8 @@
 
       populateScreen();
     };
-    // Attach event listeners after DOM loads
-    window.onload = function () {
-      const inputEl = document.getElementById("myInput");
 
-      // Trigger when input gets focus (selected)
-      inputEl.addEventListener("click", onInputSelected);
 
-      // Function to run when input is selected (focused)
-      function onInputSelected() {
-        fullessay = !fullessay;
-        if (fullessay) {
-          essayText.classList.add("italic");
-          interactiveText.classList.remove("italic");
-          interactiveView.classList.remove("show");
-          interactiveView.classList.add("hidden");
-          archiveView.classList.remove("hidden");
-          archiveView.classList.add("show");
-        } else {
-          essayText.classList.remove("italic");
-          interactiveText.classList.add("italic");
-          archiveView.classList.remove("show");
-          archiveView.classList.add("hidden");
-          interactiveView.classList.remove("hidden");
-          interactiveView.classList.add("show");
-        }
-      }
-
-      populateScreen();
-    };
   </script>
 </body>
 
