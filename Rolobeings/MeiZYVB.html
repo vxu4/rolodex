@@ -1,9 +1,8 @@
 <!-- TODO: 
-    1. Add in each quilt piece and determine top/left limits for each piece, as well as SIZING! 
-        - have them added in groups so you can add a class-name for each "kind"
-        - this kind will determine which dots each one activates
-        - make a gdoc with list of each one, so you can replicate into Sanity
-    2. Add in dots for each herb, make them respond to each successful placement
+    1. [x] add in click behavior for index
+    2. fade scroll 
+    3. hide scroll bars
+    4. index title styling - check after meeting
 -->
 <!doctype html>
 <html lang="en">
@@ -25,6 +24,10 @@
       font-size: 14px;
       font-style: normal;
       font-variation-settings: "wdth" 100;
+      color: black;
+    }
+
+    a {
       color: black;
     }
 
@@ -560,9 +563,40 @@
     /* Archive view */
     .archive-view {
       display: flex;
-      flex-direction: column;
+      flex-direction: row;
       align-items: center;
       margin-top: 14vh;
+    }
+
+    #archive-index {
+      display: flex;
+      flex-direction: column;
+      width: 10vw;
+      position: absolute;
+      top: 13vh;
+      left: 2vw;
+    }
+
+    .index-title {
+      margin: 0;
+      cursor: pointer;
+      padding-bottom: 1vh;
+      font-style: italic !important;
+    }
+
+    .green-text {
+      color: #9DDC93;
+    }
+
+    .black-text {
+      color: black;
+    }
+
+    #herb-content {
+      /* margin-left: -10vw; */
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
 
     .subtitle {
@@ -583,7 +617,7 @@
       font-variation-settings: "wdth" 300;
       font-size: 10px;
       font-style: italic;
-      align-self: flex-start;
+      align-self: flex-end;
     }
 
     .body-text {
@@ -593,18 +627,85 @@
       font-style: normal;
       font-variation-settings: "wdth" 200;
       font-size: 14px;
+      text-align: justify;
+    }
+
+    .body-img {
+      width: 20vw;
+    }
+
+    .caption-text {
+      font-family: 'Noto Sans', sans-serif;
+      font-optical-sizing: auto;
+      font-weight: 100;
+      font-style: italic;
+      font-variation-settings: "wdth" 200;
+      font-size: 12px;
+      color: #595959;
+      width: 35vw;
+      text-align: center;
+    }
+
+    #herb-wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      height: 84vh;
+      overflow: scroll;
+      margin-top: 15vh;
+      padding-bottom: 5vh;
+      /* Create fade effect at top & bottom */
+      -webkit-mask-image: linear-gradient(to bottom,
+          transparent,
+          black 8%,
+          black 70%,
+          transparent);
+      -webkit-mask-repeat: no-repeat;
+      -webkit-mask-size: 100% 100%;
+      mask-image: linear-gradient(to bottom,
+          transparent,
+          black 8%,
+          black 70%,
+          transparent);
+      mask-repeat: no-repeat;
+      mask-size: 100% 100%;
     }
 
     #essay-wrapper {
+      width: 42vw;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      width: 42vw;
+
+    }
+
+    /* Scrollbar styling */
+    ::-webkit-scrollbar {
+      width: 5px;
+      /* Width of the scrollbar */
+    }
+
+    ::-webkit-scrollbar-track {
+      background: transparent;
+      /* Background of the scrollbar track */
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: rgba(89, 89, 89, 0.2);
+      /* Color of the scrollbar handle */
+      border-radius: 5px;
+      /* Rounded corners */
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: rgba(89, 89, 89, 0.3);
+      /* Handle color on hover */
     }
 
     #title-img {
-      width: 24vw
+      height: 65vh;
     }
   </style>
 </head>
@@ -747,20 +848,18 @@
       </div>
     </div>
     <div id="archive-view" class="hidden">
-      <div id="essay-wrapper">
-        <p class="subtitle">Dandelion</p>
-        <img id="title-img" src="https://static.wixstatic.com/media/2fa7ac_9baa94d56e01443095fb63f4e4a2235e~mv2.jpg"
-          alt="Dandelion" class="herb-image" id="herb-image-1" />
-        <p class="subtitle"><i>Gemini:</i> May 20 - June 19.</p>
-        <br />
-        <br />
-        <p class="label-text">First published June 12th, 2024</p>
-        <p class="body-text"> I'm writing you from Vermont, where I have been museum sitting for Clare at the <a
-            href="https://museumofeverydaylife.org/">Museum of Everyday Life </a>. I hope this letter can be a
-          pleasant inbox surprise. It is the first in a series of monthly dispatches in a new yearlong project. Please
-          see how you like the idea by reading on, and consider subscribing to be with me for the journey. Feedback,
-          questions, fact checks, and collaboration are all more than welcome.
-        </p>
+      <div id="archive-index"></div>
+      <div id="herb-wrapper">
+        <div id="essay-wrapper">
+          <p id="herb-name" class="subtitle">Dandelion</p>
+          <img id="title-img" src="" alt="" class="herb-image" />
+          <p class="subtitle" id="zodiac-season"></p>
+          <br />
+          <br />
+          <p class="label-text" id="publish-date">First published June 12th, 2024</p>
+          <div id="herb-content">
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -901,34 +1000,34 @@
       "https://static.wixstatic.com/media/2fa7ac_6c30eedb6508422581239152820e05ae~mv2.png",
     ];
     const imageStartPts = [
-      {top: "380px", left: "50px"},
-      {top: "731px", left: "109px"},
-      {top: "634px", left: "119px"},
-      {top: "623px", left: "218px"},
-      {top: "673px", left: "408px"},
-      {top: "695px", left: "794px"},
-      {top: "712px", left: "1162px"},
-      {top: "659px", left: "1253px"},
-      {top: "702px", left: "1375px"},
-      {top: "138px", left: "1019px"},
-      {top: "213px", left: "873px"},
-      {top: "215px", left: "584px"},
-      {top: "259px", left: "582px"},
-      {top: "258px", left: "808px"},
-      {top: "490px", left: "571px"},
-      {top: "334px", left: "580px"},
-      {top: "259px", left: "650px"},
-      {top: "259px", left: "639px"},
-      {top: "333px", left: "801px"},
-      {top: "421px", left: "803px"},
-      {top: "490px", left: "633px"},
-      {top: "413px", left: "725px"},
-      {top: "407px", left: "650px"},
-      {top: "335px", left: "652px"},
-      {top: "333px", left: "727px"},
-      {top: "332px", left: "650px"},
-      {top: "334px", left: "728px"},
-      {top: "494px", left: "725px"},
+      { top: "380px", left: "50px" },
+      { top: "731px", left: "109px" },
+      { top: "634px", left: "119px" },
+      { top: "623px", left: "218px" },
+      { top: "673px", left: "408px" },
+      { top: "695px", left: "794px" },
+      { top: "712px", left: "1162px" },
+      { top: "659px", left: "1253px" },
+      { top: "702px", left: "1375px" },
+      { top: "138px", left: "1019px" },
+      { top: "213px", left: "873px" },
+      { top: "215px", left: "584px" },
+      { top: "259px", left: "582px" },
+      { top: "258px", left: "808px" },
+      { top: "490px", left: "571px" },
+      { top: "334px", left: "580px" },
+      { top: "259px", left: "650px" },
+      { top: "259px", left: "639px" },
+      { top: "333px", left: "801px" },
+      { top: "421px", left: "803px" },
+      { top: "490px", left: "633px" },
+      { top: "413px", left: "725px" },
+      { top: "407px", left: "650px" },
+      { top: "335px", left: "652px" },
+      { top: "333px", left: "727px" },
+      { top: "332px", left: "650px" },
+      { top: "334px", left: "728px" },
+      { top: "494px", left: "725px" },
     ];
     const imageCoordinates = [
       {
@@ -1004,12 +1103,12 @@
       94, 90, 88, 96, 93, 94, 93, 90, 95, 88, 95,
     ];
 
-
-
+    let selectedEssay;
     const herbData = [
       {
         name: "Dandelion",
         date: "June 12th, 2024",
+        zodiac: "<i>Gemini</i>: May 20 - June 19.",
         color: "#BB73A1",
         text: [
           `I'm writing you from Vermont, where I have been museum sitting for Clare at the <a href="https://museumofeverydaylife.org/">Museum of Everyday Life </a>. I hope this letter can be a pleasant inbox surprise. It is the first in a series of monthly dispatches in a new yearlong project. Please see how you like the idea by reading on, and consider subscribing to be with me for the journey. Feedback, questions, fact checks, and collaboration are all more than welcome.`,
@@ -1037,11 +1136,11 @@
           `<i>"In the English language you are either a human, or you are a thing, an it. Think of the repercussions of itting the world. This small piece of linguistic imperialism and the objectification of nature that "it" holds...the consequences of this objectification of the living world creates a kind of moral exclusion."</i>`,
         ],
         image: [
-          "Wix dandelion 01",
-          "Wix dandelion 02",
-          "Wix dandelion 03",
-          "Wix dandelion 04",
-          "Wix dandelion 05",
+          "https://static.wixstatic.com/media/2fa7ac_9baa94d56e01443095fb63f4e4a2235e~mv2.jpg",
+          "https://static.wixstatic.com/media/2fa7ac_82f1f88faa294da79bc55c3073c1c27d~mv2.jpg",
+          "https://static.wixstatic.com/media/2fa7ac_b987e1ac524048d7982b09e9745402bd~mv2.webp",
+          "https://static.wixstatic.com/media/2fa7ac_647ddb1a173e4bf091a8fc25915d1104~mv2.jpg",
+          "https://static.wixstatic.com/media/2fa7ac_8e7bc6814b434df798666710f3c9a442~mv2.jpg",
         ],
         caption: [
           "The garden, Dungeness, at Prospect Cottage, photographed by Howard Sooley 1990.",
@@ -1082,6 +1181,7 @@
       {
         name: "St. John's Wort",
         date: "July 5th, 2024",
+        zodiac: "<i>Cancer</i>: June 20 - July 22.",
         color: "#FBF3AB",
         text: [
           // text: 4
@@ -1182,6 +1282,7 @@
       {
         name: "Yarrow",
         date: "August 19th, 2024",
+        zodiac: "<i>Leo</i>: July 22 - Aug 22.",
         color: "#000509",
         text: [
           // text: 3
@@ -1298,6 +1399,7 @@
         name: "Elder",
         date: "September 23rd, 2024",
         color: "#D62551",
+        zodiac: "<i>Virgo</i>: August 22 - September 22.",
         text: [
           //text: 4
           `"Planting, for me, is a form of resistance" - Medo Halimy (2005-2024)`,
@@ -1406,6 +1508,7 @@
       {
         name: "Ginkgo",
         date: "September 23rd, 2024",
+        zodiac: "<i>Libra & Scorpio</i>: September 23 - November 21.",
         color: "#EBE2D3",
         text: [
           // text: 1
@@ -1437,7 +1540,8 @@
           "https://static.wixstatic.com/media/2fa7ac_74494599685c4640aae314d0c9c550cd~mv2.jpg",
           "https://static.wixstatic.com/media/2fa7ac_0a9d9163a6c94921be50d6b16dad6bd1~mv2.jpg",
           //TODO: check if gif works ok as is or if needs to be another media type
-          "https://static.wixstatic.com/media/2fa7ac_183805118c9340009f2ae221e8351b73~mv2.gif"
+          "https://static.wixstatic.com/media/2fa7ac_183805118c9340009f2ae221e8351b73~mv2.gif",
+          "https://static.wixstatic.com/media/2fa7ac_35f938b5981b4135a05910c4d30583c0~mv2.jpg"
         ],
         caption: [
           `Image content: Ginkgo hibakujumoku. Image credit: Shukkein Garden Ginkgo, Hiroshima, c. 1948 (Photographer Unknown). Calligraphy by Margaret May Fung Van. Collage by MZYVB, October 2024.`,
@@ -1852,6 +1956,79 @@
 
 
     // =========================================================
+    // POPULATE ARCHIVE
+    // =========================================================
+    function populateArchive() {
+      // make index on left from herb name, TODO: ensure in chronological order with most recent first
+      const index = document.getElementById("archive-index");
+      index.innerHTML = "";
+      for (let i = 0; i < herbData.length; i++) {
+        const title = `<p id="title-${i}" class="index-title subtitle">${herbData[i].name}</p>`;
+        index.innerHTML += title;
+
+      }
+      for (let i = 0; i < herbData.length; i++) {
+        document.getElementById(`title-${i}`).addEventListener("mouseover", () => {
+          document.getElementById(`title-${i}`).classList.add("green-text");
+        });
+        document.getElementById(`title-${i}`).addEventListener("mouseout", () => {
+          if (selectedEssay !== i) {
+            document.getElementById(`title-${i}`).classList.remove("green-text");
+          }
+          // document.getElementsByClassName("green-text")[0]?.classList.remove("green-text");
+        });
+        document.getElementById(`title-${i}`).addEventListener("click", () => {
+          document.getElementById(`title-${selectedEssay}`).classList.remove("green-text");
+          document.getElementById(`title-${i}`).classList.add("green-text");
+          selectEssay(i);
+        });
+      }
+      selectEssay(0);
+    }
+
+    function selectEssay(num) {
+      console.log("HIT SELECT ESSAY");
+      selectedEssay = num;
+      if (!document.getElementById(`title-${num}`).classList.contains("green-text")) {
+        console.log("HIT GREEN TEXT");
+        document.getElementsByClassName("green-text")[0]?.classList.remove("green-text");
+        document.getElementById(`title-${num}`).classList.add("green-text");
+      }
+      document.getElementById("herb-name").innerText = herbData[num].name;
+      console.log(herbData[num].name);
+      document.getElementById("title-img").src = herbData[num].image[0];
+      document.getElementById("zodiac-season").innerHTML = herbData[num].zodiac;
+      document.getElementById("publish-date").innerHTML = `First published ${herbData[num].date}`;
+
+      const herbContent = document.getElementById("herb-content");
+      herbContent.innerHTML = "";
+      let textArrayNum = 0
+      let imgArrayNum = 1
+      let captionArrayNum = 0
+
+      for (let i = 0; i < herbData[num].mapping.length; i += 2) {
+        if (herbData[num].mapping[i] == "text") {
+          for (let a = 0; a < herbData[num].mapping[i + 1]; a++) {
+            herbContent.innerHTML += `<p class="body-text">${herbData[num].text[textArrayNum]}</p>`;
+            textArrayNum++;
+          }
+        }
+        if (herbData[num].mapping[i] == "image") {
+          for (let b = 0; b < herbData[num].mapping[i + 1]; b++) {
+            herbContent.innerHTML += `<img class="body-img" src=${herbData[num].image[imgArrayNum]} />`;
+            imgArrayNum++;
+          }
+        }
+        if (herbData[num].mapping[i] == "caption") {
+          for (let c = 0; c < herbData[num].mapping[i + 1]; c++) {
+            herbContent.innerHTML += `<p class="caption-text">${herbData[num].caption[captionArrayNum]}</p>`;
+            captionArrayNum++;
+          }
+        }
+      }
+    }
+
+    // =========================================================
     // WINDOW LOAD
     // =========================================================
 
@@ -1881,8 +2058,11 @@
           interactiveView.classList.remove("show");
           interactiveView.classList.add("hidden");
 
+          populateArchive();
+
           archiveView.classList.remove("hidden");
           archiveView.classList.add("show");
+
 
         } else {
 
