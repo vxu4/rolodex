@@ -383,10 +383,12 @@
 
     .invisible {
       opacity: 0;
+      transition: opacity 0.5s ease;
     }
 
     .visible {
       opacity: 1;
+      transition: opacity 0.5s ease;
     }
 
     .show {
@@ -496,26 +498,41 @@
     #herb-dot-01-wrapper {
       left: 12vw;
       top: 12vh;
+      opacity: 1;
+      transition: opacity 0.5s ease;
+
     }
 
     #herb-dot-02-wrapper {
       left: 19vw;
       top: 38vh;
+      opacity: 1;
+      transition: opacity 0.5s ease;
+
     }
 
     #herb-dot-03-wrapper {
       left: 14vw;
       top: 63vh;
+      opacity: 1;
+      transition: opacity 0.5s ease;
+
     }
 
     #herb-dot-04-wrapper {
       right: 7vw;
       top: 29vh;
+      opacity: 1;
+      transition: opacity 0.5s ease;
+
     }
 
     #herb-dot-05-wrapper {
       right: 16vw;
       top: 58vh;
+      opacity: 1;
+      transition: opacity 0.5s ease;
+
     }
 
     .herb-quote-wrapper {
@@ -523,37 +540,44 @@
       flex-direction: column;
       align-items: center;
       justify-content: left;
-      width: 5vw;
+      width: 30vw;
       position: absolute;
+      transition: opacity 0.5s ease;
     }
 
-    #herb-quote-wrapper-01 {
-      left: 12vw;
+    #herb-quote-01-wrapper {
+      left: 4vw;
       top: 12vh;
+      transition: opacity 0.5s ease;
     }
 
-    #herb-quote-wrapper-02 {
-      left: 12vw;
+    #herb-quote-02-wrapper {
+      left: 4vw;
       top: 38vh;
+      transition: opacity 0.5s ease;
     }
 
-    #herb-quote-wrapper-03 {
-      left: 12vw;
+    #herb-quote-03-wrapper {
+      left: 4vw;
       top: 63vh;
+      transition: opacity 0.5s ease;
     }
 
-    #herb-quote-wrapper-04 {
-      right: 7vw;
+    #herb-quote-04-wrapper {
+      right: -2vw;
       top: 29vh;
+      transition: opacity 0.5s ease;
     }
 
-    #herb-quote-wrapper-05 {
-      right: 7vw;
+    #herb-quote-05-wrapper {
+      right: -2vw;
       top: 58vh;
+      transition: opacity 0.5s ease;
     }
 
     .herb-quote {
-      text-align: left;
+      text-align: right;
+
     }
 
     .draggable {
@@ -833,7 +857,7 @@
             <p class="herb-date invisible">Date loading</p>
           </div>
           <div class="herb-quote-wrapper" id="herb-quote-04-wrapper">
-            <p class="herb-quote" id="herb-quote-04"></p>
+            <p id="herb-quote-04"></p>
           </div>
 
           <div class="herb-dot-wrapper" id="herb-dot-05-wrapper">
@@ -842,7 +866,7 @@
             <p class="herb-date invisible">Date loading</p>
           </div>
           <div class="herb-quote-wrapper" id="herb-quote-05-wrapper">
-            <p class="herb-quote" id="herb-quote-05"></p>
+            <p id="herb-quote-05"></p>
           </div>
         </div>
       </div>
@@ -1169,14 +1193,13 @@
           "text",
           2,
         ],
-        Rquotes: [
+        quotes: [
           `It's basic manners to call people by their name, and for this reason I am trying to become better about plant identification (while also navigating the ethics of plant ID apps and their role in location sharing and poaching).`,
-          `Even though I knew I would be mowing the lawn anyways, there is an intensity and a finality to harvesting a plant from the root.`
-        ],
-        BfTQuotes: [],
-        LfTQuotes: [`I've also been reading the diary that the artist Derek Jarman kept during his last two years of life, which he chose to spend growing a garden. Jarman was diagnosed with HIV in 1986, but somehow made his garden, Dungeness, flourish despite his ailing health, and proximity to a nuclear power station.`],
-        GQuotes: [`despite the rightful romanticism we have for gardening, there is inherent violence in it, too.`],
-        SQuotes: [`Most of all, in this home <a href="https://www.youtube.com/watch?v=W41tsEjFkOQ">I Need to Start a Garden.</a>`]
+          `Even though I knew I would be mowing the lawn anyways, there is an intensity and a finality to harvesting a plant from the root.`,
+          `I've also been reading the diary that the artist Derek Jarman kept during his last two years of life, which he chose to spend growing a garden. Jarman was diagnosed with HIV in 1986, but somehow made his garden, Dungeness, flourish despite his ailing health, and proximity to a nuclear power station.`,
+          `despite the rightful romanticism we have for gardening, there is inherent violence in it, too.`,
+          `Most of all, in this home <a href="https://www.youtube.com/watch?v=W41tsEjFkOQ">I Need to Start a Garden.</a>`
+        ]
       },
       {
         name: "St. John's Wort",
@@ -1260,24 +1283,18 @@
           "caption",
           1,
         ],
-        Rquotes: [
+        quotes: [
           `Every morning, I rush to the window hoping for signs of life`,
           `I suppose this is the reality of container gardening in times of ecological crisis.`,
           `I already had everything I needed for a <a href="https://theherbalacademy.com/blog/how-to-make-a-tincture/?ref=oneyeargarden.com">tincture</a>: 80 proof vodka, a 1 quart mason jar, gas in my car.`,
-          `the high contrasts of late resulted in a thriving amid the heaviness, thanks in large part to my relationship to plants.`
-        ],
-        BfTQuotes: [
-          `St. John's Wort has its bloom time and is believed to be at its most potent on the solstice, the longest and lightest day of the year.`,
+          `the high contrasts of late resulted in a thriving amid the heaviness, thanks in large part to my relationship to plants.`, `St. John's Wort has its bloom time and is believed to be at its most potent on the solstice, the longest and lightest day of the year.`,
           `Research studies have found SJW to be as effective as standardly prescribed SSRIs (serotonin reuptake inhibitors), and with fewer side effects. That this sunshine filled herb can help to remedy our inner darkness is a logic that I just can't get over.`,
-        ],
-        LfTQuotes: [`The Hypericum here was not particularly in abundance, so I harvested just a few flowers. They stained my fingers a surprising purple, and when dropped into the vodka, turned the liquid an even more surprising red.`],
-        GQuotes: [
+          `The Hypericum here was not particularly in abundance, so I harvested just a few flowers. They stained my fingers a surprising purple, and when dropped into the vodka, turned the liquid an even more surprising red.`,
           `On June 22nd, we entered Cancer season quite dramatically with both the summer solstice and a full moon, the first time the two coincide in 40 years. Because of its relationship to the solstice, I have chosen St. John's Wort, Hypericum Perforatum, as the herb du jour.`,
           `container gardens are essentially "domesticated."`,
           `A slow meander through Butterfly Milkweed, River Sage, and Wild Carrot, searching for yellow...`,
           `We were careful to leave plenty for the bees`
         ],
-        SQuotes: []
       },
       {
         name: "Yarrow",
@@ -1381,19 +1398,13 @@
           "text",
           1,
         ],
-        Rquotes: [
+        quotes: [
           `Already mid August, and I have the nerve to just be getting started. In the blink of an eye, frost will arrive to kill the Clockvines I have been coaxing up the iron rail. But still I can't resist trying to build this little universe, the prospect of Yarrow making it through the winter, and sense of hope that each rain brings.`,
-          `Although I am learning not to reduce herbs to one single phytochemical constituent, it must be said that Yarrow is a "master of the blood." Its botanical name, Achillea millefolium, translates to Achilles' thousand leaved plant, and has a place of honor in Greek mythology. Yarrow was believed to bestow immortality to whomever bathed in its waters, and so when Achilles was born, his mother held him by his "Achilles heel" and dipped him in the Yarrow-laced waters of the River Styx. Yarrow later became Achilles' greatest plant ally on the battlefield, where he used it for its powerful styptic (blood staunching) properties to treat his soldiers' wounds. Achilles eventually died from an arrow shot to the heel, where according to lore, the Yarrow did not touch.`
-        ],
-        BfTQuotes: [
+          `Although I am learning not to reduce herbs to one single phytochemical constituent, it must be said that Yarrow is a "master of the blood." Its botanical name, Achillea millefolium, translates to Achilles' thousand leaved plant, and has a place of honor in Greek mythology. Yarrow was believed to bestow immortality to whomever bathed in its waters, and so when Achilles was born, his mother held him by his "Achilles heel" and dipped him in the Yarrow-laced waters of the River Styx. Yarrow later became Achilles' greatest plant ally on the battlefield, where he used it for its powerful styptic (blood staunching) properties to treat his soldiers' wounds. Achilles eventually died from an arrow shot to the heel, where according to lore, the Yarrow did not touch.`,
           `As an amphoteric herb, Yarrow has opposing actions when it comes to regulating blood flow. On one hand, Yarrow's astringent quality encourages wounds to knit back together, even halting internal bleeding and hemorrhaging. On the other, Yarrow promotes blood flow outwards to the capillaries, soothing the vasculature with its flavanoids.`,
           `Yarrow is known as an excellent herb in psychological first aid, and is commonly prescribed to aid workers, as well as those experiencing panic attacks, trauma triggers, or upsurges of grief.`,
-        ],
-        LfTQuotes: [
-          `They elaborate on this through the 200BCE story of Giant Fennel. Desired for its purported contraceptive properties, Giant Fennel is humanity's first documented case of a medicinal plant harvested to extinction.`
-        ],
-        GQuotes: [],
-        SQuotes: []
+          `They elaborate on this through the 200BCE story of Giant Fennel. Desired for its purported contraceptive properties, Giant Fennel is humanity's first documented case of a medicinal plant harvested to extinction.`,
+        ]
       },
       {
         name: "Elder",
@@ -1482,28 +1493,19 @@
           "text",
           1,
         ],
-        Rquotes: [
+        quotes: [
           `Carrying water across the apartment every evening as an offering to the garden has become my way of praying.`,
-          `I see myself leaning towards methods like Masanobu Fukuoka's 'Do Nothing Farming', and Ruth Stout's 'no work' garden philosophy.`
-        ],
-        BfTQuotes: [
+          `I see myself leaning towards methods like Masanobu Fukuoka's 'Do Nothing Farming', and Ruth Stout's 'no work' garden philosophy.`,
           `Sajah Popham, author of Evolutionary Herbalism, says that the only medicine that can heal the spiritual sickness pervading humanity is one that comes from something greater than our own inventions (namely, medicinal plants). He goes on to write that the power of medicinal plants is "not simply a removal of bodily symptoms, not just a replacement for a pill; it is a deeper level of doctoring within the territory of the human spirit and soul." To Popham, plants offer something beyond healing: they can facilitate the evolution of consciousness.`,
           `Elderflower is a profound emotional diaphoretic. Categorized as an "exhilarant" along with herbs like Tulsi, Linden, and Dandelion, when taken as a liqueur, Elderflower can help lift one out of downtrodden mental and emotional states,`,
-          `It is written that Elder's hollow stem, with the soft pith removed, was used to blow into the centre of a fire to generate heat. On the first day of autumn, I stare out toward the future. I wonder when fire season will arrive, sparing no one besides a few seeds buried deep underground.`
-        ],
-        //TODO: link NYC tree map
-        LfTQuotes: [
-          `Before this, Medo was making viral videos about everyday life at his camp in Gaza, including a series for a daily planting challenge. In the sandy earth outside his tent, Medo cultivated mint, lentils, mulukhiyah, and watermelon. Each video begins with the announcement: "Day X Of Planting Every Day Until This Genocide Is Over."`,
+          `It is written that Elder's hollow stem, with the soft pith removed, was used to blow into the centre of a fire to generate heat. On the first day of autumn, I stare out toward the future. I wonder when fire season will arrive, sparing no one besides a few seeds buried deep underground.`, `Before this, Medo was making viral videos about everyday life at his camp in Gaza, including a series for a daily planting challenge. In the sandy earth outside his tent, Medo cultivated mint, lentils, mulukhiyah, and watermelon. Each video begins with the announcement: "Day X Of Planting Every Day Until This Genocide Is Over."`,
           `It reminded me of turning to an elder in a moment of crisis, when this Virgo season I chose to ask the herb Elder, Sambuca Nigra, for help.`,
           `before literacy was the norm herbalists grew Elder trees outside their doors so that people could identify them.`,
-          `I made a record of the Greenpoint Elder tree on the NYC Tree Map, the most comprehensive and up-to-date living tree map in the world.`
-        ],
-        GQuotes: [
+          `I made a record of the Greenpoint Elder tree on the <a href="https://www.nycgovparks.org/tree-map">NYC Tree Map</a>, the most comprehensive and up-to-date living tree map in the world.`,
           `Elderberry has been used for centuries in the art of fever management.`,
           `In cool tea form, it acts as a diuretic, while in hot tea form, can be taken as a diaphoretic, allowing heat to release during a fever.`,
           `I learned only after making my purchase that Mountain Rose Herbs is in fact on the Boycott Divest & Sanction list. Starwest Botanicals, Frontier Co-op, and Gaia Herbs are other herbal companies currently under pressure to divest from Israeli agriculture. For archives of deeper research, check out Shabina Lafleur-Gangji's compiled resources on the topic here.`
-        ],
-        SQuotes: []
+        ]
       },
       {
         name: "Ginkgo",
@@ -1592,21 +1594,15 @@
           "text",
           1
         ],
-        Rquotes: [
+        quotes: [
           `Hibakusha (被爆者) is a Japanese term for the people who survived the 1945 atomic bombings of Hiroshima and Nagasaki. Hibakujumoku (被爆樹木) is a related term that refers specifically to the trees that survived the same event. Hibakujumoku are also known as "witness trees."`,
           `It has been quite the time, the cherry on top being the sale of our building, which precipitated an unexpected move on December 1st. Saying goodbye to the garden was something I never imagined would have to be done so soon.`,
-        ],
-        BfTQuotes: [
           `Ginkgo is one of a handful of hibakujumoku species. Standing as close as 1,120 meters from the hypocenter of the blast, these Ginkgos were exposed to massive amounts of radiation and traumatic soil conditions. No one thought they would survive the event, but eyewitness reports relate that within two years of the bombing, the trees were growing new leaf again.`,
           `Ginkgo Biloba is one of the oldest living tree species in the world. Along with horseshoe crabs and royal ferns, Ginkgo is considered a living fossil, meaning it has remained essentially unchanged from earlier geological times. Many Daoist temples feature Ginkgos older even than the temple structure itself`,
-          `When Ginkgo was brought by Western botanists from China to England in the early 19th century, the Industrial Revolution was posing a serious threat to both human and tree health. But Ginkgo was found to thrive despite heavy air pollution and soil compaction, making it an ideal urban tree.`
-        ],
-        LfTQuotes: [
+          `When Ginkgo was brought by Western botanists from China to England in the early 19th century, the Industrial Revolution was posing a serious threat to both human and tree health. But Ginkgo was found to thrive despite heavy air pollution and soil compaction, making it an ideal urban tree.`,
           `Only female Ginkgos produce the apricot like fruits – technically seeds – that carpet our streets every fall. These seeds contain butyric acid (the signature smell of human vomit), earning them the reputation of being profoundly stinky. Called by some a public nuisance, nurseries have tried to graft exclusively male Ginkgos to avoid this problem. But Ginkgos outsmart us once again, this time by spontaneously changing their sex – male trees suddenly growing female branches. If I have one takeaway from this fact, it is that trees are truly above gender.`,
-          `Following a Zoey Xinyi Gong recipe, I made Lotus Leaf Steamed Sticky Rice with Chicken and Ginkgo – a 13 hour preparation that tasted like a pocket of earth. The recipe called for lotus, coix, and ginkgo seeds, as well as adzuki beans and fox nuts. I was able to source everything from Chinatown, including fresh Ginkgo seeds harvested from city trees.`
-        ],
-        GQuotes: [`Good neurological health depends on the proper circulation of blood to the brain, and Ginkgo helps facilitate this action by stimulating circulation and reducing inflammation throughout the central nervous system.`],
-        SQuotes: []
+          `Following a Zoey Xinyi Gong recipe, I made Lotus Leaf Steamed Sticky Rice with Chicken and Ginkgo – a 13 hour preparation that tasted like a pocket of earth. The recipe called for lotus, coix, and ginkgo seeds, as well as adzuki beans and fox nuts. I was able to source everything from Chinatown, including fresh Ginkgo seeds harvested from city trees.`,
+          `Good neurological health depends on the proper circulation of blood to the brain, and Ginkgo helps facilitate this action by stimulating circulation and reducing inflammation throughout the central nervous system.`]
       },
     ];
     // const herbEssayMap = [{ ["text", 1, "image", 1,]}
@@ -1690,42 +1686,165 @@
         herbDates[i].classList.add("invisible");
       }
     }
+    let herb01counter = 0;
+    let herb02counter = 0;
+    let herb03counter = 0;
+    let herb04counter = 0;
+    let herb05counter = 0;
+    let currPiece = null;
 
     function showQuotes(type) {
-
-      const herbDot01 = document.getElementById("herb-dot-01-wrapper");
-      const herbDot02 = document.getElementById("herb-dot-02-wrapper");
-      const herbDot03 = document.getElementById("herb-dot-03-wrapper");
-      const herbDot04 = document.getElementById("herb-dot-04-wrapper");
-      const herbDot05 = document.getElementById("herb-dot-05-wrapper");
-
-
-      let quotesForDisplay = [];
-      for (let i = 0; i < herbData.length; i++) {
-        if (type == "R") {
-          //TODO: check if this is the right way to add onto an array, also if you even need to add to array (this would be for randomization)
-          quotesForDisplay.push(herbData[i].Rquotes);
-          // hides herb dot if have not already
-          if (!document.getElementById(`herb-dot-0${i}-wrapper`).classList.contains("invisible")) {
-            document.getElementById(`herb-dot-0${i}-wrapper`).classList.add("invisible");
-          }
-          //TODO: think about that 0 - how to increment or randomize? 
-          document.getElementById(`herb-quote-0${i}`).innerHTML = herbData[i].Rquotes[0];
-          document.getElementById(`herb-quote-0${i}-wrapper`).classList.remove("invisible");
-        }
-        if (type == "BfT") {
-          //TODO: check that there is a quote for this type
-        }
-        if (type == "LfT") {
-
-        }
-        if (type == "G") {
-
-        }
-        if (type == "S") {
-
+      function getHerbCounter(herbIndex) {
+        switch (herbIndex) {
+          case 1:
+            return herb01counter;
+          case 2:
+            return herb02counter;
+          case 3:
+            return herb03counter;
+          case 4:
+            return herb04counter;
+          case 5:
+            return herb05counter;
         }
       }
+
+      function incrementHerbCounter(herbIndex) {
+        switch (herbIndex) {
+          case 1:
+            if (herb01counter < herbData[0].quotes.length) {
+              herb01counter++;
+            } else {
+              console.log("hit herb 01 max");
+              herb01counter = 0;
+            }
+            break;
+          case 2:
+            if (herb02counter < herbData[1].quotes.length) {
+              herb02counter++;
+            } else {
+              console.log("hit herb 02 max");
+              herb02counter = 0;
+            }
+            break;
+          case 3:
+            if (herb03counter < herbData[2].quotes.length) {
+              herb03counter++;
+            } else {
+              console.log("hit herb 03 max");
+
+              herb03counter = 0;
+            }
+            break;
+          case 4:
+            if (herb04counter < herbData[3].quotes.length) {
+              herb04counter++;
+            } else {
+              console.log("hit herb 04 max");
+              herb04counter = 0;
+            }
+            break;
+          case 5:
+            if (herb05counter < herbData[4].quotes.length) {
+              herb05counter++;
+            } else {
+              console.log("hit herb 05 max");
+              herb05counter = 0;
+            }
+            break;
+        }
+      }
+
+      function hideAndShow(j, both) {
+        if (both) {
+          // make the dot and its hover elements (name and date of herb) invisible
+          herbDots[j - 1].classList.remove("visible");
+          // herbTexts[j - 1].classList.remove("visible");
+          // herbDates[j - 1].classList.remove("visible");
+          // herbTexts[j - 1].classList.add("invisible");
+          herbDots[j - 1].classList.add("invisible");
+          // herbDates[j - 1].classList.add("invisible");
+          //show the quote for the herb
+          console.log("INSIDE BOTH: adding in quote text");
+          console.log(getHerbCounter(j));
+          console.log(herbData[j - 1].quotes[getHerbCounter(j)]);
+          document.getElementById(`herb-quote-0${j}`).innerHTML = herbData[j - 1].quotes[getHerbCounter(j)];
+          document.getElementById(`herb-quote-0${j}-wrapper`).classList.remove("invisible");
+          // document.getElementById(`herb-quote-0${j}-wrapper`).classList.add("visible");
+        } else {
+          // do the reverse: hide the quote and show the dot and its hover elements (name and date of herb)
+          herbDots[j - 1].classList.remove("invisible");
+          // herbTexts[j - 1].classList.remove("invisible");
+          // herbDates[j - 1].classList.remove("invisible");
+          // herbTexts[j - 1].classList.add("visible");
+          herbDots[j - 1].classList.add("visible");
+          // herbDates[j - 1].classList.add("visible");
+          //show the quote for the herb
+          document.getElementById(`herb-quote-0${j}`).innerHTML = "";
+          document.getElementById(`herb-quote-0${j}-wrapper`).classList.add("invisible");
+          document.getElementById(`herb-quote-0${j}-wrapper`).classList.remove("visible");
+        }
+
+      }
+      // [ 2 ] R: 1, 2, 3, 4, 5
+      // [ 2 ] BfT: 1, 2, 4, 5
+      // [ 2 ] LfT: 3, 4, 5
+      // [ 3 ] G: 2, 4
+      // [ 1 ] S: 2
+      if (type == "R") {
+        //TODO: check if this is the right way to add onto an array, also if you even need to add to array (this would be for randomization)
+        // quotesForDisplay.push(herbData[i].Rquotes);
+        for (let j = 1; j < herbData.length + 1; j++) {
+
+          hideAndShow(j, true);
+          incrementHerbCounter(j);
+        }
+      }
+      if (type == "BfT") {
+        for (let j = 1; j < herbData.length + 1; j++) {
+          if (j !== 3) {
+            hideAndShow(j, true);
+            incrementHerbCounter(j);
+          } else {
+            hideAndShow(j, false);
+          }
+        }
+      }
+      if (type == "LfT") {
+
+        for (let j = 1; j < herbData.length + 1; j++) {
+          if (j !== 1 && j !== 2) {
+            hideAndShow(j, true);
+            incrementHerbCounter(j);
+          } else {
+            hideAndShow(j, false);
+          }
+        }
+      }
+      if (type == "G") {
+        console.log("G");
+        console.log("herb counters: ", herb01counter, herb02counter, herb03counter, herb04counter, herb05counter);
+
+        for (let j = 1; j < herbData.length + 1; j++) {
+          if (j !== 1 && j !== 3 && j !== 5) {
+            hideAndShow(j, true);
+            incrementHerbCounter(j);
+          } else {
+            hideAndShow(j, false);
+          }
+        }
+      }
+      if (type == "S") {
+        for (let j = 1; j < herbData.length + 1; j++) {
+          if (j !== 1 && j !== 3 && j !== 4 && j !== 5) {
+            hideAndShow(j, true);
+            incrementHerbCounter(j);
+          } else {
+            hideAndShow(j, false);
+          }
+        }
+      }
+
     }
 
 
@@ -1909,21 +2028,26 @@
         if (isCorrectPosition) {
           console.log("SUCCESS!", elmnt.id);
 
-          showHerbInfo(0, true);
+          // showHerbInfo(0, true);
 
           const pieceNum = Number(elmnt.id.split("-")[1]);
-          console.log(pieceNum);
-          if (pieceNum == 1 || pieceNum == 2) {
+
+          console.log("PIECE NUM", pieceNum);
+          console.log("CURR PIECE", currPiece);
+          if ((pieceNum == 1 || pieceNum == 2) && pieceNum !== currPiece) {
+            console.log("HIT showquotes R");
             showQuotes("R");
-          } else if (pieceNum == 3 || pieceNum == 4 || pieceNum == 7) {
+          } else if ((pieceNum == 3 || pieceNum == 4 || pieceNum == 7) && pieceNum !== currPiece) {
             showQuotes("G");
-          } else if (pieceNum == 5) {
+          } else if (pieceNum == 5 && pieceNum !== currPiece) {
             showQuotes("BfT");
-          } else if (pieceNum == 6 || pieceNum == 8 || pieceNum == 10) {
-            showQuotes("BfT");
-          } else if (pieceNum == 9) {
+          } else if ((pieceNum == 6 || pieceNum == 8 || pieceNum == 10) && pieceNum !== currPiece) {
+            showQuotes("LfT");
+          } else if (pieceNum == 9 && pieceNum !== currPiece) {
             showQuotes("S");
           }
+          currPiece = pieceNum;
+
 
           // // Snap to the center of the target range
           // const targetLeft =
