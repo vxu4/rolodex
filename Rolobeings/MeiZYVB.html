@@ -21,7 +21,7 @@
       font-family: "Noto Sans", sans-serif;
       font-optical-sizing: auto;
       font-weight: 200;
-      font-size: 14px;
+      font-size: 12px;
       font-style: normal;
       font-variation-settings: "wdth" 100;
       color: black;
@@ -29,6 +29,10 @@
 
     a {
       color: black;
+    }
+
+    .body {
+      margin-left: 0.5vw;
     }
 
     /* Entry overlay: w/ prompt and dot to click in */
@@ -400,8 +404,8 @@
    ========================================================= */
 
     #interactive-view {
-      width: 100vw;
-      height: 100vh;
+      width: 98vw;
+      height: 97vh;
       position: relative;
       overflow: hidden;
 
@@ -423,7 +427,7 @@
       width: 1400px;
       height: 850px;
       /* Try adjusting this number */
-      margin-left: -100px;
+      /* margin-left: -77px; */
       flex-shrink: 0;
 
       transform-origin: center center;
@@ -585,11 +589,14 @@
     }
 
     /* Archive view */
-    .archive-view {
+    #archive-view {
       display: flex;
       flex-direction: row;
       align-items: center;
+      justify-content: center;
       margin-top: 14vh;
+      height: 84vh;
+      overflow: hidden;
     }
 
     #archive-index {
@@ -652,6 +659,7 @@
       font-variation-settings: "wdth" 200;
       font-size: 14px;
       text-align: justify;
+      align-self: flex-start;
     }
 
     .body-img {
@@ -675,22 +683,22 @@
       flex-direction: column;
       align-items: center;
       justify-content: flex-start;
-      height: 84vh;
+      height: 100vh;
       overflow: scroll;
-      margin-top: 15vh;
-      padding-bottom: 5vh;
+      margin-top: 20vh;
+      padding: 0px 10px;
       /* Create fade effect at top & bottom */
       -webkit-mask-image: linear-gradient(to bottom,
           transparent,
-          black 8%,
-          black 70%,
+          black 5%,
+          black 80%,
           transparent);
       -webkit-mask-repeat: no-repeat;
       -webkit-mask-size: 100% 100%;
       mask-image: linear-gradient(to bottom,
           transparent,
-          black 8%,
-          black 70%,
+          black 5%,
+          black 80%,
           transparent);
       mask-repeat: no-repeat;
       mask-size: 100% 100%;
@@ -702,6 +710,7 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
+      padding-bottom: 200px;
 
     }
 
@@ -1121,7 +1130,6 @@
         leftUpperlim: 815,
       },
     ];
-
     const imgWidths = [
       68, 323, 85, 85, 183, 95, 101, 94, 91, 93, 61, 314, 77, 86, 79, 92, 165,
       94, 90, 88, 96, 93, 94, 93, 90, 95, 88, 95,
@@ -1165,6 +1173,7 @@
           "https://static.wixstatic.com/media/2fa7ac_b987e1ac524048d7982b09e9745402bd~mv2.webp",
           "https://static.wixstatic.com/media/2fa7ac_647ddb1a173e4bf091a8fc25915d1104~mv2.jpg",
           "https://static.wixstatic.com/media/2fa7ac_8e7bc6814b434df798666710f3c9a442~mv2.jpg",
+          "https://static.wixstatic.com/media/2fa7ac_f5e34fe9b3e74b72bbf0631569d1e050~mv2.png"
         ],
         caption: [
           "The garden, Dungeness, at Prospect Cottage, photographed by Howard Sooley 1990.",
@@ -1231,8 +1240,6 @@
           `For this reason, I am not planning to distribute any of the tinctures made from Highland Park and Greenwood Cemetery. However, I am delighted to report little green buds of revival on Ezra (he lives!). I fear publicizing this news will make him shy, but I am too proud not to share. If this trend continues, and Ezra indeed flowers, I would love to share tincture with you (unless you are on pharmaceutical SSRIs, which in combination with St. John's Wort can lead to dangerously high levels of serotonin), stay tuned. This tincture is made with grief in mind, and is a response to the debilitating but also profound experience of waking up to the harsher realities of our world. As Fariha Róisín says in this <a href=”https://forthewild.world/listen/fariha-roisin-on-the-courage-of-listening-to-our-bodies-354?ref=oneyeargarden.com”>podcast episode</a>:`,
           `"what our bodies are telling us and what our bodies are showing us through illness, primarily, and through everything from grief to depression are lighthouses back to ourselves."`,
           `My interest in engaging grief comes out of a year marked by loss on many levels, but also intense growth and learning. Not to romanticize strife, but the high contrasts of late resulted in a thriving amid the heaviness, thanks in large part to my relationship to plants. Turning to them has unlocked a wilderness of awareness and an awareness of wilderness within me.`,
-          //TODO: links for the subscription/instagram?
-          `Thank you so much for being here. Just your readership is enough, but if you feel compelled, please consider becoming a paid subscriber, or making a donation. Funds at the moment are going toward good soil, wood for planters, as well as concrete and tiles for flooring. I've also started an instagram incase anyone is interested in live, regular going ons from the garden.`,
         ],
         image: [
           "https://static.wixstatic.com/media/2fa7ac_36a9ccc256a34369904a42449b3ef81a~mv2.jpg",
@@ -1277,7 +1284,7 @@
           "caption",
           1,
           "text",
-          6,
+          5,
           "image",
           1,
           "caption",
@@ -1336,7 +1343,7 @@
           `This month I owe many thanks to Diamy and Alhassane, who helped level the garden floor with concrete. Thank you to Luz, who then empowered me to believe that we could do the tiling ourselves. Thank you Lake, for taking me to Tooth and Nail years ago, and all the growing lessons since. Thank you Tobias, for introducing me to my new favorite poetry collection, The Wild Iris by Louise Glück. And thank you Paula, for introducing a new favorite song, La Jardinera by Violeta Parra. My gratitude to Ali, for teaching me so much about how to embody time. And thank you Uncle Martin, for providing a solution for winter gardening! Lastly, thank you, dear reader, for being here.`
         ],
         image: [
-          "https://static.wixstatic.com/media/2fa7ac_cd163018ddc04bccbe887f08c17c8fdf~mv2.jpg",
+          "https://static.wixstatic.com/media/2fa7ac_51dea1110e284f6ba81b86ed59e3d8d0~mv2.png",
           "https://static.wixstatic.com/media/2fa7ac_59873debbfc14e9ca0c9467e12ede867~mv2.jpg",
           "https://static.wixstatic.com/media/2fa7ac_589231faf04a4462a9aea65272877108~mv2.jpg",
           "https://static.wixstatic.com/media/2fa7ac_9efdbd79e6e84a68b7b30693faa28e04~mv2.jpg",
@@ -1641,8 +1648,8 @@
     // =========================================================
 
     function scalePuzzle() {
-      const availableWidth = window.innerWidth;
-      const availableHeight = window.innerHeight;
+      const availableWidth = window.innerWidth - 50;
+      const availableHeight = window.innerHeight - 50;
 
       const scaleX = availableWidth / PUZZLE_WIDTH;
       const scaleY = availableHeight / PUZZLE_HEIGHT;
@@ -1650,7 +1657,7 @@
       const scale = Math.min(scaleX, scaleY);
 
       // Screen-space adjustment
-      const puzzleXOffset = 10;
+      const puzzleXOffset = -30;
       const puzzleYOffset = 0;
 
       puzzleCanvas.style.transform = `
@@ -1715,7 +1722,6 @@
             if (herb01counter < herbData[0].quotes.length) {
               herb01counter++;
             } else {
-              console.log("hit herb 01 max");
               herb01counter = 0;
             }
             break;
@@ -1723,7 +1729,6 @@
             if (herb02counter < herbData[1].quotes.length) {
               herb02counter++;
             } else {
-              console.log("hit herb 02 max");
               herb02counter = 0;
             }
             break;
@@ -1731,8 +1736,6 @@
             if (herb03counter < herbData[2].quotes.length) {
               herb03counter++;
             } else {
-              console.log("hit herb 03 max");
-
               herb03counter = 0;
             }
             break;
@@ -1740,7 +1743,6 @@
             if (herb04counter < herbData[3].quotes.length) {
               herb04counter++;
             } else {
-              console.log("hit herb 04 max");
               herb04counter = 0;
             }
             break;
@@ -1748,7 +1750,6 @@
             if (herb05counter < herbData[4].quotes.length) {
               herb05counter++;
             } else {
-              console.log("hit herb 05 max");
               herb05counter = 0;
             }
             break;
