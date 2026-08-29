@@ -501,7 +501,7 @@
 
     #herb-dot-01-wrapper {
       left: 12vw;
-      top: 12vh;
+      top: 11vh;
       opacity: 1;
       transition: opacity 0.5s ease;
 
@@ -517,7 +517,7 @@
 
     #herb-dot-03-wrapper {
       left: 14vw;
-      top: 63vh;
+      top: 65vh;
       opacity: 1;
       transition: opacity 0.5s ease;
 
@@ -525,7 +525,7 @@
 
     #herb-dot-04-wrapper {
       right: 7vw;
-      top: 29vh;
+      top: 23vh;
       opacity: 1;
       transition: opacity 0.5s ease;
 
@@ -533,7 +533,7 @@
 
     #herb-dot-05-wrapper {
       right: 16vw;
-      top: 58vh;
+      top: 57vh;
       opacity: 1;
       transition: opacity 0.5s ease;
 
@@ -551,31 +551,31 @@
 
     #herb-quote-01-wrapper {
       left: 4vw;
-      top: 12vh;
+      top: 19vh;
       transition: opacity 0.5s ease;
     }
 
     #herb-quote-02-wrapper {
       left: 4vw;
-      top: 38vh;
+      top: 46vh;
       transition: opacity 0.5s ease;
     }
 
     #herb-quote-03-wrapper {
       left: 4vw;
-      top: 63vh;
+      top: 73vh;
       transition: opacity 0.5s ease;
     }
 
     #herb-quote-04-wrapper {
       right: -2vw;
-      top: 29vh;
+      top: 31vh;
       transition: opacity 0.5s ease;
     }
 
     #herb-quote-05-wrapper {
       right: -2vw;
-      top: 58vh;
+      top: 65vh;
       transition: opacity 0.5s ease;
     }
 
@@ -1682,6 +1682,8 @@
 
         herbTexts[i].classList.add("visible");
         herbDates[i].classList.add("visible");
+        document.getElementById(`herb-quote-0${i + 1}-wrapper`).classList.add("invisible");
+        document.getElementById(`herb-quote-0${i + 1}-wrapper`).classList.remove("visible");
       } else {
 
         herbDots[i].style.backgroundColor = "transparent";
@@ -1691,6 +1693,10 @@
 
         herbTexts[i].classList.add("invisible");
         herbDates[i].classList.add("invisible");
+
+        if (document.getElementById(`herb-quote-0${i + 1}`).innerHTML !== "") {
+          document.getElementById(`herb-quote-0${i + 1}-wrapper`).classList.remove("invisible");
+        }
       }
     }
     let herb01counter = 0;
@@ -1700,23 +1706,49 @@
     let herb05counter = 0;
     let currPiece = null;
 
-    function showQuotes(type) {
-      function getHerbCounter(herbIndex) {
-        switch (herbIndex) {
-          case 1:
-            return herb01counter;
-          case 2:
-            return herb02counter;
-          case 3:
-            return herb03counter;
-          case 4:
-            return herb04counter;
-          case 5:
-            return herb05counter;
-        }
+    function getHerbCounter(herbIndex) {
+      switch (herbIndex) {
+        case 1:
+          return herb01counter;
+        case 2:
+          return herb02counter;
+        case 3:
+          return herb03counter;
+        case 4:
+          return herb04counter;
+        case 5:
+          return herb05counter;
+      }
+    }
+
+    function hideAndShow(j, both) {
+      console.log("HIT HIDE AND SHOW");
+      if (both) {
+        // make the dot and its hover elements (name and date of herb) invisible
+        // herbDots[j - 1].classList.remove("visible");
+        // herbDots[j - 1].classList.add("invisible");
+        //show the quote for the herb
+        document.getElementById(`herb-quote-0${j}`).innerHTML = herbData[j - 1].quotes[getHerbCounter(j)];
+        document.getElementById(`herb-quote-0${j}-wrapper`).classList.remove("invisible");
+        // document.getElementById(`herb-quote-0${j}-wrapper`).classList.add("visible");
+      } else {
+        // do the reverse: hide the quote and show the dot and its hover elements (name and date of herb)
+        // herbDots[j - 1].classList.remove("invisible");
+        // herbDots[j - 1].classList.add("visible");
+        //show the quote for the herb
+        document.getElementById(`herb-quote-0${j}`).innerHTML = "";
+        document.getElementById(`herb-quote-0${j}-wrapper`).classList.add("invisible");
+        document.getElementById(`herb-quote-0${j}-wrapper`).classList.remove("visible");
       }
 
+    }
+
+
+    function showQuotes(type) {
+
+
       function incrementHerbCounter(herbIndex) {
+        console.log("HIT INCREMENT HERB COUNTER");
         switch (herbIndex) {
           case 1:
             if (herb01counter < herbData[0].quotes.length) {
@@ -1756,37 +1788,6 @@
         }
       }
 
-      function hideAndShow(j, both) {
-        if (both) {
-          // make the dot and its hover elements (name and date of herb) invisible
-          herbDots[j - 1].classList.remove("visible");
-          // herbTexts[j - 1].classList.remove("visible");
-          // herbDates[j - 1].classList.remove("visible");
-          // herbTexts[j - 1].classList.add("invisible");
-          herbDots[j - 1].classList.add("invisible");
-          // herbDates[j - 1].classList.add("invisible");
-          //show the quote for the herb
-          console.log("INSIDE BOTH: adding in quote text");
-          console.log(getHerbCounter(j));
-          console.log(herbData[j - 1].quotes[getHerbCounter(j)]);
-          document.getElementById(`herb-quote-0${j}`).innerHTML = herbData[j - 1].quotes[getHerbCounter(j)];
-          document.getElementById(`herb-quote-0${j}-wrapper`).classList.remove("invisible");
-          // document.getElementById(`herb-quote-0${j}-wrapper`).classList.add("visible");
-        } else {
-          // do the reverse: hide the quote and show the dot and its hover elements (name and date of herb)
-          herbDots[j - 1].classList.remove("invisible");
-          // herbTexts[j - 1].classList.remove("invisible");
-          // herbDates[j - 1].classList.remove("invisible");
-          // herbTexts[j - 1].classList.add("visible");
-          herbDots[j - 1].classList.add("visible");
-          // herbDates[j - 1].classList.add("visible");
-          //show the quote for the herb
-          document.getElementById(`herb-quote-0${j}`).innerHTML = "";
-          document.getElementById(`herb-quote-0${j}-wrapper`).classList.add("invisible");
-          document.getElementById(`herb-quote-0${j}-wrapper`).classList.remove("visible");
-        }
-
-      }
       // [ 2 ] R: 1, 2, 3, 4, 5
       // [ 2 ] BfT: 1, 2, 4, 5
       // [ 2 ] LfT: 3, 4, 5
