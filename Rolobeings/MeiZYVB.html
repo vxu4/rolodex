@@ -31,6 +31,14 @@
       color: black;
     }
 
+    #gen-body {
+      background-image: url(https://static.wixstatic.com/media/2fa7ac_e14ea4777657472b970da0e92f871751~mv2.jpg);
+      background-size: 100vw;
+      background-color: #F7F7ED;
+      /* backdrop-filter: blur(4px); Apply blur effect */
+      margin: 0;
+    }
+
     .body {
       margin-left: 0.5vw;
     }
@@ -742,7 +750,7 @@
   </style>
 </head>
 
-<body>
+<body id="gen-body">
   <div class="mobile-only">
     <div class="rolodex" id="alldots">
       <span class="letter r"><svg width="15" height="22" viewBox="0 0 15 22" fill="none"
@@ -1656,7 +1664,7 @@
       const scale = Math.min(scaleX, scaleY);
 
       // Screen-space adjustment
-      const puzzleXOffset = -30;
+      const puzzleXOffset = -20;
       const puzzleYOffset = 0;
 
       puzzleCanvas.style.transform = `
@@ -2166,11 +2174,13 @@
           interactiveView.classList.remove("show");
           interactiveView.classList.add("hidden");
 
+          document.getElementById("gen-body").style.backgroundImage = "url()";
+
+
           populateArchive();
 
           archiveView.classList.remove("hidden");
           archiveView.classList.add("show");
-
 
         } else {
 
@@ -2179,6 +2189,9 @@
 
           archiveView.classList.remove("show");
           archiveView.classList.add("hidden");
+
+          document.getElementById("gen-body").style.backgroundImage = "url(https://static.wixstatic.com/media/2fa7ac_e14ea4777657472b970da0e92f871751~mv2.jpg)";
+
 
           interactiveView.classList.remove("hidden");
           interactiveView.classList.add("show");
