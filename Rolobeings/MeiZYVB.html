@@ -505,6 +505,12 @@
       transition: opacity 0.5s ease;
     }
 
+    #instruction {
+      position: absolute;
+      top: 150px;
+      left: 667px;
+    }
+
     #herb-dot-01-wrapper {
       left: 12vw;
       top: 11vh;
@@ -817,8 +823,7 @@
     </div>
   </div>
   <div class="entry-overlay">
-    <!-- TODO: update prompt -->
-    <p class="prompt-text">PROMPTS</p>
+    <p class="prompt-text">ON ROOTING | SPRING MIGRATION</p>
     <div id="entry-dot"></div>
   </div>
   <div class="header">
@@ -838,6 +843,7 @@
   <div class="body">
     <div id="interactive-view" class="show">
       <div id="puzzle-canvas">
+        <p id="instruction" class="subtitle" style="font-style: italic !important">Help us plant the garden.</p>
         <img id="quilt-outline" alt="Quilt outline" />
         <div id="dots-wrapper">
           <div class="herb-dot-wrapper" id="herb-dot-01-wrapper">
@@ -892,7 +898,7 @@
       <div id="herb-wrapper">
         <div id="essay-wrapper">
           <p id="herb-name" class="subtitle">Dandelion</p>
-          <img id="title-img" src="" alt="" class="herb-image" />
+          <img id="title-img" src="" alt=' ' class="herb-image" />
           <p class="subtitle" id="zodiac-season"></p>
           <br />
           <br />
@@ -1171,6 +1177,7 @@
           `<i>Around me the trees stir in their leaves<br/>and call out, “Stay awhile.”<br/>The light flows from their branches.</i>`,
           `<i>And they call again, “It's simple,” they say,<br/>“and you too have come<br/>into the world to do this, to go easy, to be filled<br/>with light, and to shine."</i>`,
           `May we walk slowly and bow often!`,
+          `𓇢𓆸`,
           `*I was fascinated to learn about Robin Wall Kimmerer's <a href=”https://www.youtube.com/watch?v=8NUcMshWFb4”>proposal</a> (39:49) to reclaim the animacy of the world in English with the new pronoun "kí" for non human living beings. She says:`,
           `<i>"In the English language you are either a human, or you are a thing, an it. Think of the repercussions of itting the world. This small piece of linguistic imperialism and the objectification of nature that "it" holds...the consequences of this objectification of the living world creates a kind of moral exclusion."</i>`,
         ],
@@ -1179,8 +1186,7 @@
           "https://static.wixstatic.com/media/2fa7ac_82f1f88faa294da79bc55c3073c1c27d~mv2.jpg",
           "https://static.wixstatic.com/media/2fa7ac_b987e1ac524048d7982b09e9745402bd~mv2.webp",
           "https://static.wixstatic.com/media/2fa7ac_647ddb1a173e4bf091a8fc25915d1104~mv2.jpg",
-          "https://static.wixstatic.com/media/2fa7ac_8e7bc6814b434df798666710f3c9a442~mv2.jpg",
-          "https://static.wixstatic.com/media/2fa7ac_f5e34fe9b3e74b72bbf0631569d1e050~mv2.png"
+          "https://static.wixstatic.com/media/2fa7ac_8e7bc6814b434df798666710f3c9a442~mv2.jpg"
         ],
         caption: [
           "The garden, Dungeness, at Prospect Cottage, photographed by Howard Sooley 1990.",
@@ -1203,11 +1209,7 @@
           "image",
           1,
           "text",
-          11,
-          "image",
-          1,
-          "text",
-          2,
+          14
         ],
         quotes: [
           `It's basic manners to call people by their name, and for this reason I am trying to become better about plant identification (while also navigating the ethics of plant ID apps and their role in location sharing and poaching).`,
@@ -1550,7 +1552,7 @@
           `Thank you for your patience with this issue of One Year a Garden. It has been quite the time, the cherry on top being the sale of our building, which precipitated an unexpected move on December 1st. Saying goodbye to the garden was something I never imagined would have to be done so soon. But this change might be the best thing that's happened for the project. My new home has a backyard, neglected but full of potential. So far, I have identified a Mulberry and a Maple tree – the rest is buried in leaves. It's only been a few days but I already feel a mending deep within.`
         ],
         image: [
-          "https://static.wixstatic.com/media/2fa7ac_559f1298e5d94120bad04e091382aa97~mv2.jpg",
+          "https://static.wixstatic.com/media/2fa7ac_5f37ce0eff6847dc8ab394637da2ca55~mv2.jpg",
           "https://static.wixstatic.com/media/2fa7ac_9f0f9efbfffa4e86a9fcfb77f194919a~mv2.jpg",
           "https://static.wixstatic.com/media/2fa7ac_5df549e25c174b49a4b7f0c8de03c9e3~mv2.jpg",
           "https://static.wixstatic.com/media/2fa7ac_74494599685c4640aae314d0c9c550cd~mv2.jpg",
@@ -1618,7 +1620,7 @@
           `Following a Zoey Xinyi Gong recipe, I made Lotus Leaf Steamed Sticky Rice with Chicken and Ginkgo – a 13 hour preparation that tasted like a pocket of earth. The recipe called for lotus, coix, and ginkgo seeds, as well as adzuki beans and fox nuts. I was able to source everything from Chinatown, including fresh Ginkgo seeds harvested from city trees.`,
           `Good neurological health depends on the proper circulation of blood to the brain, and Ginkgo helps facilitate this action by stimulating circulation and reducing inflammation throughout the central nervous system.`]
       },
-    ];
+    ].reverse();
     // const herbEssayMap = [{ ["text", 1, "image", 1,]}
     // ]
     // =========================================================
@@ -1700,9 +1702,10 @@
 
         herbTexts[i].classList.add("invisible");
         herbDates[i].classList.add("invisible");
-
         if (document.getElementById(`herb-quote-0${i + 1}`).innerHTML !== "") {
           document.getElementById(`herb-quote-0${i + 1}-wrapper`).classList.remove("invisible");
+          document.getElementById(`herb-quote-0${i + 1}-wrapper`).classList.add("visible");
+
         }
       }
     }
@@ -2084,9 +2087,11 @@
       for (let i = 0; i < herbData.length; i++) {
         const title = `<p id="title-${i}" class="index-title subtitle">${herbData[i].name}</p>`;
         index.innerHTML += title;
-
       }
-      for (let i = 0; i < herbData.length; i++) {
+      index.innerHTML += `<p style="margin-top: 0;">_______________</p>`;
+      index.innerHTML += `<p id="title-${herbData.length}" class="index-title subtitle">Pinwheel</p>`;
+
+      for (let i = 0; i < herbData.length + 1; i++) {
         document.getElementById(`title-${i}`).addEventListener("mouseover", () => {
           document.getElementById(`title-${i}`).classList.add("green-text");
         });
@@ -2094,7 +2099,6 @@
           if (selectedEssay !== i) {
             document.getElementById(`title-${i}`).classList.remove("green-text");
           }
-          // document.getElementsByClassName("green-text")[0]?.classList.remove("green-text");
         });
         document.getElementById(`title-${i}`).addEventListener("click", () => {
           document.getElementById(`title-${selectedEssay}`).classList.remove("green-text");
@@ -2106,42 +2110,60 @@
     }
 
     function selectEssay(num) {
+      if (num === herbData.length) {
+        document.getElementById("essay-wrapper").innerHTML = `<div style="display: flex; flex-direction: column; align-items: center;">           <p id="herb-name" class="subtitle">Pinwheel</p>
+<img style="height: 45vh" src="https://static.wixstatic.com/media/2fa7ac_b7717354984c402bb4bdad2171cf8e75~mv2.jpg" alt="Pinwheel" /> <p class='body-text' style="margin-top: 9vh;">This quilt square is part of a larger quilt made in a 2024 collaboration between Diana Nucera and Miranda Zhen-Yao Van-Boswell. </p></div>`;
+
+      } else {
+        if (!document.getElementById(`title-${num}`).classList.contains("green-text")) {
+          document.getElementsByClassName("green-text")[0]?.classList.remove("green-text");
+          document.getElementById(`title-${num}`).classList.add("green-text");
+        }
+
+        if (selectedEssay === herbData.length) {
+          document.getElementById("essay-wrapper").innerHTML = `<p id="herb-name" class="subtitle">Dandelion</p>
+          <img id="title-img" src="" alt=' ' class="herb-image" />
+          <p class="subtitle" id="zodiac-season"></p>
+          <br />
+          <br />
+          <p class="label-text" id="publish-date">First published June 12th, 2024</p>
+          <div id="herb-content">
+          </div>`;
+        }
+        document.getElementById("herb-name").innerText = herbData[num].name;
+        document.getElementById("title-img").src = herbData[num].image[0];
+        document.getElementById("zodiac-season").innerHTML = herbData[num].zodiac;
+        document.getElementById("publish-date").innerHTML = `First published ${herbData[num].date}`;
+
+        const herbContent = document.getElementById("herb-content");
+        herbContent.innerHTML = "";
+        let textArrayNum = 0
+        let imgArrayNum = 1
+        let captionArrayNum = 0
+
+        for (let i = 0; i < herbData[num].mapping.length; i += 2) {
+          if (herbData[num].mapping[i] == "text") {
+            for (let a = 0; a < herbData[num].mapping[i + 1]; a++) {
+              herbContent.innerHTML += `<p class="body-text">${herbData[num].text[textArrayNum]}</p>`;
+              textArrayNum++;
+            }
+          }
+          if (herbData[num].mapping[i] == "image") {
+            for (let b = 0; b < herbData[num].mapping[i + 1]; b++) {
+              herbContent.innerHTML += `<img class="body-img" src=${herbData[num].image[imgArrayNum]} />`;
+              imgArrayNum++;
+            }
+          }
+          if (herbData[num].mapping[i] == "caption") {
+            for (let c = 0; c < herbData[num].mapping[i + 1]; c++) {
+              herbContent.innerHTML += `<p class="caption-text">${herbData[num].caption[captionArrayNum]}</p>`;
+              captionArrayNum++;
+            }
+          }
+        }
+      }
       selectedEssay = num;
-      if (!document.getElementById(`title-${num}`).classList.contains("green-text")) {
-        document.getElementsByClassName("green-text")[0]?.classList.remove("green-text");
-        document.getElementById(`title-${num}`).classList.add("green-text");
-      }
-      document.getElementById("herb-name").innerText = herbData[num].name;
-      document.getElementById("title-img").src = herbData[num].image[0];
-      document.getElementById("zodiac-season").innerHTML = herbData[num].zodiac;
-      document.getElementById("publish-date").innerHTML = `First published ${herbData[num].date}`;
 
-      const herbContent = document.getElementById("herb-content");
-      herbContent.innerHTML = "";
-      let textArrayNum = 0
-      let imgArrayNum = 1
-      let captionArrayNum = 0
-
-      for (let i = 0; i < herbData[num].mapping.length; i += 2) {
-        if (herbData[num].mapping[i] == "text") {
-          for (let a = 0; a < herbData[num].mapping[i + 1]; a++) {
-            herbContent.innerHTML += `<p class="body-text">${herbData[num].text[textArrayNum]}</p>`;
-            textArrayNum++;
-          }
-        }
-        if (herbData[num].mapping[i] == "image") {
-          for (let b = 0; b < herbData[num].mapping[i + 1]; b++) {
-            herbContent.innerHTML += `<img class="body-img" src=${herbData[num].image[imgArrayNum]} />`;
-            imgArrayNum++;
-          }
-        }
-        if (herbData[num].mapping[i] == "caption") {
-          for (let c = 0; c < herbData[num].mapping[i + 1]; c++) {
-            herbContent.innerHTML += `<p class="caption-text">${herbData[num].caption[captionArrayNum]}</p>`;
-            captionArrayNum++;
-          }
-        }
-      }
     }
 
     // =========================================================
