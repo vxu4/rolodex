@@ -507,8 +507,8 @@
 
     #instruction {
       position: absolute;
-      top: 150px;
-      left: 667px;
+      top: 17%;
+      left: 49.7%;
     }
 
     #herb-dot-01-wrapper {
@@ -843,7 +843,7 @@
   <div class="body">
     <div id="interactive-view" class="show">
       <div id="puzzle-canvas">
-        <p id="instruction" class="subtitle" style="font-style: italic !important">Help us plant the garden.</p>
+        <p id="instruction" class="subtitle" style="font-style: italic !important">let's garden</p>
         <img id="quilt-outline" alt="Quilt outline" />
         <div id="dots-wrapper">
           <div class="herb-dot-wrapper" id="herb-dot-01-wrapper">
@@ -899,7 +899,7 @@
         <div id="essay-wrapper">
           <p id="herb-name" class="subtitle">Dandelion</p>
           <img id="title-img" src="" alt=' ' class="herb-image" />
-          <p class="subtitle" id="zodiac-season"></p>
+          <!-- <p class="subtitle" id="zodiac-season"></p> -->
           <br />
           <br />
           <p class="label-text" id="publish-date">First published June 12th, 2024</p>
@@ -1152,8 +1152,7 @@
     const herbData = [
       {
         name: "Dandelion",
-        date: "June 12th, 2024",
-        zodiac: "<i>Gemini</i>: May 20 - June 19.",
+        date: "June 19, 2024",
         color: "#BB73A1",
         text: [
           `I'm writing you from Vermont, where I have been museum sitting for Clare at the <a href="https://museumofeverydaylife.org/">Museum of Everyday Life </a>. I hope this letter can be a pleasant inbox surprise. It is the first in a series of monthly dispatches in a new yearlong project. Please see how you like the idea by reading on, and consider subscribing to be with me for the journey. Feedback, questions, fact checks, and collaboration are all more than welcome.`,
@@ -1221,7 +1220,7 @@
       },
       {
         name: "St. John's Wort",
-        date: "July 5th, 2024",
+        date: "July 22, 2024",
         zodiac: "<i>Cancer</i>: June 20 - July 22.",
         color: "#FBF3AB",
         text: [
@@ -1314,7 +1313,7 @@
       },
       {
         name: "Yarrow",
-        date: "August 19th, 2024",
+        date: "August 22, 2024",
         zodiac: "<i>Leo</i>: July 22 - Aug 22.",
         color: "#000509",
         text: [
@@ -1424,7 +1423,7 @@
       },
       {
         name: "Elder",
-        date: "September 23rd, 2024",
+        date: "September 22, 2024",
         color: "#D62551",
         zodiac: "<i>Virgo</i>: August 22 - September 22.",
         text: [
@@ -1525,7 +1524,7 @@
       },
       {
         name: "Ginkgo",
-        date: "September 23rd, 2024",
+        date: "November 21, 2024",
         zodiac: "<i>Libra & Scorpio</i>: September 23 - November 21.",
         color: "#EBE2D3",
         text: [
@@ -2113,7 +2112,6 @@
       if (num === herbData.length) {
         document.getElementById("essay-wrapper").innerHTML = `<div style="display: flex; flex-direction: column; align-items: center;">           <p id="herb-name" class="subtitle">Pinwheel</p>
 <img style="height: 45vh" src="https://static.wixstatic.com/media/2fa7ac_b7717354984c402bb4bdad2171cf8e75~mv2.jpg" alt="Pinwheel" /> <p class='body-text' style="margin-top: 9vh;">This quilt square is part of a larger quilt made in a 2024 collaboration between Diana Nucera and Miranda Zhen-Yao Van-Boswell. </p></div>`;
-
       } else {
         if (!document.getElementById(`title-${num}`).classList.contains("green-text")) {
           document.getElementsByClassName("green-text")[0]?.classList.remove("green-text");
@@ -2123,7 +2121,6 @@
         if (selectedEssay === herbData.length) {
           document.getElementById("essay-wrapper").innerHTML = `<p id="herb-name" class="subtitle">Dandelion</p>
           <img id="title-img" src="" alt=' ' class="herb-image" />
-          <p class="subtitle" id="zodiac-season"></p>
           <br />
           <br />
           <p class="label-text" id="publish-date">First published June 12th, 2024</p>
@@ -2132,7 +2129,7 @@
         }
         document.getElementById("herb-name").innerText = herbData[num].name;
         document.getElementById("title-img").src = herbData[num].image[0];
-        document.getElementById("zodiac-season").innerHTML = herbData[num].zodiac;
+        // document.getElementById("zodiac-season").innerHTML = herbData[num].zodiac;
         document.getElementById("publish-date").innerHTML = `First published ${herbData[num].date}`;
 
         const herbContent = document.getElementById("herb-content");
